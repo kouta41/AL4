@@ -4,6 +4,9 @@ Player::Player(){
 }
 
 Player::~Player(){
+	for (PlayerBullet* bullet_ : bullets_) {
+		delete bullet_;
+	}
 }
 
 void Player::Initialize(){
@@ -47,25 +50,27 @@ void Player::Update(){
 	}
 
 	Attack();
-	if (bullet_) {
+	for(PlayerBullet* bullet_:bullets_){
 		bullet_->Update();
 	}
 }
 
 void Player::Attack(){
 	if (input_->PushKey(DIK_SPACE)) {
+
+		
 		//弾の生成＆初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 
 		newBullet->Initialize(texHandleBullet_,worldTransform_.translate);
 
-		bullet_ = newBullet;
+		bullets_.push_back(newBullet);
 	}
 }
 
 void Player::Draw(ViewProjection viewProjection_){
 	model_->Draw(worldTransform_, viewProjection_);
-	if (bullet_) {
+	for (PlayerBullet* bullet_ : bullets_) {
 		bullet_->Draw(viewProjection_);
 	}
 }

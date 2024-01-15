@@ -1,4 +1,6 @@
 #pragma once
+#include <list>
+
 #include "Sprite.h"
 #include "Triangle.h"
 #include "Model.h"
@@ -59,7 +61,7 @@ private: // メンバ変数
 	Input* input_ = nullptr;
 
 	//弾
-	PlayerBullet* bullet_;
+	std::list<PlayerBullet*> bullets_;
 
 	//テクスチャハンドル
 	uint32_t texHandle_ = 0;
