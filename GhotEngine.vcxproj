@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{11453a16-9281-4f8b-a23b-6db46ecae4fe}</ProjectGuid>
+    <RootNamespace>CG2013tusima</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)\externals\DirectXTex;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(ProjectDir)\externals\DirectXTex;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(ProjectDir)GhotEngine\CameraRole;$(ProjectDir)GhotEngine\Math;$(ProjectDir)GhotEngine\Base\DX12;$(ProjectDir)GhotEngine\Base\Window;$(ProjectDir)externals\imgui;$(ProjectDir)GhotEngine\Utility;$(ProjectDir)GhotEngine\CreateResource;$(ProjectDir)GhotEngine\GraphicsPipeline;$(ProjectDir)GhotEngine\Input;$(ProjectDir)GhotEngine\ShaderFile;$(ProjectDir)GhotEngine\Transform;$(ProjectDir)GhotEngine;$(ProjectDir)GhotEngine\Utility\ImGuiManager;$(ProjectDir)GhotEngine\TextureManager;$(ProjectDir)GhotEngine\Model;$(ProjectDir)GhotEngine\Sprite;$(ProjectDir)Project\GameScenen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/ignore:4049 %(AdditionalOptions)</AdditionalOptions>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxcompiler.dll" "$(TargetDir)dxcompiler.dll"
+copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dxil.dll"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(ProjectDir)GhotEngine\CameraRole;$(ProjectDir)GhotEngine\Math;$(ProjectDir)GhotEngine\Base\DX12;$(ProjectDir)GhotEngine\Base\Window;$(ProjectDir)externals\imgui;$(ProjectDir)GhotEngine\Utility;$(ProjectDir)GhotEngine\CreateResource;$(ProjectDir)GhotEngine\GraphicsPipeline;$(ProjectDir)GhotEngine\Input;$(ProjectDir)GhotEngine\ShaderFile;$(ProjectDir)GhotEngine\Transform;$(ProjectDir)GhotEngine;$(ProjectDir)GhotEngine\Utility\ImGuiManager;$(ProjectDir)GhotEngine\TextureManager;$(ProjectDir)GhotEngine\Model;$(ProjectDir)GhotEngine\Sprite;$(ProjectDir)Project\GameScenen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/ignore:4049 %(AdditionalOptions)</AdditionalOptions>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxcompiler.dll" "$(TargetDir)dxcompiler.dll"
+copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dxil.dll"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="GhotEngine\Model\ModelCube.cpp" />
+    <ClCompile Include="GhotEngine\Model\ModelSphere.cpp" />
+    <ClCompile Include="Project\GameScenen\GameScene.cpp" />
+    <ClCompile Include="GhotEngine\GhotEngin.cpp" />
+    <ClCompile Include="GhotEngine\CreateResource\CreateResource.cpp" />
+    <ClCompile Include="GhotEngine\Utility\StringUtility.cpp" />
+    <ClCompile Include="GhotEngine\Base\DX12\DirectX12.cpp" />
+    <ClCompile Include="externals\imgui\imgui.cpp" />
+    <ClCompile Include="externals\imgui\imgui_demo.cpp" />
+    <ClCompile Include="externals\imgui\imgui_draw.cpp" />
+    <ClCompile Include="externals\imgui\imgui_impl_dx12.cpp" />
+    <ClCompile Include="externals\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="externals\imgui\imgui_tables.cpp" />
+    <ClCompile Include="externals\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="GhotEngine\GraphicsPipeline\GraphicsPipeline.cpp" />
+    <ClCompile Include="GhotEngine\Utility\ImGuiManager\ImguiManager.cpp" />
+    <ClCompile Include="GhotEngine\Input\Input.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="GhotEngine\Math\Mathfunction.cpp" />
+    <ClCompile Include="GhotEngine\Model\Model.cpp" />
+    <ClCompile Include="GhotEngine\Utility\ShaderCompile.cpp" />
+    <ClCompile Include="GhotEngine\Model\Triangle.cpp" />
+    <ClCompile Include="GhotEngine\CameraRole\CameraRole.cpp" />
+    <ClCompile Include="GhotEngine\Base\Window\Window.cpp" />
+    <ClCompile Include="GhotEngine\Transform\WorldTransform.cpp" />
+    <ClCompile Include="GhotEngine\Sprite\Sprite.cpp" />
+    <ClCompile Include="GhotEngine\TextureManager\TextureManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GhotEngine\Model\IModelState.h" />
+    <ClInclude Include="GhotEngine\Model\ModelCube.h" />
+    <ClInclude Include="GhotEngine\Model\ModelSphere.h" />
+    <ClInclude Include="Project\GameScenen\GameScene.h" />
+    <ClInclude Include="GhotEngine\GhotEngin.h" />
+    <ClInclude Include="GhotEngine\CreateResource\CreateResource.h" />
+    <ClInclude Include="GhotEngine\Utility\StringUtility.h" />
+    <ClInclude Include="GhotEngine\Base\DX12\DirectX12.h" />
+    <ClInclude Include="externals\imgui\imconfig.h" />
+    <ClInclude Include="externals\imgui\imgui.h" />
+    <ClInclude Include="externals\imgui\imgui_impl_dx12.h" />
+    <ClInclude Include="externals\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="externals\imgui\imgui_internal.h" />
+    <ClInclude Include="externals\imgui\imstb_rectpack.h" />
+    <ClInclude Include="externals\imgui\imstb_textedit.h" />
+    <ClInclude Include="externals\imgui\imstb_truetype.h" />
+    <ClInclude Include="GhotEngine\Math\Matrix3x3.h" />
+    <ClInclude Include="GhotEngine\Math\Matrix4x4.h" />
+    <ClInclude Include="GhotEngine\Math\Vector2.h" />
+    <ClInclude Include="GhotEngine\Math\Vector3.h" />
+    <ClInclude Include="GhotEngine\Math\Vector4.h" />
+    <ClInclude Include="GhotEngine\GraphicsPipeline\GraphicsPipeline.h" />
+    <ClInclude Include="GhotEngine\Utility\ImGuiManager\ImguiManager.h" />
+    <ClInclude Include="GhotEngine\Math\Mathfunction.h" />
+    <ClInclude Include="GhotEngine\Input\Input.h" />
+    <ClInclude Include="GhotEngine\Model\Model.h" />
+    <ClInclude Include="GhotEngine\Utility\ShaderCompile.h" />
+    <ClInclude Include="GhotEngine\Model\Triangle.h" />
+    <ClInclude Include="GhotEngine\CameraRole\CameraRole.h" />
+    <ClInclude Include="GhotEngine\Base\Window\Window.h" />
+    <ClInclude Include="GhotEngine\Transform\WorldTransform.h" />
+    <ClInclude Include="GhotEngine\Sprite\Sprite.h" />
+    <ClInclude Include="GhotEngine\TextureManager\TextureManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="GhotEngine\ShaderFile\Object3d.PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="GhotEngine\ShaderFile\Object3d.VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="GhotEngine\ShaderFile\Sprite2D.PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="GhotEngine\ShaderFile\Sprite2D.VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="externals\imgui\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GhotEngine\ShaderFile\Object3d.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
+      <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
