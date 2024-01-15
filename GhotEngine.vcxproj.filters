@@ -96,6 +96,7 @@
     </ClCompile>
     <ClCompile Include="Project\Player\Player.cpp" />
     <ClCompile Include="Project\PlayerBullet\PlayerBullet.cpp" />
+    <ClCompile Include="Project\Enemy\Enemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GhotEngine\CameraRole\CameraRole.h">
@@ -199,6 +200,7 @@
     </ClInclude>
     <ClInclude Include="Project\Player\Player.h" />
     <ClInclude Include="Project\PlayerBullet\PlayerBullet.h" />
+    <ClInclude Include="Project\Enemy\Enemy.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GhotEngine">

@@ -6,25 +6,20 @@
 #include "ModelCube.h"
 #include "Input.h"
 #include "ImGuiManager/ImGuiManager.h"
-#include "Player.h"
-#include "Enemy.h"
+#include "PlayerBullet.h"
 
-
-/// <summary>
-/// ゲームシーン
-/// </summary>
-class GameScene {
+class Enemy{
 
 public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ
 	/// </summary>
-	GameScene();
+	Enemy();
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~GameScene();
+	~Enemy();
 
 	/// <summary>
 	/// 初期化
@@ -39,18 +34,25 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw(ViewProjection viewProjection_);
 
 private: // メンバ変数
 
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
+
 	//3Dモデル
 	std::unique_ptr<Model> model_{};
-	//プレイヤー
-	std::unique_ptr<Player> player_{};
-	//敵
-	std::unique_ptr<Enemy> enemy_{};
 
+
+	//キーボード入力
+	Input* input_ = nullptr;
+
+	//弾
+	//std::list<PlayerBullet*> bullets_;
+
+	//テクスチャハンドル
 	uint32_t texHandle_ = 0;
+	uint32_t texHandleBullet_ = 0;
 };
+
