@@ -51,7 +51,7 @@ private: // メンバ変数
 	uint32_t texHandle_ = 0;
 
 	//寿命
-	static const int32_t kLifeTime = 60 * 1;
+	static const int32_t kLifeTime = 60 * 3;
 	//デスタイマー
 	int32_t deathTimer_ = kLifeTime;
 	//デスフラグ
