@@ -58,7 +58,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)GhotEngine\CameraRole;$(ProjectDir)GhotEngine\Math;$(ProjectDir)GhotEngine\Base\DX12;$(ProjectDir)GhotEngine\Base\Window;$(ProjectDir)externals\imgui;$(ProjectDir)GhotEngine\Utility;$(ProjectDir)GhotEngine\CreateResource;$(ProjectDir)GhotEngine\GraphicsPipeline;$(ProjectDir)GhotEngine\Input;$(ProjectDir)GhotEngine\ShaderFile;$(ProjectDir)GhotEngine\Transform;$(ProjectDir)GhotEngine;$(ProjectDir)GhotEngine\Utility\ImGuiManager;$(ProjectDir)GhotEngine\TextureManager;$(ProjectDir)GhotEngine\Model;$(ProjectDir)GhotEngine\Sprite;$(ProjectDir)Project\GameScenen;$(ProjectDir)Project\Player</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)GhotEngine\CameraRole;$(ProjectDir)GhotEngine\Math;$(ProjectDir)GhotEngine\Base\DX12;$(ProjectDir)GhotEngine\Base\Window;$(ProjectDir)externals\imgui;$(ProjectDir)GhotEngine\Utility;$(ProjectDir)GhotEngine\CreateResource;$(ProjectDir)GhotEngine\GraphicsPipeline;$(ProjectDir)GhotEngine\Input;$(ProjectDir)GhotEngine\ShaderFile;$(ProjectDir)GhotEngine\Transform;$(ProjectDir)GhotEngine;$(ProjectDir)GhotEngine\Utility\ImGuiManager;$(ProjectDir)GhotEngine\TextureManager;$(ProjectDir)GhotEngine\Model;$(ProjectDir)GhotEngine\Sprite;$(ProjectDir)Project\GameScenen;$(ProjectDir)Project\Player;$(ProjectDir)Project\PlayerBullet</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -82,7 +82,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)GhotEngine\CameraRole;$(ProjectDir)GhotEngine\Math;$(ProjectDir)GhotEngine\Base\DX12;$(ProjectDir)GhotEngine\Base\Window;$(ProjectDir)externals\imgui;$(ProjectDir)GhotEngine\Utility;$(ProjectDir)GhotEngine\CreateResource;$(ProjectDir)GhotEngine\GraphicsPipeline;$(ProjectDir)GhotEngine\Input;$(ProjectDir)GhotEngine\ShaderFile;$(ProjectDir)GhotEngine\Transform;$(ProjectDir)GhotEngine;$(ProjectDir)GhotEngine\Utility\ImGuiManager;$(ProjectDir)GhotEngine\TextureManager;$(ProjectDir)GhotEngine\Model;$(ProjectDir)GhotEngine\Sprite;$(ProjectDir)Project\GameScenen;$(ProjectDir)Project\Player</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)GhotEngine\CameraRole;$(ProjectDir)GhotEngine\Math;$(ProjectDir)GhotEngine\Base\DX12;$(ProjectDir)GhotEngine\Base\Window;$(ProjectDir)externals\imgui;$(ProjectDir)GhotEngine\Utility;$(ProjectDir)GhotEngine\CreateResource;$(ProjectDir)GhotEngine\GraphicsPipeline;$(ProjectDir)GhotEngine\Input;$(ProjectDir)GhotEngine\ShaderFile;$(ProjectDir)GhotEngine\Transform;$(ProjectDir)GhotEngine;$(ProjectDir)GhotEngine\Utility\ImGuiManager;$(ProjectDir)GhotEngine\TextureManager;$(ProjectDir)GhotEngine\Model;$(ProjectDir)GhotEngine\Sprite;$(ProjectDir)Project\GameScenen;$(ProjectDir)Project\Player;$(ProjectDir)Project\PlayerBullet</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -100,6 +100,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClCompile Include="GhotEngine\Model\ModelCube.cpp" />
     <ClCompile Include="GhotEngine\Model\ModelSphere.cpp" />
+    <ClCompile Include="Project\PlayerBullet\PlayerBullet.cpp" />
     <ClCompile Include="Project\Player\Player.cpp" />
     <ClCompile Include="Project\GameScenen\GameScene.cpp" />
     <ClCompile Include="GhotEngine\GhotEngin.cpp" />
@@ -131,6 +132,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="GhotEngine\Model\IModelState.h" />
     <ClInclude Include="GhotEngine\Model\ModelCube.h" />
     <ClInclude Include="GhotEngine\Model\ModelSphere.h" />
+    <ClInclude Include="Project\PlayerBullet\PlayerBullet.h" />
     <ClInclude Include="Project\Player\Player.h" />
     <ClInclude Include="Project\GameScenen\GameScene.h" />
     <ClInclude Include="GhotEngine\GhotEngin.h" />

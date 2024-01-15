@@ -95,6 +95,7 @@
       <Filter>GhotEngine\Base\Window</Filter>
     </ClCompile>
     <ClCompile Include="Project\Player\Player.cpp" />
+    <ClCompile Include="Project\PlayerBullet\PlayerBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GhotEngine\CameraRole\CameraRole.h">
@@ -197,6 +198,7 @@
       <Filter>GhotEngine\Base\Window</Filter>
     </ClInclude>
     <ClInclude Include="Project\Player\Player.h" />
+    <ClInclude Include="Project\PlayerBullet\PlayerBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GhotEngine">

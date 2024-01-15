@@ -11,28 +11,61 @@ void Player::Initialize(){
 	viewProjection_.Initialize();
 
 	texHandle_ = TextureManager::Load("resources/uvChecker.png");
+	texHandleBullet_= TextureManager::Load("resources/black.png");
+
 	model_.reset(Model::CreateObj("cube.obj"));
 	model_->SetTexHandle(texHandle_);
+
+
+
+	// シングルトンインスタンスを取得する
+	input_ = Input::GetInstance();
 }
 
 void Player::Update(){
 	worldTransform_.UpdateMatrix();
 	viewProjection_.UpdateMatrix();
 
-	if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
+	if (input_->PushKey(DIK_RIGHT)) {
 		worldTransform_.translate.x += 0.1f;
 	}
-	else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
+	else if (input_->PushKey(DIK_LEFT)) {
 		worldTransform_.translate.x -= 0.1f;
 	}
-	if (Input::GetInstance()->PushKey(DIK_UP)) {
+	if (input_->PushKey(DIK_UP)) {
 		worldTransform_.translate.y += 0.1f;
 	}
-	else if (Input::GetInstance()->PushKey(DIK_DOWN)) {
+	else if (input_->PushKey(DIK_DOWN)) {
 		worldTransform_.translate.y -= 0.1f;
+	}
+
+	if (input_->PushKey(DIK_A)) {
+		worldTransform_.rotate.y -= 0.02f;
+	}
+	else if (input_->PushKey(DIK_D)) {
+		worldTransform_.rotate.y += 0.02f;
+	}
+
+	Attack();
+	if (bullet_) {
+		bullet_->Update();
+	}
+}
+
+void Player::Attack(){
+	if (input_->PushKey(DIK_SPACE)) {
+		//弾の生成＆初期化
+		PlayerBullet* newBullet = new PlayerBullet();
+
+		newBullet->Initialize(texHandleBullet_,worldTransform_.translate);
+
+		bullet_ = newBullet;
 	}
 }
 
 void Player::Draw(ViewProjection viewProjection_){
 	model_->Draw(worldTransform_, viewProjection_);
+	if (bullet_) {
+		bullet_->Draw(viewProjection_);
+	}
 }
