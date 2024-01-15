@@ -29,10 +29,10 @@ void GameScene::Update() {
 		worldTransform_.translate.x -= 0.1f;
 	}
 	if (Input::GetInstance()->PushKey(DIK_UP)) {
-		worldTransform_.translate.z += 0.1f;
+		worldTransform_.translate.y += 0.1f;
 	}
 	else if (Input::GetInstance()->PushKey(DIK_DOWN)) {
-		worldTransform_.translate.z -= 0.1f;
+		worldTransform_.translate.y -= 0.1f;
 	}
 }
 
