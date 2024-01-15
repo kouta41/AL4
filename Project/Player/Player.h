@@ -6,24 +6,24 @@
 #include "ModelCube.h"
 #include "Input.h"
 #include "ImGuiManager/ImGuiManager.h"
-#include "Player.h"
+
 
 
 /// <summary>
-/// ゲームシーン
+/// プレイヤー
 /// </summary>
-class GameScene {
+class Player {
 
 public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ
 	/// </summary>
-	GameScene();
+	Player();
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~GameScene();
+	~Player();
 
 	/// <summary>
 	/// 初期化
@@ -38,7 +38,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw(ViewProjection viewProjection_);
 
 private: // メンバ変数
 
@@ -46,8 +46,6 @@ private: // メンバ変数
 	ViewProjection viewProjection_;
 	//3Dモデル
 	std::unique_ptr<Model> model_{};
-	//プレイヤー
-	std::unique_ptr<Player> player_{};
 
 	uint32_t texHandle_ = 0;
 };

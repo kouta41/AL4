@@ -11,33 +11,26 @@ void GameScene::Initialize() {
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
 
-	texHandle_= TextureManager::Load("resources/uvChecker.png");
-	model_.reset(Model::CreateObj("cube.obj"));
-	model_->SetTexHandle(texHandle_);
-
-
+	//自キャラの生成
+	player_ = std::make_unique<Player>();
+	player_->Initialize();
+	
 }
 
 // 更新
 void GameScene::Update() {
 	worldTransform_.UpdateMatrix();
 	viewProjection_.UpdateMatrix();
-	if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
-		worldTransform_.translate.x += 0.1f;
-	}
-	else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
-		worldTransform_.translate.x -= 0.1f;
-	}
-	if (Input::GetInstance()->PushKey(DIK_UP)) {
-		worldTransform_.translate.y += 0.1f;
-	}
-	else if (Input::GetInstance()->PushKey(DIK_DOWN)) {
-		worldTransform_.translate.y -= 0.1f;
-	}
+
+	//プレイヤーの更新
+	player_->Update();
+
+	
 }
 
 // 描画
 void GameScene::Draw() {
-	model_->Draw(worldTransform_, viewProjection_);
+	//プレイヤーの描画
+	player_->Draw(viewProjection_);
 
 }
