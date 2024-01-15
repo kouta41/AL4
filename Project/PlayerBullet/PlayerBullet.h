@@ -23,7 +23,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(uint32_t texHandle_,const Vector3& position);
+	void Initialize(uint32_t texHandle_,const Vector3& position, const Vector3& velocity);
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -35,6 +35,8 @@ public: // メンバ関数
 	/// </summary>
 	void Draw(ViewProjection viewProjection_);
 
+	bool IsDead()const { return isDead_; }
+
 private: // メンバ変数
 
 	WorldTransform worldTransform_;
@@ -42,6 +44,17 @@ private: // メンバ変数
 	//3Dモデル
 	std::unique_ptr<Model> model_{};
 
+	//速度
+	Vector3 velocity_;
+
+	//テクスチャハンドル
 	uint32_t texHandle_ = 0;
+
+	//寿命
+	static const int32_t kLifeTime = 60 * 1;
+	//デスタイマー
+	int32_t deathTimer_ = kLifeTime;
+	//デスフラグ
+	bool isDead_ = false;
 };
 

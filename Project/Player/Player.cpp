@@ -29,6 +29,15 @@ void Player::Update(){
 	worldTransform_.UpdateMatrix();
 	viewProjection_.UpdateMatrix();
 
+	//デスフラグの立った弾を削除
+	bullets_.remove_if([](PlayerBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+		});
+
 	if (input_->PushKey(DIK_RIGHT)) {
 		worldTransform_.translate.x += 0.1f;
 	}
@@ -56,13 +65,18 @@ void Player::Update(){
 }
 
 void Player::Attack(){
-	if (input_->PushKey(DIK_SPACE)) {
-
+	if (input_->PushKeyPressed(DIK_SPACE)) {
+		//弾の速度
+		const float kBulletSpeed = 1.0f;
+		Vector3 velocity(0, 0, kBulletSpeed);
 		
+		//速度ベクトルを自機の向きに合わせて回転させる
+		velocity = TransformNormal(velocity, worldTransform_.matWorld);
+
 		//弾の生成＆初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 
-		newBullet->Initialize(texHandleBullet_,worldTransform_.translate);
+		newBullet->Initialize(texHandleBullet_,worldTransform_.translate, velocity);
 
 		bullets_.push_back(newBullet);
 	}

@@ -50,3 +50,6 @@ Matrix4x4 MakeRotateMatrix(const Vector3& radian);
 // 変換
 Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 
+//Vector3加算
+Vector3 Vector3Add(const Vector3& translate, const Vector3& vector);
+

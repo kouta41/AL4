@@ -369,4 +369,13 @@ Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix)
 	return result;
 }
 
+Vector3 Vector3Add(const Vector3& translate, const Vector3& vector){
+	Vector3 result;
+	result.x = translate.x + vector.x;
+	result.y = translate.y + vector.y;
+	result.z = translate.z + vector.z;
+
+	return result;
+}
+
 
