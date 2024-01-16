@@ -8,10 +8,30 @@
 #include "ImGuiManager/ImGuiManager.h"
 #include "PlayerBullet.h"
 
+#include <cassert>
+
 enum class Phase {
 	Approach,	//接近
 	Leave,		//離脱
 };
+
+class Enemy;
+
+class BaseEnemyState {
+public:
+	virtual void Update(Enemy* pEnemy) = 0;
+};
+
+class EnemyStateApproach :public BaseEnemyState {
+public:
+	void Update(Enemy* pEnemy);
+};
+
+class EnemyStateLeave :public BaseEnemyState {
+public:
+	void Update(Enemy* pEnemy);
+};
+
 
 class Enemy{
 
@@ -42,15 +62,14 @@ public: // メンバ関数
 	/// </summary>
 	void Draw(ViewProjection viewProjection_);
 
-	/// <summary>
-	/// 接近フェーズ
-	/// </summary>
-	void MoveApproach();
+	void Move();
 
-	/// <summary>
-	/// 離脱フェーズ
-	/// </summary>
-	void MoveLeave();
+	void ChangeState(BaseEnemyState* newState);
+
+	void SetVelocity(float x, float y, float z);
+
+	Vector3 GetWorldTransform() { return worldTransform_.translate; }
+	Vector3 GetVelocity() { return velocity_; }
 private: // メンバ変数
 
 	WorldTransform worldTransform_;
@@ -76,7 +95,7 @@ private: // メンバ変数
 	uint32_t texHandle_ = 0;
 	uint32_t texHandleBullet_ = 0;
 
-	//メンバ関数ポインタのテーブル
-	static void (Enemy::* phasePFuncTable[])();
+	//ステート
+	BaseEnemyState* state;
 };
 
