@@ -8,8 +8,14 @@
 #include "ImGuiManager/ImGuiManager.h"
 #include "PlayerBullet.h"
 
+enum class Phase {
+	Approach,	//接近
+	Leave,		//離脱
+};
+
 class Enemy{
 
+	
 public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ
@@ -36,6 +42,15 @@ public: // メンバ関数
 	/// </summary>
 	void Draw(ViewProjection viewProjection_);
 
+	/// <summary>
+	/// 接近フェーズ
+	/// </summary>
+	void MoveApproach();
+
+	/// <summary>
+	/// 離脱フェーズ
+	/// </summary>
+	void MoveLeave();
 private: // メンバ変数
 
 	WorldTransform worldTransform_;
@@ -51,6 +66,12 @@ private: // メンバ変数
 	//弾
 	//std::list<PlayerBullet*> bullets_;
 
+	//移動速度
+	Vector3 velocity_;
+
+	//フェーズ
+	Phase phase_ = Phase::Approach;
+	 
 	//テクスチャハンドル
 	uint32_t texHandle_ = 0;
 	uint32_t texHandleBullet_ = 0;
