@@ -17,21 +17,14 @@ void Enemy::Initialize(){
 	model_->SetTexHandle(texHandle_);
 	worldTransform_.translate = { 0,2.0f,50.0f };
 }
+//staticで宣言したメンバ関数ポインタテーブルの実態
+void(Enemy::* Enemy::phasePFuncTable[])() = { &Enemy::MoveApproach,&Enemy::MoveLeave };
 
 void Enemy::Update(){
 	worldTransform_.UpdateMatrix();
 	viewProjection_.UpdateMatrix();
-	switch (phase_)
-	{
-	case Phase::Approach:
-		MoveApproach();
-		break;
-	case Phase::Leave:
-		MoveLeave();
-		break;
-	default:
-		break;
-	}
+	//メンバ関数ポインタに入ってる関数を呼び出す
+	(this->*phasePFuncTable[static_cast<size_t>(phase_)])();
 }
 
 void Enemy::Draw(ViewProjection viewProjection_){

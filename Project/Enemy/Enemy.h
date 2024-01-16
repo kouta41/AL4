@@ -76,5 +76,7 @@ private: // メンバ変数
 	uint32_t texHandle_ = 0;
 	uint32_t texHandleBullet_ = 0;
 
+	//メンバ関数ポインタのテーブル
+	static void (Enemy::* phasePFuncTable[])();
 };
 
