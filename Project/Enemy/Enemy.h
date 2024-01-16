@@ -6,7 +6,7 @@
 #include "ModelCube.h"
 #include "Input.h"
 #include "ImGuiManager/ImGuiManager.h"
-#include "PlayerBullet.h"
+#include "EnemyBullet.h"
 
 enum class Phase {
 	Approach,	//接近
@@ -38,6 +38,11 @@ public: // メンバ関数
 	void Update();
 
 	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void Attack();
+
+	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw(ViewProjection viewProjection_);
@@ -64,7 +69,7 @@ private: // メンバ変数
 	Input* input_ = nullptr;
 
 	//弾
-	//std::list<PlayerBullet*> bullets_;
+	std::list<EnemyBullet*> bullets_;
 
 	//移動速度
 	Vector3 velocity_;

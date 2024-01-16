@@ -98,6 +98,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Project\EnemyBullet\EnemyBullet.cpp" />
     <ClCompile Include="Project\Enemy\Enemy.cpp" />
     <ClCompile Include="GhotEngine\Model\ModelCube.cpp" />
     <ClCompile Include="GhotEngine\Model\ModelSphere.cpp" />
@@ -130,6 +131,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="GhotEngine\TextureManager\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Project\EnemyBullet\EnemyBullet.h" />
     <ClInclude Include="Project\Enemy\Enemy.h" />
     <ClInclude Include="GhotEngine\Model\IModelState.h" />
     <ClInclude Include="GhotEngine\Model\ModelCube.h" />

@@ -7,7 +7,7 @@ PlayerBullet::~PlayerBullet(){
 }
 
 void PlayerBullet::Initialize(uint32_t texHandle_, const Vector3& position, const Vector3& velocity) {
-	worldTransform_.Initialize();
+	worldTransform_.Initialize();                                                                                 
 	viewProjection_.Initialize();
 
 	model_.reset(Model::CreateObj("cube.obj"));
