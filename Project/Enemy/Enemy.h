@@ -81,5 +81,8 @@ private: // メンバ変数
 	uint32_t texHandle_ = 0;
 	uint32_t texHandleBullet_ = 0;
 
+	//発射間隔
+	 int kFireInterval = 60;
+
 };
 
