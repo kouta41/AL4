@@ -15,25 +15,56 @@ void Enemy::Initialize(){
 
 	model_.reset(Model::CreateObj("cube.obj"));
 	model_->SetTexHandle(texHandle_);
-	worldTransform_.translate = { 0,2.0f,50.0f };
-	state = new EnemyStateApproach();
+	worldTransform_.translate = { 25.0f,3.0f,100.0f };
+	state_ = new EnemyStateApproach();
+
+	//最初の状態
+	state_ = new EnemyStateApproach();
+
+	ApproachInitialize();
 }
 ;
 
 void Enemy::Update(){
 	worldTransform_.UpdateMatrix();
 	viewProjection_.UpdateMatrix();
-	state->Update(this);
+	state_->Update(this);
+	for (TimedCall* timedCall_ : timedCalls_) {
+		timedCall_->Update();
+	}
+	timedCalls_.remove_if([](TimedCall* timedCall_) {
+		if (timedCall_->IsConpleted()) {
+			delete timedCall_;
+			return true;
+		}
+		return false;
+		});
+	for (EnemyBullet* bullet_ : bullets_) {
+		bullet_->Update();
+	}
+}
+
+void Enemy::Fire(){
+		//弾の速度
+		const float kBulletSpeed = -1.0f;
+		Vector3 velocity(0, 0, kBulletSpeed);
+		//弾の生成＆初期化
+		EnemyBullet* newBullet = new EnemyBullet();
+
+		newBullet->Initialize(texHandleBullet_, worldTransform_.translate, velocity);
+
+		bullets_.push_back(newBullet);
 }
 
 void Enemy::Draw(ViewProjection viewProjection_){
 	model_->Draw(worldTransform_, viewProjection_);
-
+	for (EnemyBullet* bullet_ : bullets_) {
+		bullet_->Draw(viewProjection_);
+	}
 }
 
 void Enemy::Move(){
 	worldTransform_.translate = Vector3Add(worldTransform_.translate, velocity_);
-
 }
 
 
@@ -43,7 +74,30 @@ void Enemy::SetVelocity(float x, float y, float z) {
 	velocity_.z = z;
 }
 
-void Enemy::ChangeState(BaseEnemyState* newState) { state = newState; }
+void Enemy::ApproachUpdate()
+{
+	Fire();
+	timedCalls_.push_back(new TimedCall(std::bind(&Enemy::ApproachUpdate, this), 60));
+}
+
+void Enemy::ApproachInitialize(){
+	timedCalls_.push_back(new TimedCall(std::bind(&Enemy::ApproachUpdate, this), 60));
+}
+
+void Enemy::LeaveInitialize(){
+	timedCalls_.remove_if([](TimedCall* timedCall_) {
+		if (timedCall_ != nullptr) {
+			delete timedCall_;
+			return true;
+		}
+		return false;
+		});
+}
+
+void Enemy::ChangeState(BaseEnemyState* newState) {
+	delete state_;
+	state_ = newState;
+}
 
 
 void EnemyStateApproach::Update(Enemy* pEnemy) {

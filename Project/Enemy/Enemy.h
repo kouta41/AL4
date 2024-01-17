@@ -6,8 +6,8 @@
 #include "ModelCube.h"
 #include "Input.h"
 #include "ImGuiManager/ImGuiManager.h"
-#include "PlayerBullet.h"
-
+#include "EnemyBullet.h"
+#include "TimedCall.h"
 #include <cassert>
 
 enum class Phase {
@@ -58,6 +58,11 @@ public: // メンバ関数
 	void Update();
 
 	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void Fire();
+
+	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw(ViewProjection viewProjection_);
@@ -67,6 +72,13 @@ public: // メンバ関数
 	void ChangeState(BaseEnemyState* newState);
 
 	void SetVelocity(float x, float y, float z);
+
+	
+	//フェーズごとのアップデート
+	void ApproachUpdate();
+	//フェーズごとの初期化
+	void ApproachInitialize();
+	void LeaveInitialize();
 
 	Vector3 GetWorldTransform() { return worldTransform_.translate; }
 	Vector3 GetVelocity() { return velocity_; }
@@ -83,7 +95,7 @@ private: // メンバ変数
 	Input* input_ = nullptr;
 
 	//弾
-	//std::list<PlayerBullet*> bullets_;
+	std::list<EnemyBullet*> bullets_;
 
 	//移動速度
 	Vector3 velocity_;
@@ -96,6 +108,11 @@ private: // メンバ変数
 	uint32_t texHandleBullet_ = 0;
 
 	//ステート
-	BaseEnemyState* state;
+	BaseEnemyState* state_;
+
+	std::list<TimedCall*> timedCalls_;
+
+	//発射間隔
+	int kFireInterval = 60;
 };
 
