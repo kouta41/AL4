@@ -205,6 +205,7 @@
     <ClInclude Include="Project\Enemy\Enemy.h" />
     <ClInclude Include="Project\TimeCall\TimedCall.h" />
     <ClInclude Include="Project\EnemyBullet\EnemyBullet.h" />
+    <ClInclude Include="Project\Collider\Collider.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GhotEngine">

@@ -6,9 +6,9 @@
 #include "ModelCube.h"
 #include "Input.h"
 #include "ImGuiManager/ImGuiManager.h"
+#include "Collider.h"
 
-
-class PlayerBullet{
+class PlayerBullet :public Collider {
 public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ

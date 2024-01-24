@@ -101,7 +101,7 @@ void Enemy::SetVelocity(float x, float y, float z) {
 
 void Enemy::ApproachUpdate()
 {
-	Fire();
+	//Fire();
 	timedCalls_.push_back(new TimedCall(std::bind(&Enemy::ApproachUpdate, this), 60));
 }
 

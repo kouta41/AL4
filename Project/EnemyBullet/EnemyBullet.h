@@ -8,7 +8,7 @@
 #include "Player.h"
 class Player;
 
-class EnemyBullet {
+class EnemyBullet :public Collider {
 
 public:
 	/// <summary>

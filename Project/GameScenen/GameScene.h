@@ -57,4 +57,11 @@ private: // メンバ変数
 	std::unique_ptr<Enemy> enemy_{};
 
 	uint32_t texHandle_ = 0;
+
+	/// <summary>
+	/// コライダー2つの当たり判定
+	/// </summary>
+	/// <param name="colliderA">コライダーA</param>
+	/// <param name="colliderB">コライダーB</param>
+	void CheckCollisionPair(Collider* colliderA, Collider* colliderB);
 };

@@ -9,12 +9,12 @@
 #include "Input.h"
 #include "ImGuiManager/ImGuiManager.h"
 #include "PlayerBullet.h"
-
+#include "Collider.h"
 
 /// <summary>
 /// プレイヤー
 /// </summary>
-class Player {
+class Player:public Collider {
 
 public: // メンバ関数
 	/// <summary>

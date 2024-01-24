@@ -9,7 +9,7 @@
 #include "EnemyBullet.h"
 #include "TimedCall.h"
 #include <cassert>
-
+#include "Collider.h"
 enum class Phase {
 	Approach,	//接近
 	Leave,		//離脱
@@ -35,7 +35,7 @@ public:
 };
 
 
-class Enemy{
+class Enemy:public Collider {
 
 	
 public: // メンバ関数
