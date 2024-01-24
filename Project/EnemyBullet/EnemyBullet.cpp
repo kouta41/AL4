@@ -7,6 +7,15 @@ void EnemyBullet::Initialize(uint32_t texHandle_, const Vector3& position, const
 	model_->SetTexHandle(texHandle_);
 
 	worldTransform_.translate = position;
+
+	//Z方向に伸びた形状
+	worldTransform_.scale.x = 0.5f;
+	worldTransform_.scale.y = 0.5f;
+	worldTransform_.scale.z = 3.0f;
+
+	worldTransform_.rotate.y = std::atan2(velocity.x, velocity.z);
+	float VelocityXZ = sqrt((velocity.x * velocity.x) + (velocity.z * velocity.z));
+	worldTransform_.rotate.x = std::atan2(-velocity.y, VelocityXZ);
 	velocity_ = velocity;
 }
 
