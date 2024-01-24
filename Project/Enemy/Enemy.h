@@ -71,6 +71,12 @@ public: // メンバ関数
 
 	void Move();
 
+	//衝突判定
+	void OnCollision();
+
+	//弾リストを取得
+	const std::list<EnemyBullet*>& GetEnemyBullsts()const { return bullets_; }
+
 	//ワールド座標系を取得
 	Vector3 GetWorldPosition();
 

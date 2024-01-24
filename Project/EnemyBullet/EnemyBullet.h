@@ -25,11 +25,17 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw(const ViewProjection& viewProjection_);
+
+	//衝突判定
+	void OnCollision();
+
 	bool IsDead()const { return isDead_; }
 
 	//自機座標
 	void SetPlayer(Player* player) { player_ = player; }
 
+	//ワールド座標系を取得
+	Vector3 GetWorldPosition();
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
@@ -44,7 +50,7 @@ private:
 	Player* player_;
 
 	//寿命
-	static const int32_t kLifeTime = 120;
+	static const int32_t kLifeTime = 150;
 	//デスタイマー
 	int32_t deathTimer_ = kLifeTime;
 	//デスフラグ

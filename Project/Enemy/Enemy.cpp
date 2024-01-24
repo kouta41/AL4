@@ -88,6 +88,10 @@ void Enemy::Move(){
 	worldTransform_.translate = Vector3Add(worldTransform_.translate, velocity_);
 }
 
+void Enemy::OnCollision()
+{
+}
+
 
 void Enemy::SetVelocity(float x, float y, float z) {
 	velocity_.x = x;

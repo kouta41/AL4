@@ -35,8 +35,14 @@ public: // メンバ関数
 	/// </summary>
 	void Draw(ViewProjection viewProjection_);
 
-	bool IsDead()const { return isDead_; }
 
+	//衝突判定
+	void OnCollision();
+
+
+	bool IsDead()const { return isDead_; }
+	//ワールド座標系を取得
+	Vector3 GetWorldPosition();
 private: // メンバ変数
 
 	WorldTransform worldTransform_;

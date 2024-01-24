@@ -41,6 +41,10 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// 衝突判定
+	/// </summary>
+	void CheckAllcollisons();
 private: // メンバ変数
 
 	WorldTransform worldTransform_;
