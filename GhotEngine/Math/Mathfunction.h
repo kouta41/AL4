@@ -53,3 +53,4 @@ Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 //Vector3加算
 Vector3 Vector3Add(const Vector3& translate, const Vector3& vector);
 
+Vector3 Subtract(const Vector3& m1, const Vector3& m2);

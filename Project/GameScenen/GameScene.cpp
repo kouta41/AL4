@@ -18,6 +18,8 @@ void GameScene::Initialize() {
 	//敵の生成
 	enemy_ = std::make_unique<Enemy>();
 	enemy_->Initialize();
+
+	enemy_->SetPlayer(player_.get());
 	
 }
 

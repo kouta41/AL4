@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "Player.h"
 
 Enemy::Enemy(){
 }
@@ -45,13 +46,22 @@ void Enemy::Update(){
 }
 
 void Enemy::Fire(){
-		//弾の速度
-		const float kBulletSpeed = -1.0f;
-		Vector3 velocity(0, 0, kBulletSpeed);
+		
+
+
+		assert(player_);
+		const float kBulletSpeed = 1.0f;
+		Vector3 playerPosition = player_->GetWorldPosition();
+		Vector3 enemyPosition = this->GetWorldPosition();
+		Vector3 Bulletvelocity = Subtract(playerPosition, enemyPosition);
+		Bulletvelocity = Normalize(Bulletvelocity);
+		Bulletvelocity.x *= kBulletSpeed;
+		Bulletvelocity.y *= kBulletSpeed;
+		Bulletvelocity.z *= kBulletSpeed;
 		//弾の生成＆初期化
 		EnemyBullet* newBullet = new EnemyBullet();
 
-		newBullet->Initialize(texHandleBullet_, worldTransform_.translate, velocity);
+		newBullet->Initialize(texHandleBullet_, worldTransform_.translate, Bulletvelocity);
 
 		bullets_.push_back(newBullet);
 }
@@ -92,6 +102,17 @@ void Enemy::LeaveInitialize(){
 		}
 		return false;
 		});
+}
+
+Vector3 Enemy::GetWorldPosition()
+{
+	Vector3 worldPos;
+
+	worldPos.x = worldTransform_.matWorld.m[3][0];
+	worldPos.y = worldTransform_.matWorld.m[3][1];
+	worldPos.z = worldTransform_.matWorld.m[3][2];
+
+	return worldPos;
 }
 
 void Enemy::ChangeState(BaseEnemyState* newState) {

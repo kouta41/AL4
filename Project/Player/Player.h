@@ -47,6 +47,10 @@ public: // メンバ関数
 	/// </summary>
 	void Draw(ViewProjection viewProjection_);
 
+
+	//ワールド座標系を取得
+	Vector3 GetWorldPosition();
+
 private: // メンバ変数
 
 	WorldTransform worldTransform_;

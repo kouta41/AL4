@@ -15,6 +15,8 @@ enum class Phase {
 	Leave,		//離脱
 };
 
+class Player;
+
 class Enemy;
 
 class BaseEnemyState {
@@ -69,11 +71,15 @@ public: // メンバ関数
 
 	void Move();
 
+	//ワールド座標系を取得
+	Vector3 GetWorldPosition();
+
 	void ChangeState(BaseEnemyState* newState);
 
 	void SetVelocity(float x, float y, float z);
 
-	
+	void SetPlayer(Player* player) { player_ = player; }
+
 	//フェーズごとのアップデート
 	void ApproachUpdate();
 	//フェーズごとの初期化
@@ -114,5 +120,8 @@ private: // メンバ変数
 
 	//発射間隔
 	int kFireInterval = 60;
+
+	//自機
+	Player* player_;
 };
 

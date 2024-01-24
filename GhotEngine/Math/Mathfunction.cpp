@@ -378,4 +378,9 @@ Vector3 Vector3Add(const Vector3& translate, const Vector3& vector){
 	return result;
 }
 
+Vector3 Subtract(const Vector3& v1, const Vector3& v2) {
+	
+	return Vector3{ v1.x - v2.x, v1.y - v2.y, v1.z - v2.z };
+}
+
 
