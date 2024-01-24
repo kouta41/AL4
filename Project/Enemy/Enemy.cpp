@@ -40,6 +40,17 @@ void Enemy::Update(){
 		}
 		return false;
 		});
+
+	//デスフラグの立った弾を削除
+	bullets_.remove_if([](EnemyBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+		});
+
+
 	for (EnemyBullet* bullet_ : bullets_) {
 		bullet_->Update();
 	}
@@ -62,7 +73,7 @@ void Enemy::Fire(){
 		EnemyBullet* newBullet = new EnemyBullet();
 
 		newBullet->Initialize(texHandleBullet_, worldTransform_.translate, Bulletvelocity);
-
+		newBullet->SetPlayer(player_);
 		bullets_.push_back(newBullet);
 }
 

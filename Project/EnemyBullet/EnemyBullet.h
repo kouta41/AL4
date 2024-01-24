@@ -5,6 +5,9 @@
 #include "TextureManager.h"
 #include <cassert>
 
+#include "Player.h"
+class Player;
+
 class EnemyBullet {
 
 public:
@@ -22,6 +25,10 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw(const ViewProjection& viewProjection_);
+	bool IsDead()const { return isDead_; }
+
+	//自機座標
+	void SetPlayer(Player* player) { player_ = player; }
 
 private:
 	//ワールド変換データ
@@ -33,5 +40,13 @@ private:
 
 	//速度
 	Vector3 velocity_;
+	Vector3 toPlayer;
+	Player* player_;
 
+	//寿命
+	static const int32_t kLifeTime = 120;
+	//デスタイマー
+	int32_t deathTimer_ = kLifeTime;
+	//デスフラグ
+	bool isDead_ = false;
 };

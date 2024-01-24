@@ -5,6 +5,11 @@
 #include "Matrix4x4.h"
 #include "Vector3.h"
 
+#include<cmath>
+#include<numbers>
+#include<cassert>
+#include <algorithm>
+
 // ベクトル変換
 Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
 
@@ -53,4 +58,10 @@ Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 //Vector3加算
 Vector3 Vector3Add(const Vector3& translate, const Vector3& vector);
 
+//Vector3減算
 Vector3 Subtract(const Vector3& m1, const Vector3& m2);
+
+//線形補間
+Vector3 VectorLerp(const Vector3& v1, const Vector3& v2, float t);
+Vector3 VectorSLerp(const Vector3& v1, const Vector3& v2, float t);
+float dot(const Vector3& v1, const Vector3& v2);

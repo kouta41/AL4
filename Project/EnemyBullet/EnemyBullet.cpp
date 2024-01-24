@@ -22,6 +22,25 @@ void EnemyBullet::Initialize(uint32_t texHandle_, const Vector3& position, const
 void EnemyBullet::Update() {
 	worldTransform_.UpdateMatrix();
 
+	//時間経過でデス
+	if (--deathTimer_ <= 0) {
+		isDead_ = true;
+	}
+
+	// 玉のホーミング
+	toPlayer = Subtract(player_->GetWorldPosition(), worldTransform_.translate);
+	toPlayer = Normalize(toPlayer);
+	velocity_ = Normalize(velocity_);
+	velocity_ = VectorSLerp(velocity_, toPlayer, 0.1f);
+	velocity_.x *= 0.5f;
+	velocity_.y *= 0.5f;
+	velocity_.z *= 0.5f;
+	// 玉の向き
+	worldTransform_.rotate.y = std::atan2(velocity_.x, velocity_.z);
+	float VelocityXZ = sqrt((velocity_.x * velocity_.x) + (velocity_.z * velocity_.z));
+	worldTransform_.rotate.x = std::atan2(-velocity_.y, VelocityXZ);
+
+
 	worldTransform_.translate = Vector3Add(worldTransform_.translate, velocity_);
 }
 
