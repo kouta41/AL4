@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "CollisionManager.h"
+#include "Skydome.h"
 #include <list>
 
 /// <summary>
@@ -53,7 +54,12 @@ private: // メンバ変数
 	std::unique_ptr<Player> player_{};
 	//敵
 	std::unique_ptr<Enemy> enemy_{};
-
+	//天球
+	std::unique_ptr<Skydome> skydome_{};
+	//3Dモデル
+	std::unique_ptr<Model> modelSkydome_{};
+	//テクスチャ
+	uint32_t texHandleSkydome_ = 0;
 	uint32_t texHandle_ = 0;
 
 	//CorisionManager

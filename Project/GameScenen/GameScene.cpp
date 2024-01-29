@@ -10,6 +10,8 @@ GameScene::~GameScene() {
 void GameScene::Initialize() {
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
+	//テクスチャ追加
+	texHandleSkydome_ = TextureManager::Load("resources/skydome.jpg");
 
 	//自キャラの生成
 	player_ = std::make_unique<Player>();
@@ -21,6 +23,11 @@ void GameScene::Initialize() {
 
 	enemy_->SetPlayer(player_.get());
 	
+	//天球の生成と初期化
+	//3Dモデルの生成
+	skydome_ = std::make_unique<Skydome>();
+	skydome_->Init(texHandleSkydome_);
+
 	collisionManager_ = new CollisionManager();
 
 }
@@ -32,6 +39,9 @@ void GameScene::Update() {
 
 	CheckAllCollisions();
 
+	//天球の更新
+	skydome_->Update();
+
 	//プレイヤーの更新
 	player_->Update();
 
@@ -42,6 +52,8 @@ void GameScene::Update() {
 
 // 描画
 void GameScene::Draw() {
+	//天球の描画
+	skydome_->Draw(viewProjection_);
 	//プレイヤーの描画
 	player_->Draw(viewProjection_);
 	//プレイヤーの描画
