@@ -8,7 +8,8 @@
 #include "ImGuiManager/ImGuiManager.h"
 #include "Player.h"
 #include "Enemy.h"
-
+#include "CollisionManager.h"
+#include <list>
 
 /// <summary>
 /// ゲームシーン
@@ -41,10 +42,7 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	/// <summary>
-	/// 衝突判定
-	/// </summary>
-	void CheckAllcollisons();
+	
 private: // メンバ変数
 
 	WorldTransform worldTransform_;
@@ -58,10 +56,11 @@ private: // メンバ変数
 
 	uint32_t texHandle_ = 0;
 
+	//CorisionManager
+	CollisionManager* collisionManager_;
+
 	/// <summary>
-	/// コライダー2つの当たり判定
+	/// ゲームシーン用
 	/// </summary>
-	/// <param name="colliderA">コライダーA</param>
-	/// <param name="colliderB">コライダーB</param>
-	void CheckCollisionPair(Collider* colliderA, Collider* colliderB);
+	void CheckAllCollisions();
 };

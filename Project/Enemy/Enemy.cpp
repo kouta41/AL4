@@ -152,8 +152,7 @@ void EnemyStateApproach::Update(Enemy* pEnemy) {
 
 
 void EnemyStateLeave::Update(Enemy* pEnemy) {
-	/*pEnemy->ApproachInitialize();
-	pEnemy->ChangeState(new EnemyStateLeave());*/
+
 	pEnemy->SetVelocity(-0.2f, 0.2f, 0.0f);
 	//移動
 	pEnemy->Move();

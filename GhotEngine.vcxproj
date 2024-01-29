@@ -98,6 +98,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Project\Collider\CollisionManager.cpp" />
     <ClCompile Include="Project\EnemyBullet\EnemyBullet.cpp" />
     <ClCompile Include="Project\Enemy\Enemy.cpp" />
     <ClCompile Include="GhotEngine\Model\ModelCube.cpp" />
@@ -132,6 +133,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Project\TimeCall\TimedCall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Project\Collider\CollisionManager.h" />
     <ClInclude Include="Project\Collider\Collider.h" />
     <ClInclude Include="Project\Collider\CollisionConfig.h" />
     <ClInclude Include="Project\EnemyBullet\EnemyBullet.h" />
