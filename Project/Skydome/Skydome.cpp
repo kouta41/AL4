@@ -1,7 +1,7 @@
 #include "Skydome.h"
 
 
-void Skydome::Init(uint32_t texHandle) {
+void Skydome::Initialize(uint32_t texHandle) {
 	worldTransform_.Initialize();
 
 	worldTransform_.scale = { 100,100,100 };

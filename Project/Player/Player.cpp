@@ -9,16 +9,17 @@ Player::~Player(){
 	}
 }
 
-void Player::Initialize(){
+void Player::Initialize() {
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
 
 	texHandle_ = TextureManager::Load("resources/uvChecker.png");
-	texHandleBullet_= TextureManager::Load("resources/black.png");
+	texHandleBullet_ = TextureManager::Load("resources/black.png");
 
 	model_.reset(Model::CreateObj("cube.obj"));
 	model_->SetTexHandle(texHandle_);
 
+	worldTransform_.translate = {0, -5, 30};
 	//衝突属性を設定
 	SetcollisiionAttribute_(kCollitionAttributePlayer);
 	//衝突対象を自分以外の属性以外に設定
@@ -52,6 +53,13 @@ void Player::Update(){
 	}
 	else if (input_->PushKey(DIK_DOWN)) {
 		worldTransform_.translate.y -= 0.1f;
+	}
+
+	if (input_->PushKey(DIK_W)) {
+		worldTransform_.translate.z += 0.1f;
+	}
+	else if (input_->PushKey(DIK_S)) {
+		worldTransform_.translate.z -= 0.1f;
 	}
 
 	if (input_->PushKey(DIK_A)) {
@@ -90,6 +98,14 @@ void Player::Draw(ViewProjection viewProjection_){
 	for (PlayerBullet* bullet_ : bullets_) {
 		bullet_->Draw(viewProjection_);
 	}
+	ImGui::Begin("Player");
+	if (ImGui::TreeNode("worldTransform")) {
+		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, 100, 100);
+		ImGui::DragFloat3("rotate", &worldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat3("scale", &worldTransform_.scale.x, 0.01f, 0, 10);
+		ImGui::TreePop();
+	}
+	ImGui::End();
 }
 
 void Player::OnCollision(){
@@ -103,4 +119,9 @@ Vector3 Player::GetWorldPosition(){
 	worldPos.z = worldTransform_.matWorld.m[3][2];
 
 	return worldPos;
+}
+
+void Player::setParent(const WorldTransform* parent){
+	//親子関係を結ぶ
+	worldTransform_.parent = parent;
 }

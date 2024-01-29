@@ -10,6 +10,8 @@
 #include "Enemy.h"
 #include "CollisionManager.h"
 #include "Skydome.h"
+#include "RailCamera.h"
+
 #include <list>
 
 /// <summary>
@@ -64,6 +66,9 @@ private: // メンバ変数
 
 	//CorisionManager
 	CollisionManager* collisionManager_;
+
+	//レールカメラ
+	RailCamera* railCamera_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用

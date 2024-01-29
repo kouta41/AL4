@@ -8,7 +8,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Init(uint32_t texHandle);
+	void Initialize(uint32_t texHandle);
 
 	/// <summary>
 	/// 更新

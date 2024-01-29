@@ -58,7 +58,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)GhotEngine\CameraRole;$(ProjectDir)GhotEngine\Math;$(ProjectDir)GhotEngine\Base\DX12;$(ProjectDir)GhotEngine\Base\Window;$(ProjectDir)externals\imgui;$(ProjectDir)GhotEngine\Utility;$(ProjectDir)GhotEngine\CreateResource;$(ProjectDir)GhotEngine\GraphicsPipeline;$(ProjectDir)GhotEngine\Input;$(ProjectDir)GhotEngine\ShaderFile;$(ProjectDir)GhotEngine\Transform;$(ProjectDir)GhotEngine;$(ProjectDir)GhotEngine\Utility\ImGuiManager;$(ProjectDir)GhotEngine\TextureManager;$(ProjectDir)GhotEngine\Model;$(ProjectDir)GhotEngine\Sprite;$(ProjectDir)Project\GameScenen;$(ProjectDir)Project\Player;$(ProjectDir)Project\PlayerBullet;$(ProjectDir)Project\Enemy;$(ProjectDir)Project\EnemyBullet;$(ProjectDir)Project\TimeCall;$(ProjectDir)Project\Collider;$(ProjectDir)Project\Skydome</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)GhotEngine\CameraRole;$(ProjectDir)GhotEngine\Math;$(ProjectDir)GhotEngine\Base\DX12;$(ProjectDir)GhotEngine\Base\Window;$(ProjectDir)externals\imgui;$(ProjectDir)GhotEngine\Utility;$(ProjectDir)GhotEngine\CreateResource;$(ProjectDir)GhotEngine\GraphicsPipeline;$(ProjectDir)GhotEngine\Input;$(ProjectDir)GhotEngine\ShaderFile;$(ProjectDir)GhotEngine\Transform;$(ProjectDir)GhotEngine;$(ProjectDir)GhotEngine\Utility\ImGuiManager;$(ProjectDir)GhotEngine\TextureManager;$(ProjectDir)GhotEngine\Model;$(ProjectDir)GhotEngine\Sprite;$(ProjectDir)Project\GameScenen;$(ProjectDir)Project\Player;$(ProjectDir)Project\PlayerBullet;$(ProjectDir)Project\Enemy;$(ProjectDir)Project\EnemyBullet;$(ProjectDir)Project\TimeCall;$(ProjectDir)Project\Collider;$(ProjectDir)Project\Skydome;$(ProjectDir)Project\RailCamera</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -82,7 +82,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)GhotEngine\CameraRole;$(ProjectDir)GhotEngine\Math;$(ProjectDir)GhotEngine\Base\DX12;$(ProjectDir)GhotEngine\Base\Window;$(ProjectDir)externals\imgui;$(ProjectDir)GhotEngine\Utility;$(ProjectDir)GhotEngine\CreateResource;$(ProjectDir)GhotEngine\GraphicsPipeline;$(ProjectDir)GhotEngine\Input;$(ProjectDir)GhotEngine\ShaderFile;$(ProjectDir)GhotEngine\Transform;$(ProjectDir)GhotEngine;$(ProjectDir)GhotEngine\Utility\ImGuiManager;$(ProjectDir)GhotEngine\TextureManager;$(ProjectDir)GhotEngine\Model;$(ProjectDir)GhotEngine\Sprite;$(ProjectDir)Project\GameScenen;$(ProjectDir)Project\Player;$(ProjectDir)Project\PlayerBullet;$(ProjectDir)Project\Enemy;$(ProjectDir)Project\EnemyBullet;$(ProjectDir)Project\TimeCall;$(ProjectDir)Project\Collider;$(ProjectDir)Project\Skydome</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)GhotEngine\CameraRole;$(ProjectDir)GhotEngine\Math;$(ProjectDir)GhotEngine\Base\DX12;$(ProjectDir)GhotEngine\Base\Window;$(ProjectDir)externals\imgui;$(ProjectDir)GhotEngine\Utility;$(ProjectDir)GhotEngine\CreateResource;$(ProjectDir)GhotEngine\GraphicsPipeline;$(ProjectDir)GhotEngine\Input;$(ProjectDir)GhotEngine\ShaderFile;$(ProjectDir)GhotEngine\Transform;$(ProjectDir)GhotEngine;$(ProjectDir)GhotEngine\Utility\ImGuiManager;$(ProjectDir)GhotEngine\TextureManager;$(ProjectDir)GhotEngine\Model;$(ProjectDir)GhotEngine\Sprite;$(ProjectDir)Project\GameScenen;$(ProjectDir)Project\Player;$(ProjectDir)Project\PlayerBullet;$(ProjectDir)Project\Enemy;$(ProjectDir)Project\EnemyBullet;$(ProjectDir)Project\TimeCall;$(ProjectDir)Project\Collider;$(ProjectDir)Project\Skydome;$(ProjectDir)Project\RailCamera</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -132,6 +132,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="GhotEngine\TextureManager\TextureManager.cpp" />
     <ClCompile Include="Project\TimeCall\TimedCall.cpp" />
     <ClCompile Include="Project\Skydome\Skydome.cpp" />
+    <ClCompile Include="Project\RailCamera\RailCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Project\Collider\CollisionManager.h" />
@@ -176,6 +177,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="GhotEngine\TextureManager\TextureManager.h" />
     <ClInclude Include="Project\TimeCall\TimedCall.h" />
     <ClInclude Include="Project\Skydome\Skydome.h" />
+    <ClInclude Include="Project\RailCamera\RailCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="GhotEngine\ShaderFile\Object3d.PS.hlsl">

@@ -56,6 +56,12 @@ public: // メンバ関数
 	//ワールド座標系を取得
 	Vector3 GetWorldPosition();
 
+	/// <summary>
+	/// 親となるワールドトランスフォームをセット
+	/// </summary>
+	/// <param name="parent"></param>
+	void setParent(const WorldTransform* parent);
+
 private: // メンバ変数
 
 	WorldTransform worldTransform_;
