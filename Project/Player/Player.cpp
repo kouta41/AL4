@@ -19,7 +19,10 @@ void Player::Initialize(){
 	model_.reset(Model::CreateObj("cube.obj"));
 	model_->SetTexHandle(texHandle_);
 
-
+	//衝突属性を設定
+	SetcollisiionAttribute_(kCollitionAttributePlayer);
+	//衝突対象を自分以外の属性以外に設定
+	SetCollisionMask_(~kCollitionAttributePlayer);
 
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();

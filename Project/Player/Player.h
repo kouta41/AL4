@@ -10,6 +10,7 @@
 #include "ImGuiManager/ImGuiManager.h"
 #include "PlayerBullet.h"
 #include "Collider.h"
+#include "CollisionConfig.h"
 
 /// <summary>
 /// プレイヤー

@@ -6,6 +6,11 @@ void EnemyBullet::Initialize(uint32_t texHandle_, const Vector3& position, const
 	model_.reset(Model::CreateObj("cube.obj"));
 	model_->SetTexHandle(texHandle_);
 
+	//衝突属性を設定
+	SetcollisiionAttribute_(kCollitionAttributeEnemy);
+	//衝突対象を自分以外の属性以外に設定
+	SetCollisionMask_(~kCollitionAttributeEnemy);
+
 	worldTransform_.translate = position;
 
 	//Z方向に伸びた形状

@@ -133,6 +133,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Project\Collider\Collider.h" />
+    <ClInclude Include="Project\Collider\CollisionConfig.h" />
     <ClInclude Include="Project\EnemyBullet\EnemyBullet.h" />
     <ClInclude Include="Project\Enemy\Enemy.h" />
     <ClInclude Include="GhotEngine\Model\IModelState.h" />

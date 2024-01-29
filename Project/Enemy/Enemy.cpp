@@ -17,6 +17,12 @@ void Enemy::Initialize(){
 	model_.reset(Model::CreateObj("cube.obj"));
 	model_->SetTexHandle(texHandle_);
 	worldTransform_.translate = { 25.0f,3.0f,100.0f };
+
+	//衝突属性を設定
+	SetcollisiionAttribute_(kCollitionAttributeEnemy);
+	//衝突対象を自分以外の属性以外に設定
+	SetCollisionMask_(~kCollitionAttributeEnemy);
+
 	state_ = new EnemyStateApproach();
 
 	//最初の状態
@@ -57,9 +63,6 @@ void Enemy::Update(){
 }
 
 void Enemy::Fire(){
-		
-
-
 		assert(player_);
 		const float kBulletSpeed = 1.0f;
 		Vector3 playerPosition = player_->GetWorldPosition();
@@ -138,17 +141,19 @@ void Enemy::ChangeState(BaseEnemyState* newState) {
 
 void EnemyStateApproach::Update(Enemy* pEnemy) {
 	pEnemy->SetVelocity(0.0f, 0.f, -0.2f);
-	//移動
-	pEnemy->Move();
-
 	//既定の位置に達したら離脱
 	if (pEnemy->GetWorldTransform().z < 0.0f) {
+		pEnemy->LeaveInitialize();
 		pEnemy->ChangeState(new EnemyStateLeave());
 	}
+	//移動
+	pEnemy->Move();
 }
 
 
 void EnemyStateLeave::Update(Enemy* pEnemy) {
+	/*pEnemy->ApproachInitialize();
+	pEnemy->ChangeState(new EnemyStateLeave());*/
 	pEnemy->SetVelocity(-0.2f, 0.2f, 0.0f);
 	//移動
 	pEnemy->Move();
