@@ -1,11 +1,9 @@
 #include "Sprite.h"
 #include "Vector4.h"
 
-Sprite* Sprite::sprite_;
 
 Sprite::~Sprite()
 {
-	delete sprite_;
 }
 
 /// <summary>
@@ -25,19 +23,22 @@ void Sprite::Initialize() {
 	VertexData* vertexDataSprite = nullptr;
 	sResource_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexDataSprite));
 
+	float halfW = size_.x * anchorPoint_.x;
+	float halfH = size_.y * anchorPoint_.y;
+
 	// 1枚目の三角形
-	vertexDataSprite[0].position = { 0.0f, size_.y,0.0f, 1.0f }; // 左下LB
+	vertexDataSprite[0].position = { -halfW, halfH,0.0f, 1.0f }; // 左下
 	vertexDataSprite[0].texcoord = { 0.0f, 1.0f };
-	vertexDataSprite[1].position = { 0.0f, 0.0f, 0.0f, 1.0f }; // 左上LT
+	vertexDataSprite[1].position = { -halfW, -halfH, 0.0f, 1.0f }; // 左上
 	vertexDataSprite[1].texcoord = { 0.0f, 0.0f };
-	vertexDataSprite[2].position = { size_.x, size_.y, 0.0f,1.0f }; // 右下RB
+	vertexDataSprite[2].position = { halfW, halfH, 0.0f,1.0f }; // 右下
 	vertexDataSprite[2].texcoord = { 1.0f,1.0f };
 	// 2枚目の三角形
-	vertexDataSprite[3].position = { 0.0f, 0.0f, 0.0f, 1.0f }; // 左上LT
+	vertexDataSprite[3].position = { -halfW, -halfH, 0.0f, 1.0f }; // 左上
 	vertexDataSprite[3].texcoord = { 0.0f, 0.0f };
-	vertexDataSprite[4].position = { size_.x, 0.0f, 0.0f, 1.0f }; // 右上RT
+	vertexDataSprite[4].position = { halfW, -halfH, 0.0f, 1.0f }; // 右上
 	vertexDataSprite[4].texcoord = { 1.0f, 0.0f };
-	vertexDataSprite[5].position = { size_.x, size_.y, 0.0f,1.0f }; // 右下RB
+	vertexDataSprite[5].position = { halfW, halfH, 0.0f,1.0f }; // 右下
 	vertexDataSprite[5].texcoord = { 1.0f,1.0f };
 
 #pragma endregion
@@ -58,15 +59,19 @@ void Sprite::Initialize() {
 /// </summary>
 /// <param name="position"></param>
 /// <returns></returns>
-Sprite* Sprite::Create(Vector2 position, Vector4 color)
+Sprite* Sprite::Create(Vector2 position, Vector2 size, Vector2 anchorPoint, Vector4 color)
 {
-	sprite_ = new Sprite;
-	sprite_->Initialize();
-	sprite_->SetPosition(position);
-	sprite_->SetColor(color);
+	Sprite* sprite = new Sprite;
+	sprite->SetSize(size);
+	sprite->SetAnchorPoint(anchorPoint);
+	sprite->Initialize();
+	sprite->SetPosition(position);
+	sprite->SetColor(color);
 
-	return sprite_;
+	return sprite;
 }
+
+
 
 /// <summary>
 /// 描画
@@ -75,11 +80,10 @@ Sprite* Sprite::Create(Vector2 position, Vector4 color)
 /// <param name="t"></param>
 void Sprite::Draw(ViewProjection viewProjection, uint32_t texHandle)
 {
-
-	worldTransform_.UpdateMatrix();
 	worldTransform_.STransferMatrix(sResource_.wvpResource, viewProjection);
 	worldTransform_.translate.x = GetPosition().x;
 	worldTransform_.translate.y = GetPosition().y;
+	worldTransform_.UpdateMatrix();
 
 	Property property = GraphicsPipeline::GetInstance()->GetPSO().Sprite2D;
 

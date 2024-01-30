@@ -47,7 +47,7 @@ public: // メンバ関数
 	/// 描画
 	/// </summary>
 	void Draw(ViewProjection viewProjection_);
-
+	void DrawUI(ViewProjection viewProjection_);
 	//衝突判定
 	void OnCollision();
 
@@ -55,6 +55,7 @@ public: // メンバ関数
 	const std::list<PlayerBullet*>& GetPlayerBullsts()const { return bullets_; }
 	//ワールド座標系を取得
 	Vector3 GetWorldPosition();
+	Vector3 GetWorldPosition3DReticle();
 
 	/// <summary>
 	/// 親となるワールドトランスフォームをセット
@@ -62,10 +63,17 @@ public: // メンバ関数
 	/// <param name="parent"></param>
 	void setParent(const WorldTransform* parent);
 
+
+
+	void Reticle(const ViewProjection& viewProjection_, const Vector2& pos);
+
 private: // メンバ変数
 
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
+
+	//3Dレティクル用ワールドトランスフォーム
+	WorldTransform worldTransform3DReticle_;
 
 	//3Dモデル
 	std::unique_ptr<Model> model_{};
@@ -81,4 +89,7 @@ private: // メンバ変数
 	//テクスチャハンドル
 	uint32_t texHandle_ = 0;
 	uint32_t texHandleBullet_ = 0;
+	uint32_t textureReticle_ = 0;
+	// 2Dレティクル用スプライト
+	std::unique_ptr<Sprite> sprite2DReticle_;
 };

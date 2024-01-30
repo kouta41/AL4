@@ -61,7 +61,12 @@ Vector3 Vector3Add(const Vector3& translate, const Vector3& vector);
 //Vector3減算
 Vector3 Subtract(const Vector3& m1, const Vector3& m2);
 
+Vector3 Multiply(float scalar, const Vector3& v);
+
 //線形補間
 Vector3 VectorLerp(const Vector3& v1, const Vector3& v2, float t);
 Vector3 VectorSLerp(const Vector3& v1, const Vector3& v2, float t);
 float dot(const Vector3& v1, const Vector3& v2);
+
+Matrix4x4 MakeViewportMatrix(
+	float left, float top, float width, float heght, float minDepth, float maxDepth);

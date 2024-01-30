@@ -14,6 +14,7 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 	//テクスチャ追加
 	texHandleSkydome_ = TextureManager::Load("resources/skydome.jpg");
+	texhandle2_ = TextureManager::Load("resources/black.png");
 
 	
 	//レールカメラの生成
@@ -37,13 +38,17 @@ void GameScene::Initialize() {
 
 	collisionManager_ = new CollisionManager();
 
+	sprite2_.reset(Sprite::Create({ 640.0f,360.0f }, { 1280.0f,720.0f }, { 0.5f,0.5f }));
 
-	
+	time = 0.0f;
+	i = 0.1f;
+	color = 2.0f;
+	flag = true;
 }
 
 // 更新
 void GameScene::Update() {
-
+	if (flag == true) {
 	//レールカメラの更新
 	railCamera_->Update();
 	CheckAllCollisions();
@@ -72,6 +77,25 @@ void GameScene::Update() {
 		return false;
 		});
 
+
+	
+	
+		color -= 0.1f;
+		if (time > 600) {
+			color = 0.0f;
+			flag = false;
+		}
+	}
+	sprite2_->SetColor({ 1,1,1,color });
+	time++;
+	if (flag == false) {
+		color += 0.1f;
+		if (color >= 2) {
+			sceneNo_ = TITLE;
+		}
+	}
+	
+
 	viewProjection_.matView = railCamera_->GetViewProjection_().matView;
 	viewProjection_.matProjection = railCamera_->GetViewProjection_().matProjection;
 	viewProjection_.UpdateMatrix();
@@ -93,6 +117,11 @@ void GameScene::Draw() {
 	for (EnemyBullet* bullet : enemyBullets_) {
 		bullet->Draw(viewProjection_);
 	}
+	player_->DrawUI(viewProjection_);
+
+	//if (flag == false) {
+	sprite2_->Draw(viewProjection_, texhandle2_);
+	//}
 	
 }
 

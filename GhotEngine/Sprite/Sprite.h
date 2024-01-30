@@ -27,11 +27,13 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="position"></param>
 	/// <returns></returns>
-	static Sprite* Create(Vector2 position, Vector4 color = { 1,1,1,1 });
+	static Sprite* Create(Vector2 position, Vector2 size, Vector2 anchorPoint, Vector4 color = { 1,1,1,1 });
 
 #pragma region Getter
 	// 座標の取得
 	const Vector2& GetPosition() const { return position_; }
+	// サイズの取得
+	const Vector2& GetSize() const { return size_; }
 
 #pragma endregion 
 
@@ -40,9 +42,10 @@ public: // メンバ関数
 	void SetPosition(const Vector2& position) { position_ = position; }
 	// 色の設定
 	void SetColor(const Vector4& color) { *materialData_ = color; }
-	//サイズの指定
+	// サイズの指定
 	void SetSize(const Vector2& size) { size_ = size; }
-#pragma endregion
+	// アンカーポイントの設定
+	void SetAnchorPoint(const Vector2& a) { anchorPoint_ = a; }
 
 	/// <summary>
 	/// 描画
@@ -57,9 +60,8 @@ private: // メンバ変数
 	Resource sResource_ = {};
 	WorldTransform worldTransform_ = {};
 	Vector2 position_ = {};
-	static Sprite* sprite_;
 	Vector4* materialData_ = nullptr;
-
-	Vector2 size_ = { 100.0f,100.0f };
+	Vector2 size_ = {};
+	Vector2 anchorPoint_ = {};
 };
 

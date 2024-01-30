@@ -12,13 +12,13 @@
 #include "Skydome.h"
 #include "RailCamera.h"
 #include "EnemyBullet.h"
-
+#include "IsScen.h"
 #include <list>
 
 /// <summary>
 /// ゲームシーン
 /// </summary>
-class GameScene {
+class GameScene : public IScene {
 
 public: // メンバ関数
 	/// <summary>
@@ -98,7 +98,12 @@ private: // メンバ変数
 	//CorisionManager
 	CollisionManager* collisionManager_;
 
-
+	std::unique_ptr<Sprite> sprite2_;
+	uint32_t texhandle2_ = 0;
+	float time = 0.0f;
+	float i = 0.1f;
+	float color = 2.0f;
+	bool flag = true;
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

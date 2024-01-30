@@ -383,6 +383,15 @@ Vector3 Subtract(const Vector3& v1, const Vector3& v2) {
 	return Vector3{ v1.x - v2.x, v1.y - v2.y, v1.z - v2.z };
 }
 
+Vector3 Multiply(float scalar, const Vector3& v)
+{
+	Vector3 result;
+	result.x = scalar * v.x;
+	result.y = scalar * v.y;
+	result.z = scalar * v.z;
+	return result;
+}
+
 
 Vector3 VectorLerp(const Vector3& v1, const Vector3& v2, float t) {
 	Vector3 result;
@@ -415,5 +424,29 @@ Vector3 VectorSLerp(const Vector3& v1, const Vector3& v2, float t) {
 
 float dot(const Vector3& v1, const Vector3& v2) {
 	float result = (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
+	return result;
+}
+
+Matrix4x4 MakeViewportMatrix(float left, float top, float width, float heght, float minDepth, float maxDepth)
+{
+	Matrix4x4 result;
+
+	result.m[0][0] = width / 2.0f;
+	result.m[0][1] = 0.0f;
+	result.m[0][2] = 0.0f;
+	result.m[0][3] = 0.0f;
+	result.m[1][0] = 0.0f;
+	result.m[1][1] = -heght / 2.0f;
+	result.m[1][2] = 0.0f;
+	result.m[1][3] = 0.0f;
+	result.m[2][0] = 0.0f;
+	result.m[2][1] = 0.0f;
+	result.m[2][2] = maxDepth - minDepth;
+	result.m[2][3] = 0.0f;
+	result.m[3][0] = left + width / 2.0f;
+	result.m[3][1] = top + heght / 2.0f;
+	result.m[3][2] = minDepth;
+	result.m[3][3] = 1.0f;
+
 	return result;
 }
