@@ -11,6 +11,7 @@
 #include "CollisionManager.h"
 #include "Skydome.h"
 #include "RailCamera.h"
+#include "EnemyBullet.h"
 
 #include <list>
 
@@ -44,8 +45,24 @@ public: // メンバ関数
 	/// 描画
 	/// </summary>
 	void Draw();
+	/// <summary>
+		/// 敵発生データの読み込み
+		/// </summary>
+	void LoadEnemyPopData();
 
-	
+	/// <summary>
+	/// 敵発生コマンドの更新
+	/// </summary>
+	void UpdateEnemyPopCommands();
+
+	void EnemyInitialize(Vector3);
+
+	/// <summary>
+	///	敵:敵弾を追加する
+	/// </summary>
+	void AddEnemyBullet(EnemyBullet* enemyBullet);
+	void AddEnemy(Enemy* enemy);
+
 private: // メンバ変数
 
 	WorldTransform worldTransform_;
@@ -54,8 +71,20 @@ private: // メンバ変数
 	std::unique_ptr<Model> model_{};
 	//プレイヤー
 	std::unique_ptr<Player> player_{};
+#pragma region Enemy
 	//敵
-	std::unique_ptr<Enemy> enemy_{};
+	std::list<Enemy*> enemys_;
+	// 待機タイマー
+	int32_t waitTimer;
+	// 待機フラグ
+	bool isWait = false;
+	//敵の弾リスト
+	std::list<EnemyBullet*> enemyBullets_;
+	//敵発生コマンド
+	std::stringstream enemyPopCommands;
+	
+#pragma endregion 敵
+
 	//天球
 	std::unique_ptr<Skydome> skydome_{};
 	//3Dモデル

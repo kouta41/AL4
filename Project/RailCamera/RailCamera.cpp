@@ -8,6 +8,14 @@ void RailCamera::Initialize(const Vector3& position, const Vector3& rotate){
 	//ビュープロジェクションの初期化
 	viewProjection_.farZ = 20000;
 	viewProjection_.Initialize();
+	controlPoints_ = {
+		{0,  0,  0 },
+		{10, 10, 0 },
+		{10, 15, 0 },
+		{20, 15, 0 },
+		{20, 0,  0 },
+		{30, 0,  0 },
+	};
 }
 
 void RailCamera::Update(){

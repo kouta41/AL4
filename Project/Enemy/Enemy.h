@@ -10,13 +10,14 @@
 #include "TimedCall.h"
 #include <cassert>
 #include "Collider.h"
+
 enum class Phase {
 	Approach,	//接近
 	Leave,		//離脱
 };
 
 class Player;
-
+class GameScene;
 class Enemy;
 
 class BaseEnemyState {
@@ -94,6 +95,9 @@ public: // メンバ関数
 
 	Vector3 GetWorldTransform() { return worldTransform_.translate; }
 	Vector3 GetVelocity() { return velocity_; }
+
+	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
+
 private: // メンバ変数
 
 	WorldTransform worldTransform_;
@@ -129,5 +133,11 @@ private: // メンバ変数
 
 	//自機
 	Player* player_;
+
+	//ゲームシーン
+	GameScene* gameScene_ = nullptr;
+
+	//デスフラグ
+	bool isDead_ = false;
 };
 

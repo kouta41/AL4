@@ -3,6 +3,8 @@
 #include "CameraRole.h"
 #include "MathFunction.h"
 #include "ImGuiManager.h"
+#include <imgui.h>
+#include <vector>
 
 class RailCamera {
 public:
@@ -16,6 +18,7 @@ public:
 	/// </summary>
 	void Update();
 
+
 	const ViewProjection& GetViewProjection_() { return viewProjection_; }
 	const WorldTransform& GetworldTransform_() { return worldTransform_; }
 private:
@@ -27,5 +30,7 @@ private:
 	//速度
 	Vector3 velocity_ = { 0.0,0.0,0.0 };
 
-
+	//レールカメラの移動曲線
+	//スプライン曲線制御点(通過点)
+	std::vector<Vector3> controlPoints_;
 };

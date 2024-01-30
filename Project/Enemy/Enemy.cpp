@@ -5,6 +5,10 @@ Enemy::Enemy(){
 }
 
 Enemy::~Enemy(){
+	//Enemyの解放
+	for (EnemyBullet* EnemyBullet : bullets_) {
+		delete EnemyBullet;
+	}
 }
 
 void Enemy::Initialize(){
@@ -47,6 +51,7 @@ void Enemy::Update(){
 		return false;
 		});
 
+
 	//デスフラグの立った弾を削除
 	bullets_.remove_if([](EnemyBullet* bullet) {
 		if (bullet->IsDead()) {
@@ -55,7 +60,6 @@ void Enemy::Update(){
 		}
 		return false;
 		});
-
 
 	for (EnemyBullet* bullet_ : bullets_) {
 		bullet_->Update();
@@ -82,8 +86,9 @@ void Enemy::Fire(){
 
 void Enemy::Draw(ViewProjection viewProjection_){
 	model_->Draw(worldTransform_, viewProjection_);
-	for (EnemyBullet* bullet_ : bullets_) {
-		bullet_->Draw(viewProjection_);
+	// 弾描画
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Draw(viewProjection_);
 	}
 }
 
@@ -91,8 +96,8 @@ void Enemy::Move(){
 	worldTransform_.translate = Vector3Add(worldTransform_.translate, velocity_);
 }
 
-void Enemy::OnCollision()
-{
+void Enemy::OnCollision(){
+	isDead_ = true;
 }
 
 
