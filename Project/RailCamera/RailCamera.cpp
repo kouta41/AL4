@@ -1,19 +1,19 @@
 #include "RailCamera.h"
 
-void RailCamera::Initialize(Vector3 pos, Vector3 radius){
-	worldTransform_.translate = pos;
-	worldTransform_.rotate = radius;
+void RailCamera::Initialize(const Vector3& position, const Vector3& rotate){
+	// ワールドトランスフォーム
+	worldTransform_.translate = position;
+	worldTransform_.rotate = rotate;
+	worldTransform_.scale = { 1.0f, 1.0f, 1.0f };
 	//ビュープロジェクションの初期化
-	viewProjection_.farZ = 10000;
+	viewProjection_.farZ = 20000;
 	viewProjection_.Initialize();
-	worldTransform_.Initialize();
 }
 
 void RailCamera::Update(){
-	viewProjection_.UpdateMatrix();
-	worldTransform_.UpdateMatrix();
+	
 	//移動（ベクトルを加算）
-	worldTransform_.translate.z += 0.05f; 
+//	worldTransform_.translate.z += 0.05f; 
 	worldTransform_.matWorld = MakeAffineMatrix(worldTransform_.scale, worldTransform_.rotate, worldTransform_.translate);
 
 	//カメラオブジェクトのワールド行列からビュー行列を計算する

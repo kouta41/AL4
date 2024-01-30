@@ -9,15 +9,15 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Vector3 pos, Vector3 radius);
+	void Initialize(const Vector3& position, const Vector3& rotate);
 
 	/// <summary>
 	/// 更新
 	/// </summary>
 	void Update();
 
-	ViewProjection& GetViewProjection_() { return viewProjection_; }
-	WorldTransform& GetworldTransform_() { return worldTransform_; }
+	const ViewProjection& GetViewProjection_() { return viewProjection_; }
+	const WorldTransform& GetworldTransform_() { return worldTransform_; }
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;

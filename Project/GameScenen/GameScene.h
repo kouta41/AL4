@@ -60,6 +60,8 @@ private: // メンバ変数
 	std::unique_ptr<Skydome> skydome_{};
 	//3Dモデル
 	std::unique_ptr<Model> modelSkydome_{};
+	//レールカメラ
+	std::unique_ptr<RailCamera> railCamera_{};
 	//テクスチャ
 	uint32_t texHandleSkydome_ = 0;
 	uint32_t texHandle_ = 0;
@@ -67,8 +69,6 @@ private: // メンバ変数
 	//CorisionManager
 	CollisionManager* collisionManager_;
 
-	//レールカメラ
-	RailCamera* railCamera_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用

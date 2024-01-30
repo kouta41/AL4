@@ -13,12 +13,17 @@ void GameScene::Initialize() {
 	texHandleSkydome_ = TextureManager::Load("resources/skydome.jpg");
 
 	
+	//レールカメラの生成
+	railCamera_ = std::make_unique<RailCamera>();
+	//レールカメラの初期化
+	railCamera_->Initialize({ 0,0,0 }, { 0,0,0 });
 
 	//自キャラの生成
 	player_ = std::make_unique<Player>();
 	// 自キャラの初期化
 	player_->Initialize();
-
+	//自キャラとレールカメラの親子関係を結ぶ
+	player_->setParent(railCamera_->GetworldTransform_());
 	//敵の生成
 	enemy_ = std::make_unique<Enemy>();
 	enemy_->Initialize();
@@ -32,25 +37,19 @@ void GameScene::Initialize() {
 
 	collisionManager_ = new CollisionManager();
 
-	//レールカメラの生成
-	railCamera_ = new RailCamera();
-	//レールカメラの初期化
-	railCamera_->Initialize({ 0,0,-35 }, { 0,0,0 });
 
-	//自キャラとレールカメラの親子関係を結ぶ
-	player_->setParent(&railCamera_->GetworldTransform_());
+	
 }
 
 // 更新
 void GameScene::Update() {
-	worldTransform_.UpdateMatrix();
 
+	//レールカメラの更新
+	railCamera_->Update();
 	CheckAllCollisions();
 
 	//天球の更新
 	skydome_->Update();
-	//レールカメラの更新
-	railCamera_->Update();
 	//プレイヤーの更新
 	player_->Update();
 
@@ -60,7 +59,7 @@ void GameScene::Update() {
 	viewProjection_.matView = railCamera_->GetViewProjection_().matView;
 	viewProjection_.matProjection = railCamera_->GetViewProjection_().matProjection;
 	viewProjection_.UpdateMatrix();
-
+	worldTransform_.UpdateMatrix();
 }
 
 // 描画
