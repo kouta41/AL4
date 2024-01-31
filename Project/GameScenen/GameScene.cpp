@@ -81,7 +81,7 @@ void GameScene::Update() {
 	
 	
 		color -= 0.1f;
-		if (time > 600) {
+		if (time > 900) {
 			color = 0.0f;
 			flag = false;
 		}
