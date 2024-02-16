@@ -21,11 +21,11 @@ void GameScene::Initialize() {
 	railCamera_ = std::make_unique<RailCamera>();
 	//レールカメラの初期化
 	railCamera_->Initialize({ 0,0,0 }, { 0,0,0 });
-
 	//自キャラの生成
 	player_ = std::make_unique<Player>();
 	// 自キャラの初期化
 	player_->Initialize();
+
 	//自キャラとレールカメラの親子関係を結ぶ
 	player_->setParent(&railCamera_->GetworldTransform_());
 

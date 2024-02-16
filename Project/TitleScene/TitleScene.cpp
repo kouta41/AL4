@@ -46,7 +46,7 @@ void TitleScene::Update() {
 	}
 
 	if (flag ==false) {
-		color += 0.1f;
+		color += 0.01f;
 	}
 
 	if (color >= 2) {

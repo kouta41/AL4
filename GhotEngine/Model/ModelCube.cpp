@@ -119,7 +119,7 @@ void ModelCube::Draw(WorldTransform worldTransform, ViewProjection viewProjectio
 
 	worldTransform.TransferMatrix(resource_.wvpResource, viewProjection);
 
-	Property property = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
+	Property  property = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
 
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
 	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property.rootSignature_.Get());

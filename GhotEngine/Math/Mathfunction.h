@@ -4,11 +4,55 @@
 
 #include "Matrix4x4.h"
 #include "Vector3.h"
-
+#include "Vector4.h"
 #include<cmath>
 #include<numbers>
 #include<cassert>
 #include <algorithm>
+
+
+struct DirectionalLight {
+	Vector4 color; // ライトの色
+	Vector3 direction; // ライトの向き
+	float intensity; // 輝度
+};
+
+struct AABB {
+	Vector3 min; // 最小点
+	Vector3 max; // 最大点
+};
+
+struct TransForm {
+	Vector3 scale;
+	Vector3 rotate;
+	Vector3 translate;
+};
+
+struct Emitter {
+	TransForm transform;
+	uint32_t count;      // 発生数　発生頻度秒に何個出すか
+	float frequency;     // 発生頻度
+	float frequencyTime; // 頻度用時刻　0で初期化
+};
+
+struct Particle_ {
+	TransForm transform;
+	Vector3 velocity;
+	Vector4 color;
+	float lifeTime;
+	float currentTime;
+};
+
+struct AccelerationField {
+	Vector3 acceleration;//加速度
+	AABB area;//範囲
+};
+
+struct ParticleForGPU {
+	Matrix4x4 WVP;
+	Matrix4x4 World;
+	Vector4 color;
+};
 
 // ベクトル変換
 Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
@@ -70,3 +114,20 @@ float dot(const Vector3& v1, const Vector3& v2);
 
 Matrix4x4 MakeViewportMatrix(
 	float left, float top, float width, float heght, float minDepth, float maxDepth);
+
+
+/*--------------------演算子オーバーロード---------------------------*/
+// 二項演算子
+Vector3 operator+(const Vector3& v1, const Vector3& v2);
+Vector3 operator+(const Vector3& v1, float s);
+Vector3 operator-(const Vector3& v1, const Vector3& v2);
+Vector3 operator*(float s, const Vector3& v2);
+Vector3 operator*(const Vector3& v, float s);
+Vector3 operator/(const Vector3& v, float s);
+Matrix4x4 operator+(const Matrix4x4& m1, const Matrix4x4& m2);
+Matrix4x4 operator-(const Matrix4x4& m1, const Matrix4x4& m2);
+Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2);
+
+// 単項演算子
+Vector3 operator-(const Vector3& v);
+Vector3 operator+(const Vector3& v);
