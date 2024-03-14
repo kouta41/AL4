@@ -61,7 +61,7 @@ public: // メンバ関数
 	/// 親となるワールドトランスフォームをセット
 	/// </summary>
 	/// <param name="parent"></param>
-	void setParent(const WorldTransform* parent);
+	void setParent(WorldTransform* parent);
 
 
 

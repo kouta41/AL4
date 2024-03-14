@@ -19,8 +19,8 @@ public:
 	void Update();
 
 
-	const ViewProjection& GetViewProjection_() { return viewProjection_; }
-	const WorldTransform& GetworldTransform_() { return worldTransform_; }
+	ViewProjection& GetViewProjection_() { return viewProjection_; }
+	WorldTransform& GetworldTransform_() { return worldTransform_; }
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;

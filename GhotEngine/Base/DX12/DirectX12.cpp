@@ -1,5 +1,6 @@
 #include "DirectX12.h"
 #include "StringUtility.h"
+#include <thread>
 
 DirectXCommon* DirectXCommon::GetInstance() {
 	static DirectXCommon instance;

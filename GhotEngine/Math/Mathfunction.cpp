@@ -186,7 +186,9 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Ve
 	MakeRotateYMatrix(rotate.y);
 	MakeRotateZMatrix(rotate.z);
 
-	Matrix4x4 XYZ = Multiply(MakeRotateXMatrix(rotate.x),Multiply(MakeRotateYMatrix(rotate.y), MakeRotateZMatrix(rotate.z)));
+	Matrix4x4 XYZ = Multiply(
+		MakeRotateXMatrix(rotate.x),
+		Multiply(MakeRotateYMatrix(rotate.y), MakeRotateZMatrix(rotate.z)));
 
 	MakeAffineMatrix.m[0][0] = XYZ.m[0][0] * scale.x;
 	MakeAffineMatrix.m[0][1] = XYZ.m[0][1] * scale.x;

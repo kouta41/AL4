@@ -31,8 +31,8 @@ void WorldTransform::UpdateMatrix() {
 	matWorld = MakeAffineMatrix(scale, rotate, translate);
 	worldMatrix = MakeAffineMatrix(scale, rotate, translate);
 
-	if (parent) {
-		matWorld = Multiply(matWorld, parent->matWorld);
+	if (parent_) {
+		matWorld = Multiply(matWorld, parent_->matWorld);
 	}
 
 }

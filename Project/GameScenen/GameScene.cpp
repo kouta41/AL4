@@ -20,13 +20,12 @@ void GameScene::Initialize() {
 	//レールカメラの生成
 	railCamera_ = std::make_unique<RailCamera>();
 	//レールカメラの初期化
-	railCamera_->Initialize({ 0,0,0 }, { 0,0,0 });
+	railCamera_->Initialize({ 0,-1,-50 }, { 0,0,0 });
 
 	//自キャラの生成
 	player_ = std::make_unique<Player>();
 	// 自キャラの初期化
 	player_->Initialize();
-
 	//自キャラとレールカメラの親子関係を結ぶ
 	player_->setParent(&railCamera_->GetworldTransform_());
 
@@ -49,10 +48,10 @@ void GameScene::Initialize() {
 
 // 更新
 void GameScene::Update() {
-	if (flag == true) {
+	//if (flag == true) {
+	CheckAllCollisions();
 	//レールカメラの更新
 	railCamera_->Update();
-	CheckAllCollisions();
 
 	//天球の更新
 	skydome_->Update();
@@ -86,7 +85,7 @@ void GameScene::Update() {
 			color = 0.0f;
 			flag = false;
 		}
-	}
+//	}
 	sprite2_->SetColor({ 1,1,1,color });
 	time++;
 	if (flag == false) {
@@ -96,11 +95,10 @@ void GameScene::Update() {
 		}
 	}
 	
-
 	viewProjection_.matView = railCamera_->GetViewProjection_().matView;
 	viewProjection_.matProjection = railCamera_->GetViewProjection_().matProjection;
 	viewProjection_.UpdateMatrix();
-	worldTransform_.UpdateMatrix();
+	//worldTransform_.UpdateMatrix();
 }
 
 // 描画

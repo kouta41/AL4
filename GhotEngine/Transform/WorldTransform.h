@@ -22,7 +22,7 @@ struct WorldTransform {
 	Matrix4x4 worldMatrix = {};
 	Matrix4x4 sMatWorld = {};
 
-	const WorldTransform* parent = nullptr;
+	const WorldTransform* parent_ = nullptr;
 
 	void Initialize();
 

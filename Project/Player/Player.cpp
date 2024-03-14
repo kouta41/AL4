@@ -167,9 +167,9 @@ Vector3 Player::GetWorldPosition3DReticle()
 	return worldPos;
 }
 
-void Player::setParent(const WorldTransform* parent){
+void Player::setParent(WorldTransform* parent){
 	//親子関係を結ぶ
-	worldTransform_.parent = parent;
+	worldTransform_.parent_ = parent;
 }
 
 void Player::Reticle(const ViewProjection& viewProjection_, const Vector2& pos)
