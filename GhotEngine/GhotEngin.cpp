@@ -19,11 +19,11 @@ void Engine::Initialize() {
 	dxCommon_->Initialize(win_);
 	Input::Initialize();
 	GraphicsPipeline::Initialize();
-	TextureManager::GetInstance()->Initialize();
 
 	//ゲームシーンの初期化
 	gameManager_ = std::make_unique<GameManager>();
 	
+
 	// ImGuiの初期化
 	imguiManager_ = ImGuiManager::GetInstance();
 	imguiManager_->Initialize(win_, dxCommon_);

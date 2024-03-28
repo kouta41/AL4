@@ -17,12 +17,24 @@ struct Property {
 struct PipelineState {
 	Property Object3D;
 	Property Sprite2D;
+	Property Particle;
+	Property PointLight;
+	Property SpotLight;
+	Property BlinnPhongObject3D;
+	Property PostEffectTest;
+};
+
+
+enum Light {
+	None,
+	Point,
+	Spot
 };
 
 // BlendMode
 enum BlendMode {
 	BlendNormal,
-
+	BlendAdd,
 };
 
 class GraphicsPipeline {

@@ -178,6 +178,17 @@ Matrix4x4 MakeTranslateMatrix(const Vector3& translate) {
 
 	return MakeTranslateMatrix;
 }
+Matrix4x4 MakeBiilboardWorldMatrix(const Vector3& scale, const Matrix4x4& billboard, const Vector3& translate)
+{
+	// スケーリング行列
+	Matrix4x4 Scale = MakeScaleMatrix(scale);
+	// 平行移動行列
+	Matrix4x4 Translate = MakeTranslateMatrix(translate);
+	// ワールド行列
+	Matrix4x4 worldMatrix = Multiply(Scale, Multiply(billboard, Translate));
+
+	return worldMatrix;
+}
 //  アフィン変換行列
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
 	Matrix4x4 MakeAffineMatrix;

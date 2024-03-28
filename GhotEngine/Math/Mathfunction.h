@@ -10,6 +10,12 @@
 #include<cassert>
 #include <algorithm>
 
+
+struct AABB {
+	Vector3 min; // 最小点
+	Vector3 max; // 最大点
+};
+
 // ベクトル変換
 Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
 
@@ -30,6 +36,9 @@ Matrix4x4 Multiply(Matrix4x4 m1, Matrix4x4 m2);
 
 // 平行移動行列
 Matrix4x4 MakeTranslateMatrix(const Vector3& translate);
+
+// ビルボード用のワールド行列作成
+Matrix4x4 MakeBiilboardWorldMatrix(const Vector3& scale, const Matrix4x4& billboard, const Vector3& translate);
 
 //  アフィン変換行列
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
