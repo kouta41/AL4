@@ -1,6 +1,6 @@
 #include "CameraRole.h"
 
-void CameraRole::Initialize() {
+void ViewProjection::Initialize() {
 
 	CreateConstBuffer();
 	Map();
@@ -9,17 +9,17 @@ void CameraRole::Initialize() {
 	sMatProjection = MakeIdentityMatrix();
 }
 
-void CameraRole::CreateConstBuffer()
+void ViewProjection::CreateConstBuffer()
 {
 	constBuff_ = CreateResource::CreateBufferResource(sizeof(ConstBufferDataViewProjection));
 }
 
-void CameraRole::Map()
+void ViewProjection::Map()
 {
 	constBuff_.Get()->Map(0, nullptr, reinterpret_cast<void**>(&constMap));
 }
 
-void CameraRole::UpdateMatrix() {
+void ViewProjection::UpdateMatrix() {
 
 	matView = Inverse(MakeAffineMatrix(scale, rotate, translate));
 	matProjection = MakePerspectiveFovMatrix(fov, aspectRatio, nearZ, farZ);
@@ -30,7 +30,7 @@ void CameraRole::UpdateMatrix() {
 
 }
 
-void CameraRole::TransferMatrix()
+void ViewProjection::TransferMatrix()
 {
 	constMap->view = matView;
 	constMap->projection = matProjection;
