@@ -6,9 +6,12 @@
 #include <sstream>
 #include "ImGuiManager.h"
 #include "CameraRole.h"
-#include "assimp/include/assimp/Importer.hpp"
+//#include "assimp/include/assimp/Importer.h"
+//#include "assimp/include/assimp/scene.h"
+//#include "assimp/include/assimp/postprocess.h"
+#include "assimp/Importer.hpp"
 #include "assimp/include/assimp/scene.h"
-#include "assimp/include/assimp/postprocess.h"
+#include "externals/assimp/include/assimp/postprocess.h"
 #include <numbers>
 
 struct Node {
