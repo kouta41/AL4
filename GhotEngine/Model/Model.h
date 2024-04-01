@@ -1,4 +1,5 @@
 #pragma once
+
 #include "IModelState.h"
 #include "ModelSphere.h"
 #include "Vector2.h"
@@ -6,12 +7,9 @@
 #include <sstream>
 #include "ImGuiManager.h"
 #include "CameraRole.h"
-//#include "assimp/include/assimp/Importer.h"
-//#include "assimp/include/assimp/scene.h"
-//#include "assimp/include/assimp/postprocess.h"
 #include "assimp/Importer.hpp"
-#include "assimp/include/assimp/scene.h"
-#include "externals/assimp/include/assimp/postprocess.h"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
 #include <numbers>
 
 struct Node {
@@ -50,7 +48,7 @@ public:
 	/// <summary>
 	/// Objの描画
 	/// </summary>
-	void Draw(WorldTransform worldTransform, ViewProjection camera, Light light = None);
+	void Draw(WorldTransform worldTransform, CameraRole cameraRole, Light light = None);
 
 #pragma region Setter
 

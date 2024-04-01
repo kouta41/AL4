@@ -69,3 +69,4 @@ D3D12_GPU_DESCRIPTOR_HANDLE SrvManager::GetInstancingGPUHandle(uint32_t texHandl
 
 	return handleGPU;
 }
+

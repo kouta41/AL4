@@ -72,7 +72,7 @@ void ParticleSystem::CreateSrv() {
 /// </summary>
 /// <param name="worldTransform"></param>
 /// <param name="viewprojection"></param>
-void ParticleSystem::Draw(std::list<Particle>& particles, const ViewProjection& camera) {
+void ParticleSystem::Draw(std::list<Particle>& particles, const CameraRole& camera) {
 
 	uint32_t  numInstance = 0; // 描画すべきインスタンス数
 

@@ -47,10 +47,10 @@ void Triangle::Initialize()
 	resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
 }
 
-void Triangle::Draw(WorldTransform worldTransform, ViewProjection viewProjection, uint32_t texHandle)
+void Triangle::Draw(WorldTransform worldTransform, CameraRole cameraRole, uint32_t texHandle)
 {
 
-	worldTransform.TransferMatrix(resource_.wvpResource, viewProjection);
+	worldTransform.TransferMatrix(resource_.wvpResource, cameraRole);
 
 	Property property = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
 

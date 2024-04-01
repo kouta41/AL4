@@ -7,7 +7,7 @@ void WorldTransform::Initialize() {
 
 }
 
-void WorldTransform::TransferMatrix(Microsoft::WRL::ComPtr<ID3D12Resource>& wvpResource, ViewProjection& viewProjection) {
+void WorldTransform::TransferMatrix(Microsoft::WRL::ComPtr<ID3D12Resource>& wvpResource, CameraRole& viewProjection) {
 
 	TransformationMatrix* wvp = {};
 	matWorld = Multiply(matWorld, Multiply(viewProjection.matView, viewProjection.matProjection));
@@ -17,7 +17,7 @@ void WorldTransform::TransferMatrix(Microsoft::WRL::ComPtr<ID3D12Resource>& wvpR
 
 }
 
-void WorldTransform::STransferMatrix(Microsoft::WRL::ComPtr<ID3D12Resource>& wvpResource, ViewProjection& viewProjection)
+void WorldTransform::STransferMatrix(Microsoft::WRL::ComPtr<ID3D12Resource>& wvpResource, CameraRole& viewProjection)
 {
 	TransformationMatrix* wvp = {};
 	sMatWorld = Multiply(matWorld, Multiply(viewProjection.sMatView, viewProjection.sMatProjection));

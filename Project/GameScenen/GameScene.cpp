@@ -8,22 +8,27 @@ GameScene::~GameScene() {
 
 // 初期化
 void GameScene::Initialize() {
-	worldTransform_.Initialize();
-	viewProjection_.Initialize();
+	
+	texHandleUV_ = TextureManager::Load("resources/uvChecker.png");
+	texHandleCircle_ = TextureManager::Load("resources/circle.png");
+	spriteUV_.reset(Sprite::Create(texHandleUV_));
 
+	
 }
 
 // 更新
 void GameScene::Update() {
 	
-	viewProjection_.UpdateMatrix();
-	//worldTransform_.UpdateMatrix();
+	if (input_->PushKey(DIK_S)) {
+		sceneNo_ = TITLE;
+	}
 }
 
 // 描画
 void GameScene::Draw() {
 	
-	
+	spriteUV_->Draw();
+
 }
 
 void GameScene::LoadEnemyPopData()

@@ -4,6 +4,9 @@
 #include "Vector4.h"
 #include "Vector2.h"
 #include "Vector3.h"
+#include "Mathfunction.h"
+
+
 
 struct Resource {
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertexResource;

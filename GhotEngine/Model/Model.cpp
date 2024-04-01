@@ -37,7 +37,7 @@ void Model::InitializeObj(const std::string& filename)
 	materialData_->enableLighting = false;
 	materialData_->shininess = 70.0f;
 
-	resource_.cameraResource = CreateResource::CreateBufferResource(sizeof(ViewProjection));
+	resource_.cameraResource = CreateResource::CreateBufferResource(sizeof(CameraRole));
 	resource_.cameraResource->Map(0, nullptr, reinterpret_cast<void**>(&cameraData_));
 	cameraData_->worldPosition = { 0.0f,10.0f,-40.0f };
 
@@ -107,7 +107,7 @@ void Model::InitializeGLTF(const std::string& filename)
 	materialData_->enableLighting = false;
 	materialData_->shininess = 70.0f;
 
-	resource_.cameraResource = CreateResource::CreateBufferResource(sizeof(ViewProjection));
+	resource_.cameraResource = CreateResource::CreateBufferResource(sizeof(CameraRole));
 	resource_.cameraResource->Map(0, nullptr, reinterpret_cast<void**>(&cameraData_));
 	cameraData_->worldPosition = { 0.0f,10.0f,-40.0f };
 
@@ -148,10 +148,10 @@ void Model::InitializeGLTF(const std::string& filename)
 /// <param name="worldTransform"></param>
 /// <param name="camera"></param>
 /// <param name="light"></param>
-void Model::Draw(WorldTransform worldTransform, ViewProjection camera, Light light)
+void Model::Draw(WorldTransform worldTransform, CameraRole cameraRole, Light light)
 {
 
-	worldTransform.TransferMatrix(resource_.wvpResource, camera);
+	worldTransform.TransferMatrix(resource_.wvpResource, cameraRole);
 
 	if (light == None) {
 		property_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;

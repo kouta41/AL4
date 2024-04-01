@@ -125,10 +125,10 @@ void ModelSphere::Initialize(Model* state)
 /// <param name="state"></param>
 /// <param name="viewProjection"></param>
 /// <param name="texHandle"></param>
-void ModelSphere::Draw(WorldTransform worldTransform, ViewProjection viewProjection, uint32_t texHandle)
+void ModelSphere::Draw(WorldTransform worldTransform, CameraRole cameraRole, uint32_t texHandle)
 {
 
-	worldTransform.TransferMatrix(resource_.wvpResource, viewProjection);
+	worldTransform.TransferMatrix(resource_.wvpResource, cameraRole);
 
 	Property property = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
 

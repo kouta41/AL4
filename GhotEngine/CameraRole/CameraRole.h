@@ -2,7 +2,7 @@
 #include "Mathfunction.h"
 #include "CreateResource.h"
 
-struct ViewProjection {
+struct CameraRole {
 
 	// 定数バッファ用データ構造体
 	struct ConstBufferDataViewProjection {

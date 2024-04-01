@@ -44,3 +44,4 @@ D3D12_GPU_DESCRIPTOR_HANDLE DescriptorManager::GetGPUDescriptorHandle(ID3D12Desc
 	handleGPU.ptr += (descriptorSize * index);
 	return handleGPU;
 }
+

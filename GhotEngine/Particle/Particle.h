@@ -56,7 +56,7 @@ public:
 	/// </summary>
 	/// <param name="worldTransform"></param>
 	/// <param name="viewprojection"></param>
-	void Draw(std::list<Particle>& partcles, const ViewProjection& camera);
+	void Draw(std::list<Particle>& partcles, const CameraRole& camera);
 
 #pragma region setter
 

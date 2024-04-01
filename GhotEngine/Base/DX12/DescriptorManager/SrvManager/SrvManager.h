@@ -1,4 +1,3 @@
-
 #pragma once
 #include "DescriptorManager/DescriptorManager.h"
 #include "CreateResource.h"
@@ -27,7 +26,7 @@ public:
 	/// <param name="resource"></param>
 	/// <param name="metadata"></param>
 	/// <param name="index"></param>
-	void CreateInstancingSrv(Resource& resource, uint32_t index);
+	void CreateInstancingSrv(Resource& resource,uint32_t index);
 
 	/// <summary>
 	/// postProcess用のsrv
@@ -51,7 +50,7 @@ public:
 
 #pragma region setter
 
-	uint32_t SetIndex(uint32_t index) { return index_ = index; }
+    uint32_t SetIndex(uint32_t index) { return index_ = index; }
 
 #pragma endregion
 
