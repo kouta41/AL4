@@ -103,7 +103,7 @@ void TitleScene::Update() {
 
 	}
 
-
+	
 	camera_.UpdateMatrix();
 	worldTransformCube_.UpdateMatrix();
 	worldTransformAxis_.UpdateMatrix();

@@ -66,6 +66,8 @@ private: // メンバ変数
 	//キーボード入力
 	Input* input_ = nullptr;
 
+	Vector2 pos = { 1.0f,1.0f };
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

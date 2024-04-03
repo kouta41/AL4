@@ -22,6 +22,10 @@ void GameScene::Update() {
 	if (input_->PushKey(DIK_S)) {
 		sceneNo_ = TITLE;
 	}
+
+	spriteUV_->SetPosition(pos);
+
+	
 }
 
 // 描画
