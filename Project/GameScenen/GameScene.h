@@ -60,8 +60,12 @@ private: // メンバ変数
 
 	uint32_t texHandleUV_ = 0;
 	uint32_t texHandleCircle_ = 0;
+
+
+
 	std::unique_ptr<Sprite> spriteUV_ = nullptr;
 	std::unique_ptr<Sprite> spriteCircle_ = nullptr;
+
 
 	//キーボード入力
 	Input* input_ = nullptr;

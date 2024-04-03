@@ -3,7 +3,6 @@
 #include "CreateResource.h"
 
 struct CameraRole {
-
 	// 定数バッファ用データ構造体
 	struct ConstBufferDataViewProjection {
 		Matrix4x4 view;       // ワールド → ビュー変換行列

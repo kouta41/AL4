@@ -10,8 +10,6 @@
 #include "CameraRole.h"
 #include "TextureManager.h"
 #include "Vector2.h"
-#pragma once
-
 
 class Sprite {
 public: // メンバ関数
@@ -93,3 +91,4 @@ private:
 
 	void AdjustTextureSize(uint32_t texHandle);
 };
+

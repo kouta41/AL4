@@ -11,9 +11,10 @@ void GameScene::Initialize() {
 	
 	texHandleUV_ = TextureManager::Load("resources/uvChecker.png");
 	texHandleCircle_ = TextureManager::Load("resources/enemy.png");
+
 	spriteUV_.reset(Sprite::Create(texHandleUV_));
-	spriteCircle_.reset(Sprite::Create(texHandleCircle_, { 550.0f,0 }));
-	
+	spriteCircle_.reset(Sprite::Create(texHandleCircle_, { 10.0f,0 }));
+
 }
 
 // 更新
@@ -23,8 +24,14 @@ void GameScene::Update() {
 		sceneNo_ = TITLE;
 	}
 
-	spriteUV_->SetPosition(pos);
-
+ 
+	if (input_->PushKey(DIK_A)) {
+		pos.x++;
+	}
+	else if (input_->PushKey(DIK_D)) {
+		pos.x--;
+	}
+	
 	
 }
 
@@ -33,6 +40,8 @@ void GameScene::Draw() {
 	
 	spriteUV_->Draw();
 	spriteCircle_->Draw();
+
+
 }
 
 void GameScene::LoadEnemyPopData()
