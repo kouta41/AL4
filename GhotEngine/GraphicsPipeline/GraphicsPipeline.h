@@ -24,7 +24,6 @@ struct PipelineState {
 	Property PostEffectTest;
 };
 
-
 enum Light {
 	None,
 	Point,
@@ -86,6 +85,15 @@ private:
 
 	static Property CreateSprite2D(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	static Property CreateParticle(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreatePointLight(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreateSpotLight(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreatePostEffectTest(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
 	PipelineState pso = {};
 
 };
+

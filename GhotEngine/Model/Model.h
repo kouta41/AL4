@@ -103,6 +103,7 @@ private: // メンバ変数
 	ModelData modelData_;
 	Resource resource_ = {};
 	D3D12_VERTEX_BUFFER_VIEW objVertexBufferView_{};
+
 	Material* materialData_ = nullptr;
 	DirectionalLight* directionalLightData_ = nullptr;
 	uint32_t texHandle_ = 0;

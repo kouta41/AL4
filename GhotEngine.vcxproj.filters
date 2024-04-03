@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="GhotEngine\ShaderFile\Object3d.PS.hlsl">
-      <Filter>GhotEngine\ShaderFile</Filter>
-    </FxCompile>
     <FxCompile Include="GhotEngine\ShaderFile\Object3d.VS.hlsl">
       <Filter>GhotEngine\ShaderFile</Filter>
     </FxCompile>
@@ -13,6 +10,9 @@
     <FxCompile Include="GhotEngine\ShaderFile\Sprite2D.PS.hlsl">
       <Filter>GhotEngine\ShaderFile</Filter>
     </FxCompile>
+    <FxCompile Include="GhotEngine\ShaderFile\Object3d.PS.hlsl" />
+    <FxCompile Include="GhotEngine\ShaderFile\Particle.PS.hlsl" />
+    <FxCompile Include="GhotEngine\ShaderFile\Particle.VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -380,5 +380,6 @@
     <None Include="externals\assimp\include\assimp\matrix3x3.inl" />
     <None Include="externals\assimp\include\assimp\material.inl" />
     <None Include="externals\assimp\include\assimp\.editorconfig" />
+    <None Include="GhotEngine\ShaderFile\Particle.hlsli" />
   </ItemGroup>
 </Project>
