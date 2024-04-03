@@ -5,7 +5,7 @@
 #include "ModelManager.h"
 #include "TextureManager.h"
 #include "Sprite.h"
-#include "Particle/Particle.h"
+#include "Particle.h"
 #include "Mathfunction.h"
 
 class TitleScene : public IScene
