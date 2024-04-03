@@ -12,7 +12,7 @@ void GameScene::Initialize() {
 	texHandleUV_ = TextureManager::Load("resources/uvChecker.png");
 	texHandleCircle_ = TextureManager::Load("resources/enemy.png");
 	spriteUV_.reset(Sprite::Create(texHandleUV_));
-	spriteCircle_.reset(Sprite::Create(texHandleCircle_));
+	spriteCircle_.reset(Sprite::Create(texHandleCircle_, { 550.0f,0 }));
 	
 }
 
