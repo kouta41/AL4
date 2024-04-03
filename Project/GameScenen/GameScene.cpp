@@ -10,9 +10,9 @@ GameScene::~GameScene() {
 void GameScene::Initialize() {
 	
 	texHandleUV_ = TextureManager::Load("resources/uvChecker.png");
-	texHandleCircle_ = TextureManager::Load("resources/circle.png");
+	texHandleCircle_ = TextureManager::Load("resources/enemy.png");
 	spriteUV_.reset(Sprite::Create(texHandleUV_));
-
+	spriteCircle_.reset(Sprite::Create(texHandleCircle_));
 	
 }
 
@@ -28,7 +28,7 @@ void GameScene::Update() {
 void GameScene::Draw() {
 	
 	spriteUV_->Draw();
-
+	spriteCircle_->Draw();
 }
 
 void GameScene::LoadEnemyPopData()
