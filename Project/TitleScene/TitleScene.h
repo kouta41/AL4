@@ -42,6 +42,7 @@ private:
 	bool isDrawParticle1_ = false;
 	bool isDrawParticle2_ = false;
 
+
 	//キーボード入力
 	Input* input_ = nullptr;
 };

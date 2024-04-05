@@ -108,6 +108,7 @@ Sprite* Sprite::Create(uint32_t texHandle, Vector2 position, Vector4 color)
 	sprite->SetPosition(position);
 	sprite->SetColor(color);
 
+
 	return sprite;
 }
 
@@ -129,10 +130,10 @@ void Sprite::Draw()
 {
 
 	CreateVertex();
-	worldTransform_.STransferMatrix(resource_.wvpResource, camera_);
 	worldTransform_.translate.x = GetPosition().x;
 	worldTransform_.translate.y = GetPosition().y;
 	worldTransform_.UpdateMatrix();
+	worldTransform_.STransferMatrix(resource_.wvpResource, camera_);
 
 	Property property = GraphicsPipeline::GetInstance()->GetPSO().Sprite2D;
 
@@ -150,5 +151,7 @@ void Sprite::Draw()
 	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
 	// 描画。(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
 	DirectXCommon::GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
+
+
 
 }

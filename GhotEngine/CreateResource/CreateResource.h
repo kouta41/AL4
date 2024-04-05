@@ -7,7 +7,6 @@
 #include "Mathfunction.h"
 
 
-
 struct Resource {
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertexResource;
 	Microsoft::WRL::ComPtr<ID3D12Resource> indexResource;

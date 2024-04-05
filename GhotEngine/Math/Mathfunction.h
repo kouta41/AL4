@@ -1,10 +1,8 @@
 #pragma once
-#include <format>
-#include <cassert>
-
 #include "Matrix4x4.h"
 #include "Vector3.h"
 
+#include <format>
 #include<cmath>
 #include<numbers>
 #include<cassert>
@@ -16,40 +14,38 @@ struct AABB {
 	Vector3 max; // 最大点
 };
 
-// ベクトル変換
-Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
 
+// 積
+Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2);
 // 拡大縮小行列
 Matrix4x4 MakeScaleMatrix(const Vector3& scale);
-
-// X軸周りの回転行列
-Matrix4x4 MakeRotateXMatrix(float rotate);
-
-// Y軸周りの回転行列
-Matrix4x4 MakeRotateYMatrix(float rotate);
-
-// Z軸周りの回転行列
-Matrix4x4 MakeRotateZMatrix(float rotate);
-
-// 回転行列
-Matrix4x4 Multiply(Matrix4x4 m1, Matrix4x4 m2);
-
-// 平行移動行列
+// 平行移動
 Matrix4x4 MakeTranslateMatrix(const Vector3& translate);
+
+/*---------------------------------
+ 回転行列
+------------------------------------*/
+
+// X軸
+Matrix4x4 MakeRotateXMatrix(float radian);
+// Y軸
+Matrix4x4 MakeRotateYMatrix(float radian);
+// Z軸
+Matrix4x4 MakeRotateZMatrix(float radian);
+
+// アフィン変換
+Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vector3& translate);
 
 // ビルボード用のワールド行列作成
 Matrix4x4 MakeBiilboardWorldMatrix(const Vector3& scale, const Matrix4x4& billboard, const Vector3& translate);
 
-//  アフィン変換行列
-Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
-
-//透視投影行列
+// 透視投影行列
 Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip, float farClip);
 
-//平行投射行列
-Matrix4x4 MakeOrthographicMatrix(float left, float top, float right, float bottom, float nearClip, float farCcip);
+//正射影行列
+Matrix4x4 MakeOrthographicMatrix(float left, float top, float right, float bottom, float nearClip, float farClip);
 
-//逆行(列
+// 逆行列
 Matrix4x4 Inverse(const Matrix4x4& m);
 
 // 単位行列
@@ -58,24 +54,26 @@ Matrix4x4 MakeIdentityMatrix();
 // 正規化
 Vector3 Normalize(const Vector3& v);
 
-//回転行列
-Matrix4x4 MakeRotateMatrix(const Vector3& radian);
-
 // 変換
 Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 
-//Vector3加算
-Vector3 Add(const Vector3& translate, const Vector3& vector);
+// ノルム
+float Length(const Vector3& v);
 
-//Vector3減算
-Vector3 Subtract(const Vector3& m1, const Vector3& m2);
+// ベクトル減算
+Vector3 Subtract(const Vector3& v1, const Vector3& v2);
 
+// スカラー倍
 Vector3 Multiply(float scalar, const Vector3& v);
 
-//線形補間
-Vector3 VectorLerp(const Vector3& v1, const Vector3& v2, float t);
-Vector3 VectorSLerp(const Vector3& v1, const Vector3& v2, float t);
-float dot(const Vector3& v1, const Vector3& v2);
+// クロス積
+Vector3 Cross(const Vector3& v1, const Vector3& v2);
 
-Matrix4x4 MakeViewportMatrix(
-	float left, float top, float width, float heght, float minDepth, float maxDepth);
+// 加算
+Vector3 Add(const Vector3& v1, const Vector3& v2);
+
+// 減算
+Vector3 Subtract(const Vector3& v1, const Vector3& v2);
+
+// 内積
+float Dot(const Vector3& v1, const Vector3& v2);

@@ -17,6 +17,7 @@ void TitleScene::Initialize()
 	ModelManager::GetInstance()->LoadObjModel("axis.obj");
 	ModelManager::GetInstance()->LoadObjModel("cube.obj");
 
+
 	modelCube_ = ModelManager::GetInstance()->CreateObj("cube.obj");
 	modelCube_->SetTexHandle(texHandleUV_);
 	modelAxis_ = ModelManager::GetInstance()->CreateObj("axis.obj");
@@ -42,6 +43,8 @@ void TitleScene::Initialize()
 }
 
 void TitleScene::Update() {	
+
+
 	ImGui::Begin("Camera");
 
 	if (ImGui::TreeNode("transform")) {
@@ -112,6 +115,7 @@ void TitleScene::Update() {
 
 void TitleScene::Draw()
 {
+
 	modelCube_->Draw(worldTransformCube_, camera_);
 	modelAxis_->Draw(worldTransformAxis_, camera_);
 

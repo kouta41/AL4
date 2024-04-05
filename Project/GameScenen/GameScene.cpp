@@ -10,28 +10,24 @@ GameScene::~GameScene() {
 void GameScene::Initialize() {
 	
 	texHandleUV_ = TextureManager::Load("resources/uvChecker.png");
-	texHandleCircle_ = TextureManager::Load("resources/enemy.png");
+	texHandleCircle_ = TextureManager::Load("resources/cube.jpg");
 
+	Sprite::StaticInitialize();
 	spriteUV_.reset(Sprite::Create(texHandleUV_));
-	spriteCircle_.reset(Sprite::Create(texHandleCircle_, { 10.0f,0 }));
+	spriteCircle_.reset(Sprite::Create(texHandleCircle_, { 550.0f,0 }));
 
 }
 
 // 更新
 void GameScene::Update() {
-	
+	Sprite::StaticUpdate();
 	if (input_->PushKey(DIK_S)) {
 		sceneNo_ = TITLE;
 	}
 
- 
-	if (input_->PushKey(DIK_A)) {
-		pos.x++;
-	}
-	else if (input_->PushKey(DIK_D)) {
-		pos.x--;
-	}
-	
+	ImGui::Begin("SceneChang");
+	ImGui::Text("S KEY");
+	ImGui::End();
 	
 }
 
