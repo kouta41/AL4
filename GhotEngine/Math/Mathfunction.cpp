@@ -256,6 +256,30 @@ Matrix4x4 MakeOrthographicMatrix(float left, float top, float right, float botto
 	return result;
 }
 
+//ビューポート行列
+Matrix4x4 MakeViewportMatrix(float left, float top, float width, float heght, float minDepth, float maxDepth){
+	Matrix4x4 result;
+
+	result.m[0][0] = width / 2.0f;
+	result.m[0][1] = 0.0f;
+	result.m[0][2] = 0.0f;
+	result.m[0][3] = 0.0f;
+	result.m[1][0] = 0.0f;
+	result.m[1][1] = -heght / 2.0f;
+	result.m[1][2] = 0.0f;
+	result.m[1][3] = 0.0f;
+	result.m[2][0] = 0.0f;
+	result.m[2][1] = 0.0f;
+	result.m[2][2] = maxDepth - minDepth;
+	result.m[2][3] = 0.0f;
+	result.m[3][0] = left + width / 2.0f;
+	result.m[3][1] = top + heght / 2.0f;
+	result.m[3][2] = minDepth;
+	result.m[3][3] = 1.0f;
+
+	return result;
+}
+
 // 逆行列
 Matrix4x4 Inverse(const Matrix4x4& m) {
 	Matrix4x4 result;
@@ -362,6 +386,15 @@ Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix) {
 	return result;
 }
 
+//ベクトル変換
+Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m){
+	Vector3 result{
+			v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0],
+			v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1],
+			v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2] };
+	return result;
+}
+
 // 長さ（ノルム）
 float Length(const Vector3& v) {
 	float result;
@@ -384,6 +417,21 @@ Vector3 Subtract(const Vector3& v1, const Vector3& v2) {
 	result.x = v1.x - v2.x;
 	result.y = v1.y - v2.y;
 	result.z = v1.z - v2.z;
+	return result;
+}
+
+//線形補間
+Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t){
+	Vector3 result;
+	float h = Dot(v1, v2);
+	float Costheta = std::acos((h * (float)std::numbers::pi) / 180);
+	float Sintheta = std::sin(Costheta);
+	float Pstert = std::sin((1 - t) * Costheta) / Sintheta;
+	float Pend = std::sin(t * Costheta) / Sintheta;
+	result.x = (Pstert * v1.x + Pend * v2.x);
+	result.y = (Pstert * v1.y + Pend * v2.y);
+	result.z = (Pstert * v1.z + Pend * v2.z);
+
 	return result;
 }
 

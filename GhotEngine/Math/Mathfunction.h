@@ -45,6 +45,9 @@ Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip
 //正射影行列
 Matrix4x4 MakeOrthographicMatrix(float left, float top, float right, float bottom, float nearClip, float farClip);
 
+//ビューポート行列
+Matrix4x4 MakeViewportMatrix(float left, float top, float width, float heght, float minDepth, float maxDepth);
+
 // 逆行列
 Matrix4x4 Inverse(const Matrix4x4& m);
 
@@ -56,6 +59,9 @@ Vector3 Normalize(const Vector3& v);
 
 // 変換
 Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
+
+//ベクトル変換
+Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
 
 // ノルム
 float Length(const Vector3& v);
@@ -74,6 +80,8 @@ Vector3 Add(const Vector3& v1, const Vector3& v2);
 
 // 減算
 Vector3 Subtract(const Vector3& v1, const Vector3& v2);
+
+Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t);
 
 // 内積
 float Dot(const Vector3& v1, const Vector3& v2);

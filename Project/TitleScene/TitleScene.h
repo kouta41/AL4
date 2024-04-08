@@ -1,12 +1,9 @@
 #pragma once
 #include "IsScen.h"
-#include "Input.h"
-#include "Model.h"
-#include "ModelManager.h"
+#include "Input/Input.h"
+#include "Model/Model.h"
 #include "TextureManager.h"
-#include "Sprite.h"
-#include "Particle.h"
-#include "Mathfunction.h"
+#include "Sprite/Sprite.h"
 
 class TitleScene : public IScene
 {
@@ -22,27 +19,27 @@ public:
 	void Draw()override;
 
 private:
-	CameraRole camera_{};
-	WorldTransform worldTransformCube_{};
-	WorldTransform worldTransformAxis_{};
-	uint32_t texHandleUV_ = 0;
-	uint32_t texHandleMonsterBall_ = 0;
-	Model* modelCube_ = nullptr;
-	Model* modelAxis_ = nullptr;
+	uint32_t texhandle_ = 0;
+	uint32_t texhandle1_ = 0;
+	uint32_t texhandle2_ = 0;
+	//ワールド変換データ
+	WorldTransform worldTransform_;
+	WorldTransform worldTransform1_;
 
-	// particle
-	std::list<Particle> particles1_ = {};
-	std::list<Particle> particles2_ = {};
-	std::unique_ptr<ParticleSystem> particle1_ = {};
-	std::unique_ptr<ParticleSystem> particle2_ = {};
-	const float dt = 1.0f / 60.0f;
-	Emitter emit{};
-	AccelerationField accelerationField{};
-	std::mt19937 randomEngine_;
-	bool isDrawParticle1_ = false;
-	bool isDrawParticle2_ = false;
+	CameraRole viewProjection_{};
+	CameraRole viewProjection1_{};
 
+	std::unique_ptr<Sprite> sprite_;
+	std::unique_ptr<Sprite> sprite1_;
+	std::unique_ptr<Sprite> sprite2_;
 
+	Vector2 pos ;
+	float time = 0.0f;
+	float i = 0.1f;
+
+	float color = 0.0f;
+
+	bool flag = true;
 	//キーボード入力
 	Input* input_ = nullptr;
 };

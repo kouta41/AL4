@@ -103,6 +103,12 @@
     <ClCompile Include="GhotEngine\Model\ModelManager.cpp" />
     <ClCompile Include="GhotEngine\Base\DX12\DescriptorManager\SrvManager\SrvManager.cpp" />
     <ClCompile Include="GhotEngine\Base\DX12\DescriptorManager\DescriptorManager.cpp" />
+    <ClCompile Include="Project\Skydome\Skydome.cpp" />
+    <ClCompile Include="Project\RailCamera\RailCamera.cpp" />
+    <ClCompile Include="Project\PlayerBullet\PlayerBullet.cpp" />
+    <ClCompile Include="Project\Player\Player.cpp" />
+    <ClCompile Include="Project\EnemyBullet\EnemyBullet.cpp" />
+    <ClCompile Include="Project\Enemy\Enemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GhotEngine\CameraRole\CameraRole.h">
@@ -298,6 +304,12 @@
     <ClInclude Include="GhotEngine\Model\ModelManager.h" />
     <ClInclude Include="GhotEngine\Base\DX12\DescriptorManager\DescriptorManager.h" />
     <ClInclude Include="GhotEngine\Base\DX12\DescriptorManager\SRVManager\SrvManager.h" />
+    <ClInclude Include="Project\Skydome\Skydome.h" />
+    <ClInclude Include="Project\RailCamera\RailCamera.h" />
+    <ClInclude Include="Project\PlayerBullet\PlayerBullet.h" />
+    <ClInclude Include="Project\Player\Player.h" />
+    <ClInclude Include="Project\EnemyBullet\EnemyBullet.h" />
+    <ClInclude Include="Project\Enemy\Enemy.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GhotEngine">
