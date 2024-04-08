@@ -18,7 +18,7 @@ void Engine::Initialize() {
 	// DirectX初期化
 	dxCommon_->Initialize(win_);
 	Input::Initialize();
-	GraphicsPipeline::Initialize();
+	//GraphicsPipeline::Initialize();
 	TextureManager::GetInstance()->Initialize();
 
 	//ゲームシーンの初期化
