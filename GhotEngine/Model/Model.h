@@ -46,25 +46,14 @@ public:
 	void InitializeGLTF(const std::string& filename);
 
 	/// <summary>
-	/// Objの描画
+	/// 描画
 	/// </summary>
-	void Draw(WorldTransform worldTransform, CameraRole cameraRole, Light light = None);
+	void Draw();
 
 #pragma region Setter
 
-	// テクスチャハンドル設定
-	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
-	// ライティングのsetter
-	int32_t SetEnableLighting(int32_t enableLighting) { return materialData_->enableLighting = enableLighting; }
-	// マテリアルの設定
-	Material SetMaterialProperty(Material materialdata) { return *materialData_ = materialdata; }
-	// directionalLightの設定
-	DirectionalLight SetLightingProperty(DirectionalLight directionalLight) { return *directionalLightData_ = directionalLight; }
-	// lightの設定
-	PointLight SetPointLightProperty(PointLight pointLight) { return *pointLightData_ = pointLight; }
-	SpotLight SetSpotLightProperty(SpotLight spotLight) { return *spotLightData_ = spotLight; }
-	// cameradataの設定
-	Vector3 SetCameraData(Vector3 camera) { return cameraData_->worldPosition = camera; }
+
+
 #pragma endregion
 
 	/// <summary>
@@ -103,12 +92,4 @@ private: // メンバ変数
 	ModelData modelData_;
 	Resource resource_ = {};
 	D3D12_VERTEX_BUFFER_VIEW objVertexBufferView_{};
-
-	Material* materialData_ = nullptr;
-	DirectionalLight* directionalLightData_ = nullptr;
-	uint32_t texHandle_ = 0;
-	PointLight* pointLightData_ = nullptr;
-	SpotLight* spotLightData_ = nullptr;
-	CameraData* cameraData_ = nullptr;
-	Property property_{};
 };

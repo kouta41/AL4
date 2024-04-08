@@ -2,9 +2,12 @@
 
 void EnemyBullet::Initialize(uint32_t texHandle_, const Vector3& position, const Vector3& velocity) {
 	worldTransform_.Initialize();
-	model_ = ModelManager::GetInstance()->CreateObj("cube.obj");
-	model_->SetTexHandle(texHandle_);
 
+
+	model_ = std::make_unique<Object3DPlacer>();
+	model_->Initialize();
+	model_->SetModel("cube.obj");
+	model_->SetTexHandle(texHandle_);
 	
 	//衝突属性を設定
 	SetcollisiionAttribute_(kCollitionAttributeEnemy);

@@ -15,10 +15,11 @@ void GameScene::Initialize() {
 	//テクスチャ追加
 	texHandleSkydome_ = TextureManager::Load("resources/skydome.jpg");
 	texhandle2_ = TextureManager::Load("resources/black.png");
-	ModelManager::GetInstance()->LoadObjModel("cube.obj");
+	ModelManager::LoadObjModel("cube.obj");
+	ModelManager::LoadObjModel("skydome.obj");
 
 	//レールカメラの生成
-	railCamera_ = std::make_unique<RailCamera>();
+	railCamera_ = new RailCamera();
 	//レールカメラの初期化
 	railCamera_->Initialize({ 0,0,0 }, { 0,0,0 });
 	//自キャラの生成
@@ -27,7 +28,7 @@ void GameScene::Initialize() {
 	player_->Initialize();
 
 	//自キャラとレールカメラの親子関係を結ぶ
-	player_->setParent(&railCamera_->GetworldTransform_());
+//	player_->setParent(&railCamera_->GetworldTransform_());
 
 	LoadEnemyPopData();
 	
@@ -86,8 +87,10 @@ void GameScene::Update() {
 			flag = false;
 		}
 	}
+
 	sprite2_->SetColor({ 1,1,1,color });
 	time++;
+
 	if (flag == false) {
 		color += 0.1f;
 		if (color >= 2) {
@@ -98,6 +101,7 @@ void GameScene::Update() {
 
 	viewProjection_.matView = railCamera_->GetViewProjection_().matView;
 	viewProjection_.matProjection = railCamera_->GetViewProjection_().matProjection;
+
 	viewProjection_.UpdateMatrix();
 	worldTransform_.UpdateMatrix();
 }

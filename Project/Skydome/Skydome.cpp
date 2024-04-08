@@ -6,8 +6,10 @@ void Skydome::Initialize(uint32_t texHandle) {
 	worldTransform_.Initialize();
 
 	worldTransform_.scale = { 100,100,100 };
-	ModelManager::GetInstance()->LoadObjModel("skydome.obj");
-	model_ = ModelManager::GetInstance()->CreateObj("skydome.obj");
+	
+	model_ = std::make_unique<Object3DPlacer>();
+	model_->Initialize();
+	model_->SetModel("skydome.obj");
 	model_->SetTexHandle(texHandle);
 
 }

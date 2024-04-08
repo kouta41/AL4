@@ -1,6 +1,7 @@
 #pragma once
 #include "Model.h"
 #include "WorldTransform.h"
+#include "Object3D.h"
 #include <cassert>
 
 class Skydome {
@@ -26,5 +27,5 @@ private:
 	WorldTransform worldTransform_;
 
 	//モデル
-	Model* model_{};
+	std::unique_ptr<Object3DPlacer> model_;
 };

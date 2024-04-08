@@ -1,3 +1,4 @@
+
 #include "ModelManager.h"
 
 ModelManager* ModelManager::GetInstance()
@@ -11,7 +12,7 @@ void ModelManager::LoadObjModel(const std::string& fileName)
 	// 読み込み済みなら抜ける
 	if (ModelManager::GetInstance()->models_.contains(fileName)) {
 		return;
-    }
+	}
 
 	std::unique_ptr<Model> model = std::make_unique<Model>();
 	model->InitializeObj(fileName);

@@ -90,7 +90,7 @@ private: // メンバ変数
 	//3Dモデル
 	std::unique_ptr<Model> modelSkydome_{};
 	//レールカメラ
-	std::unique_ptr<RailCamera> railCamera_{};
+	RailCamera* railCamera_{};
 	//テクスチャ
 	uint32_t texHandleSkydome_ = 0;
 	uint32_t texHandle_ = 0;

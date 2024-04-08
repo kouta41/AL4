@@ -16,9 +16,10 @@ void Player::Initialize() {
 	texHandle_ = TextureManager::Load("resources/uvChecker.png");
 	texHandleBullet_ = TextureManager::Load("resources/black.png");
 
-	model_ = ModelManager::GetInstance()->CreateObj("cube.obj");
+	model_ = std::make_unique<Object3DPlacer>();
+	model_->Initialize();
+	model_->SetModel("cube.obj");
 	model_->SetTexHandle(texHandle_);
-
 
 	worldTransform_.translate = {0, -5, 30};
 	//衝突属性を設定

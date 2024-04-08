@@ -8,6 +8,7 @@
 #include "Input.h"
 #include "ImGuiManager/ImGuiManager.h"
 #include "Collider.h"
+#include "Object3D.h"
 
 
 class PlayerBullet :public Collider {
@@ -50,7 +51,7 @@ private: // メンバ変数
 	WorldTransform worldTransform_;
 	CameraRole viewProjection_;
 	//3Dモデル
-	Model* model_{};
+	std::unique_ptr<Object3DPlacer> model_;
 
 	//速度
 	Vector3 velocity_;

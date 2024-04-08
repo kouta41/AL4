@@ -11,6 +11,7 @@
 #include "TimedCall.h"
 #include <cassert>
 #include "Collider.h"
+#include "Object3D.h"
 
 enum class Phase {
 	Approach,	//接近
@@ -105,7 +106,7 @@ private: // メンバ変数
 	CameraRole viewProjection_;
 
 	//3Dモデル
-	Model* model_{};
+	std::unique_ptr<Object3DPlacer> model_;
 
 
 	//キーボード入力

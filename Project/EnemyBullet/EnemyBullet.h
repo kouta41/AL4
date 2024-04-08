@@ -6,7 +6,9 @@
 #include "ModelManager.h"
 #include <cassert>
 
+#include "Object3D.h"
 #include "Player.h"
+
 class Player;
 
 class EnemyBullet :public Collider {
@@ -41,7 +43,8 @@ private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
 	//モデル
-	Model* model_{};
+	std::unique_ptr<Object3DPlacer> model_;
+
 	//テクスチャハンドル
 	uint32_t texHandle_ = 0u;
 

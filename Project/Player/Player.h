@@ -77,8 +77,8 @@ private: // メンバ変数
 	WorldTransform worldTransform3DReticle_;
 
 	//3Dモデル
-	Model* model_{};
-	Model* modelBullet_{};
+	std::unique_ptr<Object3DPlacer> model_;
+	std::unique_ptr<Object3DPlacer> modelBullet_;
 
 
 	//キーボード入力

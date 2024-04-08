@@ -1,3 +1,4 @@
+
 #include "Model.h"
 
 Model::~Model()
@@ -28,49 +29,7 @@ void Model::InitializeObj(const std::string& filename)
 	VertexData* vertexData = nullptr;
 	// 書き込むためのアドレスを取得
 	resource_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
-	std::memcpy(vertexData, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size()); // 頂点データをリソースにコピー
-	resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
-	// データを書き込む
-	// アドレスを取得
-	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
-	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	materialData_->enableLighting = false;
-	materialData_->shininess = 70.0f;
-
-	resource_.cameraResource = CreateResource::CreateBufferResource(sizeof(CameraRole));
-	resource_.cameraResource->Map(0, nullptr, reinterpret_cast<void**>(&cameraData_));
-	cameraData_->worldPosition = { 0.0f,10.0f,-40.0f };
-
-	resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
-
-	// 平行光源用のリソース
-	resource_.directionalLightResource = CreateResource::CreateBufferResource(sizeof(DirectionalLight));
-
-	// 書き込むためのアドレスを取得
-	resource_.directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
-	directionalLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	directionalLightData_->direction = Normalize({ 0.0f, -1.0f, 0.0f });
-	directionalLightData_->intensity = 1.0f;
-
-	resource_.pointLightResource = CreateResource::CreateBufferResource(sizeof(PointLight));
-	resource_.pointLightResource->Map(0, nullptr, reinterpret_cast<void**>(&pointLightData_));
-	pointLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	pointLightData_->position = { 0.0f,10.0f,0.0f };
-	pointLightData_->intensity = 1.0f;
-	pointLightData_->radius = 12.0f;
-	pointLightData_->decay = 0.6f;
-
-	resource_.spotLightResource = CreateResource::CreateBufferResource(sizeof(SpotLight));
-	resource_.spotLightResource->Map(0, nullptr, reinterpret_cast<void**>(&spotLightData_));
-	spotLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	spotLightData_->position = { 2.0f,1.25f,0.0f };
-	spotLightData_->intensity = 4.0f;
-	spotLightData_->direction = Normalize({ -1.0f, -1.0f, 0.0f });
-	spotLightData_->distance = 7.0f;
-	spotLightData_->cosAngle = std::cos(std::numbers::pi_v<float> / 3.0f);
-	spotLightData_->cosFallooffStart = 1.0f;
-	spotLightData_->decay = 2.0f;
-
+	std::memcpy(vertexData, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size()); // 頂点データをリソースにコピー;
 
 }
 
@@ -99,47 +58,6 @@ void Model::InitializeGLTF(const std::string& filename)
 	// 書き込むためのアドレスを取得
 	resource_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
 	std::memcpy(vertexData, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size()); // 頂点データをリソースにコピー
-	resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
-	// データを書き込む
-	// アドレスを取得
-	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
-	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	materialData_->enableLighting = false;
-	materialData_->shininess = 70.0f;
-
-	resource_.cameraResource = CreateResource::CreateBufferResource(sizeof(CameraRole));
-	resource_.cameraResource->Map(0, nullptr, reinterpret_cast<void**>(&cameraData_));
-	cameraData_->worldPosition = { 0.0f,10.0f,-40.0f };
-
-	resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
-
-	// 平行光源用のリソース
-	resource_.directionalLightResource = CreateResource::CreateBufferResource(sizeof(DirectionalLight));
-
-	// 書き込むためのアドレスを取得
-	resource_.directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
-	directionalLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	directionalLightData_->direction = Normalize({ 0.0f, -1.0f, 0.0f });
-	directionalLightData_->intensity = 1.0f;
-
-	resource_.pointLightResource = CreateResource::CreateBufferResource(sizeof(PointLight));
-	resource_.pointLightResource->Map(0, nullptr, reinterpret_cast<void**>(&pointLightData_));
-	pointLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	pointLightData_->position = { 0.0f,10.0f,0.0f };
-	pointLightData_->intensity = 1.0f;
-	pointLightData_->radius = 12.0f;
-	pointLightData_->decay = 0.6f;
-
-	resource_.spotLightResource = CreateResource::CreateBufferResource(sizeof(SpotLight));
-	resource_.spotLightResource->Map(0, nullptr, reinterpret_cast<void**>(&spotLightData_));
-	spotLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	spotLightData_->position = { 2.0f,1.25f,0.0f };
-	spotLightData_->intensity = 4.0f;
-	spotLightData_->direction = Normalize({ -1.0f, -1.0f, 0.0f });
-	spotLightData_->distance = 7.0f;
-	spotLightData_->cosAngle = std::cos(std::numbers::pi_v<float> / 3.0f);
-	spotLightData_->cosFallooffStart = 1.0f;
-	spotLightData_->decay = 2.0f;
 }
 
 /// <summary>
@@ -148,50 +66,9 @@ void Model::InitializeGLTF(const std::string& filename)
 /// <param name="worldTransform"></param>
 /// <param name="camera"></param>
 /// <param name="light"></param>
-void Model::Draw(WorldTransform worldTransform, CameraRole cameraRole, Light light)
+void Model::Draw()
 {
-
-	worldTransform.TransferMatrix(resource_.wvpResource, cameraRole);
-
-	if (light == None) {
-		property_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
-	}
-	else if (light == Point) {
-		property_ = GraphicsPipeline::GetInstance()->GetPSO().PointLight;
-	}
-	else if (light == Spot) {
-		property_ = GraphicsPipeline::GetInstance()->GetPSO().SpotLight;
-	}
-
-	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
-	ID3D12DescriptorHeap* heaps[] = { DescriptorManager::GetInstance()->GetSRV() };
-	DirectXCommon::GetCommandList()->SetDescriptorHeaps(_countof(heaps), heaps);
-	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
-	DirectXCommon::GetCommandList()->SetPipelineState(property_.graphicsPipelineState_.Get()); // PSOを設定
 	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &objVertexBufferView_); // VBVを設定
-	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
-	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	// マテリアルCBufferの場所を設定
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
-	// wvp用のCBufferの場所を設定
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
-	// 平行光源
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(3, resource_.directionalLightResource->GetGPUVirtualAddress());
-
-
-	if (light == Point) {
-		// カメラ用
-		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(4, resource_.cameraResource->GetGPUVirtualAddress());
-		// ポイントライト用
-		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.pointLightResource->GetGPUVirtualAddress());
-	}
-	else if (light == Spot) {
-		// カメラ用
-		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(4, resource_.cameraResource->GetGPUVirtualAddress());
-		// ポイントライト用
-		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.spotLightResource->GetGPUVirtualAddress());
-	}
 
 	// 描画。(DrawCall/ドローコール)。
 	DirectXCommon::GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
