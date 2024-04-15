@@ -14,6 +14,12 @@ struct AABB {
 	Vector3 max; // 最大点
 };
 
+struct Quaternion {
+	float x;
+	float y;
+	float z;
+	float w;
+};
 
 // 積
 Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2);
@@ -85,3 +91,24 @@ Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t);
 
 // 内積
 float Dot(const Vector3& v1, const Vector3& v2);
+
+// quaternionの積
+Quaternion Multiply(const Quaternion& lhs, const Quaternion& rhs);
+// 単位quaternion
+Quaternion IdentityQuaternion();
+// 共役quaternion
+Quaternion Conjugate(const Quaternion& quaternion);
+// quaternionのnorm
+float Norm(const Quaternion& quaternion);
+// 正規化したquaternion
+Quaternion QNormalize(const Quaternion& quaternion);
+// 逆quaternion
+Quaternion QInverse(const Quaternion& quaternion);
+// 任意軸回転を表すquaternionの生成
+Quaternion MakeRotateAxisAngleQuaternion(const Vector3& axis, float angle);
+// ベクトルをquaternionで回転させた結果のベクトルを求める
+Vector3 RotateVector(const Vector3& vector, const Quaternion& quaternion);
+// quaternionから回転行列を求める
+Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion);
+// 球面線形補間
+Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);

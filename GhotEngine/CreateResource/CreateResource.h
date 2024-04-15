@@ -68,6 +68,7 @@ struct CameraData {
 	Vector3 worldPosition;
 };
 
+
 class CreateResource {
 public:
 	// Resource作成
