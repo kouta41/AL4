@@ -28,7 +28,7 @@ void GameScene::Initialize() {
 	player_->Initialize();
 
 	//自キャラとレールカメラの親子関係を結ぶ
-//aaaa	player_->setParent(&railCamera_->GetworldTransform_());
+//	player_->setParent(&railCamera_->GetworldTransform_());
 
 	LoadEnemyPopData();
 	
