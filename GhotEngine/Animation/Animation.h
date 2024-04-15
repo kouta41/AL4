@@ -3,6 +3,9 @@
 
 //#include "CameraRole.h"
 #include "CreateResource.h"
+#include "assimp/Importer.hpp"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
 #include <map>
 
 template<typename tValue>
@@ -37,8 +40,12 @@ struct Animation{
 	std::map<std::string, NodeAnimation> nodeAnimations;
 };
 
-class Animation
-{
-};
+
+//アニメーションの解析
+Animation LoadAnimationFile(const std::string& directoryPath, const std::string& filename);
+
+//任意の時刻の値を取得する
+Vector3 CalculateValue(const std::vector<KeyframeVector3>& keyframes, float time);
+
 
 ///モデルの所と統合するかもしれん
