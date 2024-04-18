@@ -194,6 +194,23 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vecto
 	return Transform;
 }
 
+Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Quaternion& rot, const Vector3& translate){
+	// スケーリング行列
+	Matrix4x4 Scale = MakeScaleMatrix(scale);
+
+	// 回転行列合成
+	Matrix4x4 Rotate = MakeRotateMatrix(rot);
+
+	// 平行移動行列
+	Matrix4x4 Translate = MakeTranslateMatrix(translate);
+
+	// スケール、回転、平行移動の合成
+	Matrix4x4 Transform = Multiply(Multiply(Scale, Rotate), Translate);
+
+	return Transform;
+
+}
+
 // ビルボード用のワールド行列
 Matrix4x4 MakeBiilboardWorldMatrix(const Vector3& scale, const Matrix4x4& billboard, const Vector3& translate) {
 	// スケーリング行列
@@ -421,7 +438,7 @@ Vector3 Subtract(const Vector3& v1, const Vector3& v2) {
 }
 
 //線形補間
-Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t){
+Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t){
 	Vector3 result;
 	float h = Dot(v1, v2);
 	float Costheta = std::acos((h * (float)std::numbers::pi) / 180);
@@ -585,7 +602,7 @@ Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion)
 	return result;
 }
 
-Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t)
+Quaternion Lerp(const Quaternion& q0, const Quaternion& q1, float t)
 {
 	Quaternion result{};
 	Vector3 q0Vec = { q0.x,q0.y,q0.z };

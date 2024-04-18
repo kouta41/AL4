@@ -39,7 +39,7 @@ void EnemyBullet::Update() {
 	toPlayer = Subtract(player_->GetWorldPosition(), worldTransform_.translate);
 	toPlayer = Normalize(toPlayer);
 	velocity_ = Normalize(velocity_);
-	velocity_ = SLerp(velocity_, toPlayer, 0.1f);
+	velocity_ = Lerp(velocity_, toPlayer, 0.1f);
 	velocity_.x *= 0.5f;
 	velocity_.y *= 0.5f;
 	velocity_.z *= 0.5f;

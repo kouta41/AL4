@@ -397,5 +397,12 @@
     <None Include="externals\assimp\include\assimp\material.inl" />
     <None Include="externals\assimp\include\assimp\.editorconfig" />
     <None Include="GhotEngine\ShaderFile\Particle.hlsli" />
+    <None Include="externals\assimp\lib\Debug\assimp-vc143-mtd.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="externals\assimp\lib\Debug\assimp-vc143-mdd.lib" />
+    <Library Include="externals\assimp\lib\Debug\assimp-vc143-mtd.lib" />
+    <Library Include="externals\assimp\lib\Release\assimp-vc143-md.lib" />
+    <Library Include="externals\assimp\lib\Release\assimp-vc143-mt.lib" />
   </ItemGroup>
 </Project>

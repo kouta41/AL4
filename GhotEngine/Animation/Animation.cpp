@@ -1,10 +1,18 @@
 #include "Animation.h"
-#include <omp_llvm.h>
-#include <atlevent.h>
 
-Animation   LoadAnimationFile(const std::string& directoryPath, const std::string& filename)
+
+Matio::Matio()
 {
-    Animation animation;//アニメーション
+}
+
+Matio::~Matio()
+{
+}
+
+
+Animation Matio::LoadAnimationFile(const std::string& directoryPath, const std::string& filename)
+{
+    Animation animation;
     Assimp::Importer importer;
     std::string filePath = directoryPath + "/" + filename;
     const aiScene* scene = importer.ReadFile(filePath.c_str(), 0);
@@ -25,10 +33,11 @@ Animation   LoadAnimationFile(const std::string& directoryPath, const std::strin
             nodeAnimation.translate.push_back(keyframe);//ここがミスってるかも
         }
     }
+    //解析完了
     return animation;
 }
 
-Vector3 CalculateValue(const std::vector<KeyframeVector3>& keyframes, float time){
+Vector3 Matio::CalculateValue(const std::vector<KeyframeVector3>& keyframes, float time){
     assert(!keyframes.empty());//キーがないものは返す値が分らないのでエラー
     if (keyframes.size() == 1 || time <= keyframes[0].time) {//キーが1つか、時刻のがキーフレーム前なら最初の値とする
         return keyframes[0].value;
@@ -45,5 +54,46 @@ Vector3 CalculateValue(const std::vector<KeyframeVector3>& keyframes, float time
     }
 
     //ここまでできた場合は一番後の時刻よりも後ろなので最後の値をかえすことになる
+    return (*keyframes.rbegin()).value;
 }
 //くおたにおんも作る
+
+Quaternion Matio::CalculateValue(const std::vector<KeyframeQuaternion>& keyframes, float time) {
+    assert(!keyframes.empty());//キーがないものは返す値が分らないのでエラー
+    if (keyframes.size() == 1 || time <= keyframes[0].time) {//キーが1つか、時刻のがキーフレーム前なら最初の値とする
+        return keyframes[0].value;
+    }
+
+    for (size_t index = 0; index < keyframes.size() - 1; ++index) {
+        size_t nextIndex = index + 1;
+        //indexとnextIndexの2つのkeyframeを取得して範囲内に時刻があるのかを判定
+        if (keyframes[index].time <= time && time <= keyframes[nextIndex].time) {
+            //範囲内を補間する
+            float t = (time - keyframes[index].time) / (keyframes[nextIndex].time - keyframes[index].time);
+            return Lerp(keyframes[index].value, keyframes[nextIndex].value, t);
+        }
+    }
+
+    //ここまでできた場合は一番後の時刻よりも後ろなので最後の値をかえすことになる
+    return (*keyframes.rbegin()).value;
+
+}
+
+void Matio::Playback(const WorldTransform& worldTransform, const CameraRole& camera) {
+    float animationTime = 0.0f;
+    animationTime += 1.0f / 60.0f;//時間を進める。1/60で計測した時間を使って可変フレーム対応する法が望ましい
+    animationTime = std::fmod(animationTime, animation.duration);//最後まで行ったら最初からリピート再生。リピート再生しなくてもよい
+    NodeAnimation& rootNodeAnimation = animation.nodeAnimations[modelData.rootNode.name];//rootNodeのAnimationを取得
+    Vector3 translate = CalculateValue(rootNodeAnimation.translate, animationTime);//指定時間の値の取得
+    Quaternion rotate = CalculateValue(rootNodeAnimation.rotate, animationTime);
+    Vector3 scale = CalculateValue(rootNodeAnimation.scale, animationTime);
+
+    Matrix4x4 localMatrix = MakeAffineMatrix(scale, rotate, translate);
+
+    transformData_->WVP = Multiply(localMatrix, Multiply(worldTransform.matWorld, Multiply(camera.matView, camera.matProjection)));
+    transformData_->World = Multiply(localMatrix, worldTransform.worldMatrix);
+
+
+}
+
+

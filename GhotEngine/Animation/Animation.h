@@ -1,11 +1,8 @@
 #pragma once
 #include "Mathfunction.h"
-
-//#include "CameraRole.h"
-#include "CreateResource.h"
-#include "assimp/Importer.hpp"
-#include "assimp/scene.h"
-#include "assimp/postprocess.h"
+#include "Model.h"
+#include "WorldTransform.h"
+#include "CameraRole.h"
 #include <map>
 
 template<typename tValue>
@@ -28,11 +25,11 @@ struct AnimationCurve {
 	std::vector<Keyframe<tValue>> keyframes;
 };
 
-struct NodeAnimattion {
-	AnimationCurve<Vector3> translate;
-	AnimationCurve<Quaternion> rotate;
-	AnimationCurve<Vector3> scale;
-};
+//struct NodeAnimation {
+//	AnimationCurve<Vector3> translate;
+//	AnimationCurve<Quaternion> rotate;
+//	AnimationCurve<Vector3> scale;
+//};
 
 struct Animation{
 	float duration;//アニメーション全体の尺(単位は秒)
@@ -41,11 +38,49 @@ struct Animation{
 };
 
 
-//アニメーションの解析
-Animation LoadAnimationFile(const std::string& directoryPath, const std::string& filename);
+class Matio
+{
+public:
+	Matio();
+	~Matio();
 
-//任意の時刻の値を取得する
-Vector3 CalculateValue(const std::vector<KeyframeVector3>& keyframes, float time);
+
+	//アニメーションの解析
+	Animation LoadAnimationFile(const std::string& directoryPath, const std::string& filename);
+
+	//任意の時刻の値を取得する(Vecter3)ver
+	Vector3 CalculateValue(const std::vector<KeyframeVector3>& keyframes, float time);
+
+	//任意の時刻の値を取得する(Quaternion)ver
+	Quaternion CalculateValue(const std::vector<KeyframeQuaternion>& keyframes, float time);
 
 
-///モデルの所と統合するかもしれん
+	/// <summary>
+	/// 描画
+	/// </summary>
+	/// <param name="camera"></param>
+
+	void Playback(const WorldTransform& worldTransform, const CameraRole& camera);
+
+
+#pragma region Setter
+
+	void SetModel(const std::string& directoryPath, const std::string& filename) { animation = LoadAnimationFile(directoryPath, filename); }
+
+	void SetAnimation(const Animation& animation_) { animation = animation_; }
+
+	void SetModelData(const ModelData& modelData_) { modelData = modelData_; }
+
+#pragma endregion
+
+private:
+	Animation animation;//アニメーション
+	ModelData modelData;
+	float animationTime = 0.0f;
+	ParticleForGPU* transformData_ = nullptr;
+	Resource resource_ = {};
+	D3D12_VERTEX_BUFFER_VIEW AnimationVertexBufferView_{};
+};
+
+///モデルの所と統合するかもしれ
+

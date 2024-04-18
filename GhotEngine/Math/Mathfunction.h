@@ -42,6 +42,10 @@ Matrix4x4 MakeRotateZMatrix(float radian);
 // アフィン変換
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vector3& translate);
 
+//アフィン変換ver2
+Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Quaternion& rot, const Vector3& translate);
+
+
 // ビルボード用のワールド行列作成
 Matrix4x4 MakeBiilboardWorldMatrix(const Vector3& scale, const Matrix4x4& billboard, const Vector3& translate);
 
@@ -87,7 +91,8 @@ Vector3 Add(const Vector3& v1, const Vector3& v2);
 // 減算
 Vector3 Subtract(const Vector3& v1, const Vector3& v2);
 
-Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t);
+//線形補間
+Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
 
 // 内積
 float Dot(const Vector3& v1, const Vector3& v2);
@@ -111,4 +116,4 @@ Vector3 RotateVector(const Vector3& vector, const Quaternion& quaternion);
 // quaternionから回転行列を求める
 Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion);
 // 球面線形補間
-Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);
+Quaternion Lerp(const Quaternion& q0, const Quaternion& q1, float t);

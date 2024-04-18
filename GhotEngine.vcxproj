@@ -88,7 +88,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir)GhotEngine\CameraRole;$(ProjectDir)GhotEngine\Math;$(ProjectDir)GhotEngine\Base\DX12;$(ProjectDir)GhotEngine\Base\Window;$(ProjectDir)externals\imgui;$(ProjectDir)GhotEngine\Utility;$(ProjectDir)GhotEngine\CreateResource;$(ProjectDir)GhotEngine\GraphicsPipeline;$(ProjectDir)GhotEngine\Input;$(ProjectDir)GhotEngine\ShaderFile;$(ProjectDir)GhotEngine\Transform;$(ProjectDir)externals\assimp\include;$(ProjectDir)GhotEngine\Model;$(ProjectDir)GhotEngine\Particle;$(ProjectDir)GhotEngine\Sprite;$(ProjectDir)GhotEngine\TextureManager;$(ProjectDir)GhotEngine\Utility\ImGuiManager;$(ProjectDir)Project\GameManager;$(ProjectDir)Project\GameScenen;$(ProjectDir)Project\IsScen;$(ProjectDir)Project\TitleScene;$(ProjectDir)GhotEngine;$(ProjectDir)Project\Collider;$(ProjectDir)externals\DirectXTex;$(ProjectDir)Project\Enemy;$(ProjectDir)Project\EnemyBullet;$(ProjectDir)Project\Player;$(ProjectDir)Project\PlayerBullet;$(ProjectDir)Project\RailCamera;$(ProjectDir)Project\Skydome;$(ProjectDir)Project\TimeCall;$(ProjectDir)GhotEngine\Object3D;$(ProjectDir)GhotEngin\Animation</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -153,7 +153,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Project\TitleScene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GhotEngine\Animation\Animation.h" />
     <ClInclude Include="externals\assimp\include\assimp\aabb.h" />
     <ClInclude Include="externals\assimp\include\assimp\ai_assert.h" />
     <ClInclude Include="externals\assimp\include\assimp\anim.h" />
@@ -237,6 +236,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="externals\assimp\include\assimp\XmlParser.h" />
     <ClInclude Include="externals\assimp\include\assimp\XMLTools.h" />
     <ClInclude Include="externals\assimp\include\assimp\ZipArchiveIOSystem.h" />
+    <ClInclude Include="GhotEngine\Animation\Animation.h" />
     <ClInclude Include="GhotEngine\Base\DX12\DescriptorManager\DescriptorManager.h" />
     <ClInclude Include="GhotEngine\Base\DX12\DescriptorManager\SRVManager\SrvManager.h" />
     <ClInclude Include="GhotEngine\Model\ModelManager.h" />
@@ -335,6 +335,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <None Include="externals\assimp\include\assimp\SmoothingGroups.inl" />
     <None Include="externals\assimp\include\assimp\vector2.inl" />
     <None Include="externals\assimp\include\assimp\vector3.inl" />
+    <None Include="externals\assimp\lib\Debug\assimp-vc143-mtd.pdb" />
     <None Include="GhotEngine\ShaderFile\Object3d.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -348,6 +349,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ProjectReference Include="externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="externals\assimp\lib\Debug\assimp-vc143-mdd.lib" />
+    <Library Include="externals\assimp\lib\Debug\assimp-vc143-mtd.lib" />
+    <Library Include="externals\assimp\lib\Release\assimp-vc143-md.lib" />
+    <Library Include="externals\assimp\lib\Release\assimp-vc143-mt.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
