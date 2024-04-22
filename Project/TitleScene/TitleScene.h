@@ -6,6 +6,7 @@
 #include "ModelManager.h"
 #include "Sprite/Sprite.h"
 #include "Animation/Animation.h"
+#include "Object3D.h"
 
 class TitleScene : public IScene
 {
@@ -26,7 +27,9 @@ private:
 
 	ModelData model{};
 	Animation animation{};
-	Model* model_;
 	std::unique_ptr<Matio>matio;
+	std::unique_ptr<Object3DPlacer> model_;
+	uint32_t texHandle_ = 0;
+
 
 };

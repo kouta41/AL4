@@ -12,6 +12,9 @@ public:
 
 	// setter
 	void SetModel(const std::string& fileName) { model_ = ModelManager::CreateObj(fileName); }
+
+	void SetGLTFModel(const std::string& fileName) { model_ = ModelManager::CreateGLTF(fileName); }
+
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 	void SetColor(const Vector4& color) { color_ = color; }
 //	void SetLight(Lighting* lighting) { lighting_ = lighting; }
