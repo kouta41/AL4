@@ -22,6 +22,7 @@ struct PipelineState {
 	Property SpotLight;
 	Property BlinnPhongObject3D;
 	Property PostEffectTest;
+	Property Animation;
 };
 
 enum Light {

@@ -26,6 +26,10 @@ void WorldTransform::STransferMatrix(Microsoft::WRL::ComPtr<ID3D12Resource>& wvp
 	wvp->World = worldMatrix;
 }
 
+void WorldTransform::ATransferMatrix(Microsoft::WRL::ComPtr<ID3D12Resource>& wvpResource, CameraRole& cameraRole)
+{
+}
+
 void WorldTransform::UpdateMatrix() {
 
 	matWorld = MakeAffineMatrix(scale, rotate, translate);

@@ -25,12 +25,6 @@ struct AnimationCurve {
 	std::vector<Keyframe<tValue>> keyframes;
 };
 
-//struct NodeAnimation {
-//	AnimationCurve<Vector3> translate;
-//	AnimationCurve<Quaternion> rotate;
-//	AnimationCurve<Vector3> scale;
-//};
-
 struct Animation{
 	float duration;//アニメーション全体の尺(単位は秒)
 	//NodeAnimationの集合。Node名でひけるようにしておく
@@ -43,7 +37,13 @@ class Matio
 public:
 	Matio();
 	~Matio();
-
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="directoryPath"></param>
+	/// <param name="filename"></param>
+	/// <returns></returns>
+	void Initialize(ModelData modeldata,Animation animation);
 
 	//アニメーションの解析
 	Animation LoadAnimationFile(const std::string& directoryPath, const std::string& filename);
@@ -54,13 +54,18 @@ public:
 	//任意の時刻の値を取得する(Quaternion)ver
 	Quaternion CalculateValue(const std::vector<KeyframeQuaternion>& keyframes, float time);
 
+	/// <summary>
+	/// リソース作成
+	/// </summary>
+	/// <param name="modelData"></param>
+	void CreateResource(ModelData modelData);
 
 	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="camera"></param>
 
-	void Playback(const WorldTransform& worldTransform, const CameraRole& camera);
+	void Playback(WorldTransform& worldTransform, CameraRole& camera);
 
 
 #pragma region Setter
@@ -71,15 +76,22 @@ public:
 
 	void SetModelData(const ModelData& modelData_) { modelData = modelData_; }
 
+	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
+
+
 #pragma endregion
 
 private:
 	Animation animation;//アニメーション
 	ModelData modelData;
 	float animationTime = 0.0f;
-	ParticleForGPU* transformData_ = nullptr;
+//	ParticleForGPU transformData_;
 	Resource resource_ = {};
 	D3D12_VERTEX_BUFFER_VIEW AnimationVertexBufferView_{};
+	uint32_t index_ = 0;
+	uint32_t texHandle_ = 0;
+	TransformationMatrix* transformData_ = {};
+
 };
 
 ///モデルの所と統合するかもしれ

@@ -22,19 +22,7 @@ void Object3DPlacer::Initialize()
 void Object3DPlacer::Draw(WorldTransform worldTransform, CameraRole camera)
 {
 
-	/*if (lighting_ == nullptr) {
-		property_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
-	}
-	else {
-		if (lighting_->GetLightType() == None) {
-		}
-		else if (lighting_->GetLightType() == Point) {
-			property_ = GraphicsPipeline::GetInstance()->GetPSO().PointLight;
-		}
-		else if (lighting_->GetLightType() == Spot) {
-			property_ = GraphicsPipeline::GetInstance()->GetPSO().SpotLight;
-		}
-	}*/
+	
 	property_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
 
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
@@ -50,12 +38,7 @@ void Object3DPlacer::Draw(WorldTransform worldTransform, CameraRole camera)
 	worldTransform.TransferMatrix(resource_.wvpResource, camera);
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
-	// 平行光源
-	//DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(3, resource_.directionalLightResource->GetGPUVirtualAddress());
 
-	/*if (lighting_) {
-		lighting_->CreateCommand();
-	}*/
 
 	if (model_) {
 		model_->Draw();

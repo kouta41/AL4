@@ -30,6 +30,8 @@ struct WorldTransform {
 
 	void STransferMatrix(Microsoft::WRL::ComPtr<ID3D12Resource>& wvpResource, CameraRole& cameraRole);
 
+	void ATransferMatrix(Microsoft::WRL::ComPtr<ID3D12Resource>& wvpResource, CameraRole& cameraRole);
+
 	void UpdateMatrix();
 
 };

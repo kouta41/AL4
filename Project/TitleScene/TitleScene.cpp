@@ -10,21 +10,16 @@ void TitleScene::Initialize(){
 	worldTransform.Initialize();
 	camera.Initialize();
 	matio = std::make_unique<Matio>();
-	//model = model_->LoadGLTFFile("./resources/AnimatedCube", "AnimatedCube.gltf");
-	animation=matio->LoadAnimationFile("./resources/AnimatedCube", "AnimatedCube.gltf");
+	model = model_->LoadGLTFFile("./resources/AnimatedCube", "AnimatedCube.gltf");
+	animation = matio->LoadAnimationFile("./resources/AnimatedCube", "AnimatedCube.gltf");
 	texHandle_ = TextureManager::Load("resources/uvChecker.png");
 
+
+	matio->SetTexHandle(texHandle_);
 	matio->SetModelData(model);
 	matio->SetAnimation(animation);
+	matio->Initialize(model, animation);
 
-	ModelManager::LoadObjModel("cube.obj");
-	ModelManager::LoadGLTFModel("AnimatedCube/AnimatedCube.gltf");
-
-	model_ = std::make_unique<Object3DPlacer>();
-	model_->Initialize();
-	model_->SetModel("AnimatedCube/AnimatedCube.gltf");
-//	model_->SetModel("cube.obj");
-	model_->SetTexHandle(texHandle_);
 }
 
 void TitleScene::Update() {	
@@ -41,6 +36,6 @@ void TitleScene::Draw(){
 		ImGui::TreePop();
 	}
 	ImGui::End();
-//	matio->Playback(worldTransform, camera);
-	model_->Draw(worldTransform, camera);
+	matio->Playback(worldTransform, camera);
+//	model_->Draw(worldTransform, camera);
 }

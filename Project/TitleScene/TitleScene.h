@@ -28,7 +28,7 @@ private:
 	ModelData model{};
 	Animation animation{};
 	std::unique_ptr<Matio>matio;
-	std::unique_ptr<Object3DPlacer> model_;
+	std::unique_ptr<Model> model_;
 	uint32_t texHandle_ = 0;
 
 
