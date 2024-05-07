@@ -144,10 +144,6 @@ void Matio::Playback(WorldTransform& worldTransform, CameraRole& camera) {
     Matrix4x4 localMatrix = MakeAffineMatrix(scale, rotate, translate);
     Matrix4x4 worldViewProjectionMatrix = Multiply(localMatrix, Multiply(worldTransform.worldMatrix, Multiply(camera.matView, camera.matProjection)));
 
-    transformData_->WVP = worldViewProjectionMatrix;
-    transformData_->World = Multiply(localMatrix, worldTransform.worldMatrix);
-
-
     TransformationMatrix* wvp = {};
     worldViewProjectionMatrix = Multiply(localMatrix, Multiply(worldTransform.worldMatrix, Multiply(camera.matView, camera.matProjection)));
     resource_.wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvp));
