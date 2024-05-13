@@ -10,8 +10,12 @@ Matio::~Matio()
 }
 
 
-void Matio::Initialize(ModelData modeldata, Animation animation){
-    CreateResource(modelData);
+void Matio::Initialize(ModelData modeldata_, Animation animation_){
+
+    animation = animation_;
+    modelData = modeldata_;
+  
+    CreateResource();
 }
 
 Animation Matio::LoadAnimationFile(const std::string& directoryPath, const std::string& filename)
@@ -75,7 +79,6 @@ Vector3 Matio::CalculateValue(const std::vector<KeyframeVector3>& keyframes, flo
     //ここまでできた場合は一番後の時刻よりも後ろなので最後の値をかえすことになる
     return (*keyframes.rbegin()).value;
 }
-//くおたにおんも作る
 
 Quaternion Matio::CalculateValue(const std::vector<KeyframeQuaternion>& keyframes, float time) {
     assert(!keyframes.empty());//キーがないものは返す値が分らないのでエラー
@@ -98,15 +101,43 @@ Quaternion Matio::CalculateValue(const std::vector<KeyframeQuaternion>& keyframe
 
 }
 
-void Matio::CreateResource(ModelData modelData){
+Skeleton Matio::CreateSkeleton(){
+    Skeleton skeleton;
+    skeleton.root = CreateJoint(modelData.rootNode, {}, skeleton.joints);
+
+    //名前とindexのマッピングを行いアクセスしやすくする
+    for (const Joint& joint : skeleton.joints) {
+        skeleton.jointMap.emplace(joint.name, joint.index);
+    }
+    return skeleton;
+}
+
+int32_t Matio::CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints){
+    Joint joint;
+    joint.name = node.name;
+    joint.localMatrix = node.localMatrix;
+    joint.skeletonSpaceMatrix = MakeIdentityMatrix();
+    joint.transform = node.transform;
+    joint.index = int32_t(joints.size());//現在登録されている数をIndexに
+    joint.parent = parent;
+    joints.push_back(joint);//Skeletonのjoint列に追加
+    for (const Node& child : node.children) {
+        //子Jointwoを作成し、そのIndexを登録
+        int32_t childIndex = CreateJoint(child, joint.index, joints);
+        joints[joint.index].children.push_back(childIndex);
+    }
+    //自身のIndexを返す
+    return joint.index;
+}
+
+void Matio::CreateResource(){
     // Instancing用のTransformationMatrixResourceを作る
     resource_.instancingResource = CreateResource::CreateBufferResource(sizeof(ParticleForGPU) );
     // 書き込むためのアドレスを取得
     resource_.instancingResource->Map(0, nullptr, reinterpret_cast<void**>(&transformData_));
     // 単位行列を書き込む
-        transformData_->WVP = MakeIdentityMatrix();
-        transformData_->World = MakeIdentityMatrix();
-        //transformData_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+    transformData_->WVP = MakeIdentityMatrix();
+    transformData_->World = MakeIdentityMatrix();
 
     // VertexResource
     resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * modelData.vertices.size());
@@ -133,22 +164,47 @@ void Matio::CreateResource(ModelData modelData){
 
 }
 
+void Matio::Update(Skeleton& skeleton){
+    //すべてのJointを更新。親が若いので通常ループで処理を可能にしている
+    for (Joint& joint : skeleton.joints) {
+        joint.localMatrix = MakeAffineMatrix(joint.transform.scale, joint.transform.rotate, joint.transform.translate);
+        if (joint.parent) {//親がいれば親の行列をかける
+            joint.skeletonSpaceMatrix =Multiply( joint.localMatrix , skeleton.joints[*joint.parent].skeletonSpaceMatrix);
+        } else {//親がいなければlocalMatrixとskeletonSpeaceMatrixは一致する
+            joint.skeletonSpaceMatrix = joint.localMatrix;
+        }
+    }
+}
+
+void Matio::ApplyAnimation(Skeleton& skeleton, float animationTime){
+    for (Joint& joint : skeleton.joints) {
+        //対象のJointのAnimationがあれば、値の適用を行う。下記のif文はC++17から可能になった初期化文付きのif文
+        if (auto it = animation.nodeAnimations.find(joint.name); it != animation.nodeAnimations.end()) {
+            const NodeAnimation& rootNodeAnimation = (*it).second;
+            joint.transform.translate = CalculateValue(rootNodeAnimation.translate, animationTime);
+            joint.transform.rotate = CalculateValue(rootNodeAnimation.rotate, animationTime);
+            joint.transform.scale = CalculateValue(rootNodeAnimation.scale, animationTime);
+        }
+    }
+}
+
 void Matio::Playback(WorldTransform& worldTransform, CameraRole& camera) {
     animationTime += 1.0f / 60.0f;//時間を進める。1/60で計測した時間を使って可変フレーム対応する法が望ましい
     animationTime = std::fmod(animationTime, animation.duration);//最後まで行ったら最初からリピート再生。リピート再生しなくてもよい
-    NodeAnimation& rootNodeAnimation = animation.nodeAnimations[modelData.rootNode.name];//rootNodeのAnimationを取得
-    Vector3 translate = CalculateValue(rootNodeAnimation.translate, animationTime);//指定時間の値の取得
-    Quaternion rotate = CalculateValue(rootNodeAnimation.rotate, animationTime);
-    Vector3 scale = CalculateValue(rootNodeAnimation.scale, animationTime);
 
-    Matrix4x4 localMatrix = MakeAffineMatrix(scale, rotate, translate);
-    Matrix4x4 worldViewProjectionMatrix = Multiply(localMatrix, Multiply(worldTransform.worldMatrix, Multiply(camera.matView, camera.matProjection)));
+    //NodeAnimation& rootNodeAnimation = animation.nodeAnimations[modelData.rootNode.name];//rootNodeのAnimationを取得
+    //Vector3 translate = CalculateValue(rootNodeAnimation.translate, animationTime);//指定時間の値の取得
+    //Quaternion rotate = CalculateValue(rootNodeAnimation.rotate, animationTime);
+    //Vector3 scale = CalculateValue(rootNodeAnimation.scale, animationTime);
+
+    //Matrix4x4 localMatrix = MakeAffineMatrix(scale, rotate, translate);
+    //Matrix4x4 worldViewProjectionMatrix = Multiply(localMatrix, Multiply(worldTransform.worldMatrix, Multiply(camera.matView, camera.matProjection)));
 
     TransformationMatrix* wvp = {};
-    worldViewProjectionMatrix = Multiply(localMatrix, Multiply(worldTransform.worldMatrix, Multiply(camera.matView, camera.matProjection)));
+    Matrix4x4  worldViewProjectionMatrix =Multiply(worldTransform.worldMatrix, Multiply(camera.matView, camera.matProjection));
     resource_.wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvp));
     wvp->WVP = worldViewProjectionMatrix;
-    wvp->World = Multiply(localMatrix, worldTransform.worldMatrix);
+    wvp->World = worldTransform.worldMatrix;
 
 
     Property property = GraphicsPipeline::GetInstance()->GetPSO().Object3D;

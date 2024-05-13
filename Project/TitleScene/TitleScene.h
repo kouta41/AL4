@@ -25,11 +25,13 @@ private:
 	WorldTransform worldTransform;
 	CameraRole camera;
 
+
 	ModelData model{};
 	Animation animation{};
-	std::unique_ptr<Matio>matio;
+	Skeleton skeleton{};
+	std::unique_ptr<Matio> matio;
 	std::unique_ptr<Model> model_;
 	uint32_t texHandle_ = 0;
 
-
+	float animationTime = 0.0f;
 };

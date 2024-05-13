@@ -9,20 +9,22 @@ TitleScene::~TitleScene() {
 void TitleScene::Initialize(){
 	worldTransform.Initialize();
 	camera.Initialize();
+
+
+	texHandle_ = TextureManager::Load("resources/white.png");
 	matio = std::make_unique<Matio>();
-	model = model_->LoadGLTFFile("./resources/AnimatedCube", "AnimatedCube.gltf");
-	animation = matio->LoadAnimationFile("./resources/AnimatedCube", "AnimatedCube.gltf");
-	texHandle_ = TextureManager::Load("resources/uvChecker.png");
 
-
+	model = model_->LoadGLTFFile("./resources", "sneakWalk.gltf");
+	animation = matio->LoadAnimationFile("./resources", "sneakWalk.gltf");
 	matio->SetTexHandle(texHandle_);
-	matio->SetModelData(model);
-	matio->SetAnimation(animation);
 	matio->Initialize(model, animation);
-
+	skeleton = matio->CreateSkeleton();
 }
 
 void TitleScene::Update() {	
+	animationTime += 1.0f / 60.0f;
+	matio->ApplyAnimation(skeleton, animationTime);
+	matio->Update(skeleton);
 	worldTransform.UpdateMatrix();
 	camera.UpdateMatrix();
 }

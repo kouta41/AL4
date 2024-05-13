@@ -11,8 +11,39 @@
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
 #include <numbers>
+#include <map>
+#include <optional>
 
+struct EulerTransform {
+	Vector3 scale;
+	Vector3 rotate;
+	Vector3 translate;
+};
+
+struct QuaternionTransform {
+	Vector3 scale;
+	Quaternion rotate;
+	Vector3 translate;
+};
+
+
+struct Joint {
+	QuaternionTransform transform;//Transform情報
+	Matrix4x4 localMatrix;//localMatrix
+	Matrix4x4 skeletonSpaceMatrix;//skeletonSpaceでの変換行列
+	std::string name;//名前
+	std::vector<int32_t> children;//子jointのIndexのリスト。いなければ空
+	int32_t index;//自身のIndex
+	std::optional<int32_t> parent;//親のjointのIndex。いなければnull
+};
+
+struct Skeleton {
+	int32_t root;//RootjointのIndex
+	std::map<std::string, int32_t>jointMap;//Joint名とIndexとの辞書
+	std::vector<Joint> joints;//所属しているジョイント
+};
 struct Node {
+	QuaternionTransform transform;
 	Matrix4x4 localMatrix;
 	std::string name;
 	std::vector<Node> children;
@@ -23,6 +54,7 @@ struct MaterialData {
 };
 
 struct ModelData {
+
 	std::vector<VertexData> vertices;
 	MaterialData material;
 	Node rootNode;

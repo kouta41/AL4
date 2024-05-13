@@ -32,7 +32,7 @@ struct Animation{
 };
 
 
-class Matio
+class Matio 
 {
 public:
 	Matio();
@@ -43,7 +43,7 @@ public:
 	/// <param name="directoryPath"></param>
 	/// <param name="filename"></param>
 	/// <returns></returns>
-	void Initialize(ModelData modeldata,Animation animation);
+	void Initialize(ModelData modeldata_, Animation animation_);
 
 	//アニメーションの解析
 	Animation LoadAnimationFile(const std::string& directoryPath, const std::string& filename);
@@ -54,17 +54,36 @@ public:
 	//任意の時刻の値を取得する(Quaternion)ver
 	Quaternion CalculateValue(const std::vector<KeyframeQuaternion>& keyframes, float time);
 
+	//Skeletonの作成
+	Skeleton CreateSkeleton();
+
+	//jointの作成
+	int32_t CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints);
+	
 	/// <summary>
 	/// リソース作成
 	/// </summary>
 	/// <param name="modelData"></param>
-	void CreateResource(ModelData modelData);
+	void CreateResource();
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="skeleton"></param>
+	void Update(Skeleton& skeleton);
+
+	/// <summary>
+	/// アニメーションに適用する
+	/// </summary>
+	/// <param name="skeleton"></param>
+	/// <param name="animation"></param>
+	/// <param name="animationTime"></param>
+	void ApplyAnimation(Skeleton& skeleton, float animationTime);
 
 	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="camera"></param>
-
 	void Playback(WorldTransform& worldTransform, CameraRole& camera);
 
 
@@ -84,8 +103,8 @@ public:
 private:
 	Animation animation;//アニメーション
 	ModelData modelData;
+	Skeleton skeleton;
 	float animationTime = 0.0f;
-//	ParticleForGPU transformData_;
 	Resource resource_ = {};
 	D3D12_VERTEX_BUFFER_VIEW AnimationVertexBufferView_{};
 	uint32_t index_ = 0;
