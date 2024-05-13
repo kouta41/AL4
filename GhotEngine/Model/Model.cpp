@@ -13,23 +13,37 @@ void Model::InitializeObj(const std::string& filename)
 {
 	modelData_ = LoadObjFile("resources", filename);
 
-	// VertexResource
-	resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * modelData_.vertices.size());
-	// VertexBufferView
-	// 頂点バッファビューを作成する
+	//// VertexResource
+	//resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * modelData_.vertices.size());
+	////VertexBufferView
+	//// 頂点バッファビューを作成する
+
+	//// リソースの先頭のアドレスから使う
+	//objVertexBufferView_.BufferLocation = resource_.vertexResource->GetGPUVirtualAddress();
+	//// 使用するリソースのサイズは頂点サイズ
+	//objVertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelData_.vertices.size());
+	//// 1頂点あたりのサイズ
+	//objVertexBufferView_.StrideInBytes = sizeof(VertexData);
+
+	//// 頂点リソースにデータを書き込む
+	//VertexData* vertexData = nullptr;
+	//// 書き込むためのアドレスを取得
+	//resource_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
+	//std::memcpy(vertexData, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size()); // 頂点データをリソースにコピー;
+
+	resource_.indexResource = CreateResource::CreateBufferResource(sizeof(uint32_t) * modelData_.indices.size());
 
 	// リソースの先頭のアドレスから使う
-	objVertexBufferView_.BufferLocation = resource_.vertexResource->GetGPUVirtualAddress();
+	indexBufferViewSprite_.BufferLocation = resource_.indexResource->GetGPUVirtualAddress();
 	// 使用するリソースのサイズは頂点サイズ
-	objVertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelData_.vertices.size());
+	indexBufferViewSprite_.SizeInBytes = UINT(sizeof(uint32_t) * modelData_.indices.size());
 	// 1頂点あたりのサイズ
-	objVertexBufferView_.StrideInBytes = sizeof(VertexData);
+	indexBufferViewSprite_.Format = DXGI_FORMAT_R32_UINT;
 
-	// 頂点リソースにデータを書き込む
 	VertexData* vertexData = nullptr;
-	// 書き込むためのアドレスを取得
-	resource_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
-	std::memcpy(vertexData, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size()); // 頂点データをリソースにコピー;
+	//// 書き込むためのアドレスを取得
+	resource_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
+	std::memcpy(vertexData, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size()); // 頂点データをリソースにコピー;
 
 }
 
@@ -58,6 +72,20 @@ void Model::InitializeGLTF(const std::string& filename)
 	// 書き込むためのアドレスを取得
 	resource_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
 	std::memcpy(vertexData, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size()); // 頂点データをリソースにコピー
+
+
+	resource_.indexResource = CreateResource::CreateBufferResource(sizeof(uint32_t) * modelData_.indices.size());
+
+	// リソースの先頭のアドレスから使う
+	indexBufferViewSprite_.BufferLocation = resource_.indexResource->GetGPUVirtualAddress();
+	// 使用するリソースのサイズは頂点サイズ
+	indexBufferViewSprite_.SizeInBytes = UINT(sizeof(uint32_t) * modelData_.indices.size());
+	// 1頂点あたりのサイズ
+	indexBufferViewSprite_.Format = DXGI_FORMAT_R32_UINT;
+
+	//// 書き込むためのアドレスを取得
+	resource_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
+	std::memcpy(vertexData, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size()); // 頂点データをリソースにコピー;
 }
 
 /// <summary>
@@ -69,9 +97,10 @@ void Model::InitializeGLTF(const std::string& filename)
 void Model::Draw()
 {
 	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &objVertexBufferView_); // VBVを設定
+	DirectXCommon::GetCommandList()->IASetIndexBuffer(&indexBufferViewSprite_); // IBVを設定
 
 	// 描画。(DrawCall/ドローコール)。
-	DirectXCommon::GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
+	DirectXCommon::GetCommandList()->DrawInstanced(UINT(modelData_.indices.size()), 1, 0, 0);
 }
 
 
@@ -87,23 +116,28 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 		aiMesh* mesh = scene->mMeshes[meshIndex];
 		assert(mesh->HasNormals());
 		assert(mesh->HasTextureCoords(0));
-
+		modelData_.vertices.reserve(mesh->mNumVertices);//最初に頂点数分のメモリを確保しておく
 		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
 			aiFace& face = mesh->mFaces[faceIndex];
 			assert(face.mNumIndices == 3);
 
-			for (uint32_t element = 0; element < face.mNumIndices; ++element) {
-				uint32_t vertexIndex = face.mIndices[element];
+			for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; ++vertexIndex) {
 				aiVector3D& position = mesh->mVertices[vertexIndex];
 				aiVector3D& normal = mesh->mNormals[vertexIndex];
 				aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
-				VertexData vertex;
-				vertex.position = { position.x, position.y,position.z,1.0f };
-				vertex.normal = { normal.x,normal.y,normal.z };
-				vertex.texcoord = { texcoord.x, texcoord.y };
-				vertex.position.x *= -1.0f;
-				vertex.normal.x *= -1.0f;
-				modelData.vertices.push_back(vertex);
+				//右手系ー＞左手系への変換
+				modelData_.vertices[vertexIndex].position = { -position.x,position.y,position.z,1.0f };
+				modelData_.vertices[vertexIndex].normal = { -normal.x,normal.y,normal.z };
+				modelData_.vertices[vertexIndex].texcoord = { texcoord.x,texcoord.y };
+			}
+			for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
+				aiFace& face = mesh->mFaces[faceIndex];
+				assert(face.mNumIndices == 3);
+
+				for (uint32_t element = 0; element < face.mNumIndices; ++element) {
+						uint32_t vertexIndex = face.mIndices[element];
+						modelData_.indices.push_back(vertexIndex);
+				}
 			}
 		}
 	}
