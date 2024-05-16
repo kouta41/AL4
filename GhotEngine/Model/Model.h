@@ -13,6 +13,7 @@
 #include <numbers>
 #include <map>
 #include <optional>
+#include <span>
 
 struct EulerTransform {
 	Vector3 scale;
@@ -53,12 +54,45 @@ struct MaterialData {
 	std::string textureFilePath;
 };
 
+struct VertexWeightData {
+	float weight;
+	uint32_t vertexIndex;
+};
+
+struct JointWeightData {
+	Matrix4x4 inveerseBindPoseMatrix;
+	std::vector<VertexWeightData> vertexWeights;
+};
+
 struct ModelData {
+	std::map<std::string, JointWeightData> skinCluaterData;
 	std::vector<VertexData> vertices;
 	std::vector<uint32_t> indices;
 	MaterialData material;
 	Node rootNode;
 };
+
+const uint32_t kNumMakInfluence = 4;
+struct VertexInfluence {
+	std::array<float, kNumMakInfluence> weights;
+	std::array<int32_t, kNumMakInfluence> jointIndices;
+};
+
+struct WeelForGPU {
+	Matrix4x4 skeletonSpaceMatrix;//位置用
+	Matrix4x4 skeletonSpaceInverseTransposeMatrix;//法線用
+};
+
+struct SkinCluster {
+	std::vector<Matrix4x4> inverseBindPoseMatrices;
+	Microsoft::WRL::ComPtr<ID3D12Resource> influenceResource;
+	D3D12_VERTEX_BUFFER_VIEW influenceBufferView;
+	std::span<VertexInfluence> mappedInfluence;
+	Microsoft::WRL::ComPtr<ID3D12Resource> paletteResource;
+	std::span<WeelForGPU> mappedPalette;
+	std::pair<D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE> paletteSrvHandle;
+};
+
 
 class Model {
 public:
@@ -119,6 +153,17 @@ public:
 	/// <returns></returns>
 	Node ReadNode(aiNode* node);
 
+	/// <summary>
+	/// SkinClusterの生成
+	/// </summary>
+	/// <param name="device_"></param>
+	/// <param name="skeleton_"></param>
+	/// <param name="modelData_"></param>
+	/// <param name="descriptorHeap_"></param>
+	/// <param name="descriptorSize_"></param>
+	/// <returns></returns>
+	SkinCluster CreateSkinCluster(const Microsoft::WRL::ComPtr<ID3D12Device>& device_, const Skeleton& skeleton_, const
+		ModelData& modelData_, const Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& descriptorHeap_, uint32_t descriptorSize_);
 private: // メンバ変数
 
 	ModelData modelData_;

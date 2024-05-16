@@ -132,16 +132,43 @@ int32_t Matio::CreateJoint(const Node& node, const std::optional<int32_t>& paren
 
 void Matio::CreateResource(){
     // Instancing用のTransformationMatrixResourceを作る
-    resource_.instancingResource = CreateResource::CreateBufferResource(sizeof(ParticleForGPU) );
-    // 書き込むためのアドレスを取得
-    resource_.instancingResource->Map(0, nullptr, reinterpret_cast<void**>(&transformData_));
-    // 単位行列を書き込む
-    transformData_->WVP = MakeIdentityMatrix();
-    transformData_->World = MakeIdentityMatrix();
+    //resource_.instancingResource = CreateResource::CreateBufferResource(sizeof(ParticleForGPU) );
+    //// 書き込むためのアドレスを取得
+    //resource_.instancingResource->Map(0, nullptr, reinterpret_cast<void**>(&transformData_));
+    //// 単位行列を書き込む
+    //transformData_->WVP = MakeIdentityMatrix();
+    //transformData_->World = MakeIdentityMatrix();
+
+    //// VertexResource
+    //resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * modelData.vertices.size());
+    //// VertexBufferView
+    //AnimationVertexBufferView_.BufferLocation = resource_.vertexResource->GetGPUVirtualAddress();
+    //// 使用するリソースのサイズは頂点サイズ
+    //AnimationVertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelData.vertices.size());
+    //// 1頂点あたりのサイズ
+    //AnimationVertexBufferView_.StrideInBytes = sizeof(VertexData);
+
+    //// 頂点リソースにデータを書き込む
+    //VertexData* vertexData = nullptr;
+    //// 書き込むためのアドレスを取得
+    //resource_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
+    //std::memcpy(vertexData, modelData.vertices.data(), sizeof(VertexData) * modelData.vertices.size()); // 頂点データをリソースにコピー
+    //resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
+    // データを書き込む
+    //Material* materialData = nullptr;
+    //// アドレスを取得
+    //resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
+    //materialData->color = { 1.0f,1.0f,1.0f,1.0f };
+
+    //resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
+
 
     // VertexResource
     resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * modelData.vertices.size());
-    // VertexBufferView
+    //VertexBufferView
+    // 頂点バッファビューを作成する
+
+    // リソースの先頭のアドレスから使う
     AnimationVertexBufferView_.BufferLocation = resource_.vertexResource->GetGPUVirtualAddress();
     // 使用するリソースのサイズは頂点サイズ
     AnimationVertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelData.vertices.size());
@@ -152,15 +179,21 @@ void Matio::CreateResource(){
     VertexData* vertexData = nullptr;
     // 書き込むためのアドレスを取得
     resource_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
-    std::memcpy(vertexData, modelData.vertices.data(), sizeof(VertexData) * modelData.vertices.size()); // 頂点データをリソースにコピー
-    resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
-    // データを書き込む
-    Material* materialData = nullptr;
-    // アドレスを取得
-    resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
-    materialData->color = { 1.0f,1.0f,1.0f,1.0f };
+    std::memcpy(vertexData, modelData.vertices.data(), sizeof(VertexData) * modelData.vertices.size()); // 頂点データをリソースにコピー;
 
-    resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
+    resource_.indexResource = CreateResource::CreateBufferResource(sizeof(uint32_t) * modelData.indices.size());
+
+    // リソースの先頭のアドレスから使う
+    indexBufferViewSprite_.BufferLocation = resource_.indexResource->GetGPUVirtualAddress();
+    // 使用するリソースのサイズは頂点サイズ
+    indexBufferViewSprite_.SizeInBytes = UINT(sizeof(uint32_t) * modelData.indices.size());
+    // 1頂点あたりのサイズ
+    indexBufferViewSprite_.Format = DXGI_FORMAT_R32_UINT;
+
+    //// 書き込むためのアドレスを取得
+    resource_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
+    std::memcpy(vertexData, modelData.indices.data(), sizeof(uint32_t) * modelData.indices.size()); // 頂点データをリソースにコピー;
+
 
 }
 
@@ -224,6 +257,7 @@ void Matio::Playback(WorldTransform& worldTransform, CameraRole& camera) {
     DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
 
     DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &AnimationVertexBufferView_); // VBVを設定
+    DirectXCommon::GetCommandList()->IASetIndexBuffer(&indexBufferViewSprite_); // IBVを設定
 
     // 描画。(DrawCall/ドローコール)。
     DirectXCommon::GetCommandList()->DrawInstanced(UINT(modelData.vertices.size()), 1, 0, 0);

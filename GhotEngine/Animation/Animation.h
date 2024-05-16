@@ -107,6 +107,7 @@ private:
 	float animationTime = 0.0f;
 	Resource resource_ = {};
 	D3D12_VERTEX_BUFFER_VIEW AnimationVertexBufferView_{};
+	D3D12_INDEX_BUFFER_VIEW indexBufferViewSprite_{};
 	uint32_t index_ = 0;
 	uint32_t texHandle_ = 0;
 	TransformationMatrix* transformData_ = {};

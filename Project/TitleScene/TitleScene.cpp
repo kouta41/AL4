@@ -14,7 +14,7 @@ void TitleScene::Initialize(){
 	texHandle_ = TextureManager::Load("resources/white.png");
 	matio = std::make_unique<Matio>();
 
-	model = model_->LoadGLTFFile("./resources", "sneakWalk.gltf");
+	model = model_->LoadGLTFFile("./resources","sneakWalk.gltf");
 	animation = matio->LoadAnimationFile("./resources", "sneakWalk.gltf");
 	matio->SetTexHandle(texHandle_);
 	matio->Initialize(model, animation);

@@ -116,30 +116,44 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 		aiMesh* mesh = scene->mMeshes[meshIndex];
 		assert(mesh->HasNormals());
 		assert(mesh->HasTextureCoords(0));
-		modelData_.vertices.reserve(mesh->mNumVertices);//最初に頂点数分のメモリを確保しておく
+		modelData_.vertices.resize(mesh->mNumVertices);//最初に頂点数分のメモリを確保しておく
+		for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; ++vertexIndex) {
+			aiVector3D& position = mesh->mVertices[vertexIndex];
+			aiVector3D& normal = mesh->mNormals[vertexIndex];
+			aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
+			//右手系ー＞左手系への変換
+			modelData_.vertices[vertexIndex].position = { -position.x,position.y,position.z,1.0f };
+			modelData_.vertices[vertexIndex].normal = { -normal.x,normal.y,normal.z };
+			modelData_.vertices[vertexIndex].texcoord = { texcoord.x,texcoord.y };
+		}
 		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
 			aiFace& face = mesh->mFaces[faceIndex];
 			assert(face.mNumIndices == 3);
 
-			for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; ++vertexIndex) {
-				aiVector3D& position = mesh->mVertices[vertexIndex];
-				aiVector3D& normal = mesh->mNormals[vertexIndex];
-				aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
-				//右手系ー＞左手系への変換
-				modelData_.vertices[vertexIndex].position = { -position.x,position.y,position.z,1.0f };
-				modelData_.vertices[vertexIndex].normal = { -normal.x,normal.y,normal.z };
-				modelData_.vertices[vertexIndex].texcoord = { texcoord.x,texcoord.y };
-			}
-			for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
-				aiFace& face = mesh->mFaces[faceIndex];
-				assert(face.mNumIndices == 3);
-
-				for (uint32_t element = 0; element < face.mNumIndices; ++element) {
-						uint32_t vertexIndex = face.mIndices[element];
-						modelData_.indices.push_back(vertexIndex);
-				}
+			for (uint32_t element = 0; element < face.mNumIndices; ++element) {
+				uint32_t vertexIndex = face.mIndices[element];
+				modelData_.indices.push_back(vertexIndex);
 			}
 		}
+
+		for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
+			aiBone* bone = mesh->mBones[boneIndex];
+			std::string jointName = bone->mName.C_Str();
+			JointWeightData& jointWeightData = modelData_.skinCluaterData[jointName];
+
+			aiMatrix4x4 bindPoseMatrixAssimp = bone->mOffsetMatrix.Inverse();
+			aiVector3D scale, translate;
+			aiQuaternion rotate;
+			bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
+			Matrix4x4 bindPoseMatrix = MakeAffineMatrix(
+				{ scale.x,scale.y,scale.z }, { rotate.x,-rotate.y,-rotate.z,rotate.w }, { -translate.x,translate.y,translate.z });
+			jointWeightData.inveerseBindPoseMatrix = Inverse(bindPoseMatrix);
+
+			for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
+				jointWeightData.vertexWeights.push_back({ bone->mWeights[weightIndex].mWeight,bone->mWeights[weightIndex].mVertexId });
+			}
+		}
+
 	}
 
 	for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; ++materialIndex) {
@@ -166,27 +180,45 @@ ModelData Model::LoadGLTFFile(const std::string& directoryPath, const std::strin
 		aiMesh* mesh = scene->mMeshes[meshIndex];
 		assert(mesh->HasNormals());
 		assert(mesh->HasTextureCoords(0));
-
+	//	modelData_.vertices.resize(mesh->mNumVertices);//最初に頂点数分のメモリを確保しておく
+		for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; ++vertexIndex) {
+			aiVector3D& position = mesh->mVertices[vertexIndex];
+			aiVector3D& normal = mesh->mNormals[vertexIndex];
+			aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
+			//右手系ー＞左手系への変換
+			modelData_.vertices[vertexIndex].position = { -position.x,position.y,position.z,1.0f };
+			modelData_.vertices[vertexIndex].normal = { -normal.x,normal.y,normal.z };
+			modelData_.vertices[vertexIndex].texcoord = { texcoord.x,texcoord.y };
+		}
 		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
 			aiFace& face = mesh->mFaces[faceIndex];
 			assert(face.mNumIndices == 3);
 
 			for (uint32_t element = 0; element < face.mNumIndices; ++element) {
 				uint32_t vertexIndex = face.mIndices[element];
-				aiVector3D& position = mesh->mVertices[vertexIndex];
-				aiVector3D& normal = mesh->mNormals[vertexIndex];
-				aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
-				VertexData vertex;
-				vertex.position = { position.x, position.y,position.z,1.0f };
-				vertex.normal = { normal.x,normal.y,normal.z };
-				vertex.texcoord = { texcoord.x, texcoord.y };
-				vertex.position.x *= -1.0f;
-				vertex.normal.x *= -1.0f;
-				modelData.vertices.push_back(vertex);
+				modelData_.indices.push_back(vertexIndex);
 			}
 		}
-	}
 
+		for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
+			aiBone* bone = mesh->mBones[boneIndex];
+			std::string jointName = bone->mName.C_Str();
+			JointWeightData& jointWeightData = modelData_.skinCluaterData[jointName];
+
+			aiMatrix4x4 bindPoseMatrixAssimp = bone->mOffsetMatrix.Inverse();
+			aiVector3D scale, translate;
+			aiQuaternion rotate;
+			bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
+			Matrix4x4 bindPoseMatrix = MakeAffineMatrix(
+				{ scale.x,scale.y,scale.z }, { rotate.x,-rotate.y,-rotate.z,rotate.w }, { -translate.x,translate.y,translate.z });
+			jointWeightData.inveerseBindPoseMatrix = Inverse(bindPoseMatrix);
+
+			for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
+				jointWeightData.vertexWeights.push_back({ bone->mWeights[weightIndex].mWeight,bone->mWeights[weightIndex].mVertexId });
+			}
+		}
+
+	}
 	for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; ++materialIndex) {
 		aiMaterial* material = scene->mMaterials[materialIndex];
 		if (material->GetTextureCount(aiTextureType_DIFFUSE) != 0) {
@@ -245,4 +277,65 @@ Node Model::ReadNode(aiNode* node)
 
 	return result;
 
+}
+
+SkinCluster Model::CreateSkinCluster(const Microsoft::WRL::ComPtr<ID3D12Device>& device_, const Skeleton& skeleton_, const ModelData& modelData_, const Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& descriptorHeap_, uint32_t descriptorSize_){
+	SkinCluster skinCluster;
+	//palette用のResourceを確保
+	skinCluster.paletteResource = CreateResource::CreateBufferResource(sizeof(WeelForGPU) * skeleton_.joints.size());
+	WeelForGPU* mappedPalette = nullptr;
+	skinCluster.paletteResource->Map(0, nullptr, reinterpret_cast<void**>(&mappedPalette));
+	skinCluster.mappedPalette = { mappedPalette,skeleton_.joints.size() };
+	skinCluster.paletteSrvHandle.first = DescriptorManager::GetCPUDescriptorHandle(descriptorHeap_.Get(), descriptorSize_, uint32_t( modelData_.indices.size()));
+	skinCluster.paletteSrvHandle.second = DescriptorManager::GetGPUDescriptorHandle(descriptorHeap_.Get(), descriptorSize_, uint32_t(modelData_.indices.size()));
+
+	//palette用のsrvを作成。StructuredBufferでアクセスしやすいようにする
+	D3D12_SHADER_RESOURCE_VIEW_DESC paletteSrvDesc{};
+	paletteSrvDesc.Format = DXGI_FORMAT_UNKNOWN;
+	paletteSrvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	paletteSrvDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
+	paletteSrvDesc.Buffer.FirstElement = 0;
+	paletteSrvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
+	paletteSrvDesc.Buffer.NumElements = UINT(skeleton_.joints.size());
+	paletteSrvDesc.Buffer.StructureByteStride = sizeof(WeelForGPU);
+	device_->CreateShaderResourceView(skinCluster.paletteResource.Get(), &paletteSrvDesc, skinCluster.paletteSrvHandle.first);
+	
+	//influence用のResourceを確保。頂点ごとにinfluence情報を追加できるようにする
+	skinCluster.influenceResource = CreateResource::CreateBufferResource(sizeof(VertexInfluence) * modelData_.vertices.size());
+	VertexInfluence* mappedInfluence = nullptr;
+	skinCluster.influenceResource->Map(0, nullptr, reinterpret_cast<void**>(&mappedInfluence));
+	std::memset(mappedInfluence, 0, sizeof(VertexInfluence) * modelData_.vertices.size());//0埋め。weightを0にしておく
+	skinCluster.mappedInfluence = { mappedInfluence,modelData_.vertices.size() };
+
+	//Influence用のVBVを作成
+	skinCluster.influenceBufferView.BufferLocation = skinCluster.influenceResource->GetGPUVirtualAddress();
+	skinCluster.influenceBufferView.SizeInBytes = UINT(sizeof(VertexInfluence) * modelData_.vertices.size());
+	skinCluster.influenceBufferView.StrideInBytes = sizeof(VertexInfluence);
+
+	//InveresBindPoseMatrixを格納する場所を作成して、単位行列で埋める
+	skinCluster.inverseBindPoseMatrices.resize(skeleton_.joints.size());
+	std::generate(skinCluster.inverseBindPoseMatrices.begin(), skinCluster.inverseBindPoseMatrices.end(), MakeIdentityMatrix);
+
+	//ModelDataを解析してInfluenceを埋める
+	for (const auto& jointWeight : modelData_.skinCluaterData) {//modelのskinClusterの情報を解析
+		auto it = skeleton_.jointMap.find(jointWeight.first);//jointWeight.firstはjoint名なので、skeletonに対象となるjointが含まれているのか判断
+		if (it == skeleton_.jointMap.end()) {//そんな名前のjointは存在しない。なので次に回す
+			continue;
+		}
+		//(*it).secondにはjointのindexが入っているので、該当のindexのinverseBindPoseMatrixを代入
+		skinCluster.inverseBindPoseMatrices[(*it).second] = jointWeight.second.inveerseBindPoseMatrix;
+		for (const auto& vertexWeight : jointWeight.second.vertexWeights) {
+			auto& currentInfluence = skinCluster.mappedInfluence[vertexWeight.vertexIndex];//該当のvertexIndexのinfluence情報を参照しておく
+			for (uint32_t index = 0; index < kNumMakInfluence; ++index) {//空いているところに入れる
+				if (currentInfluence.weights[index] == 0.0f) {//weght==0が空いてる状態なので、その場所にweightとjointのindexを代入
+					currentInfluence.weights[index] = vertexWeight.weight;
+					currentInfluence.jointIndices[index] = (*it).second;
+					break;
+				}
+
+			}
+		}
+	}
+
+	return skinCluster;
 }
