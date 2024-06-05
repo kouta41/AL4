@@ -18,10 +18,6 @@ struct PipelineState {
 	Property Object3D;
 	Property Sprite2D;
 	Property Particle;
-	Property PointLight;
-	Property SpotLight;
-	Property BlinnPhongObject3D;
-	Property PostEffectTest;
 	Property Animation;
 };
 
@@ -88,7 +84,8 @@ private:
 
 	static Property CreateParticle(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	
+	static Property CreateSkinng(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
 
 	PipelineState pso = {};
 

@@ -97,6 +97,10 @@ Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
 // 内積
 float Dot(const Vector3& v1, const Vector3& v2);
 
+// 転置行列
+Matrix4x4 Transpose(const Matrix4x4& m);
+
+
 // quaternionの積
 Quaternion Multiply(const Quaternion& lhs, const Quaternion& rhs);
 // 単位quaternion

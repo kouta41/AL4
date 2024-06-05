@@ -128,7 +128,7 @@ void ModelSphere::Initialize(Model* state)
 void ModelSphere::Draw(WorldTransform worldTransform, CameraRole cameraRole, uint32_t texHandle)
 {
 
-	worldTransform.TransferMatrix(resource_.wvpResource, cameraRole);
+	worldTransform.TransferMatrix();
 
 	Property property = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
 

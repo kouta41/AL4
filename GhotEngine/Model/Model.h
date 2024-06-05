@@ -72,6 +72,7 @@ struct ModelData {
 	Node rootNode;
 };
 
+
 const uint32_t kNumMakInfluence = 4;
 struct VertexInfluence {
 	std::array<float, kNumMakInfluence> weights;
@@ -169,6 +170,6 @@ private: // メンバ変数
 	ModelData modelData_;
 	Resource resource_ = {};
 	ID3D12Resource* indexResource_;
-	D3D12_VERTEX_BUFFER_VIEW objVertexBufferView_{};
+	D3D12_VERTEX_BUFFER_VIEW VertexBufferView_{};
 	D3D12_INDEX_BUFFER_VIEW indexBufferViewSprite_{};
 };

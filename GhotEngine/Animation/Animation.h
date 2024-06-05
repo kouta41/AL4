@@ -43,7 +43,7 @@ public:
 	/// <param name="directoryPath"></param>
 	/// <param name="filename"></param>
 	/// <returns></returns>
-	void Initialize(ModelData modeldata_, Animation animation_);
+	void Initialize(ModelData modeldata, Animation animation);
 
 	//アニメーションの解析
 	Animation LoadAnimationFile(const std::string& directoryPath, const std::string& filename);
@@ -55,11 +55,13 @@ public:
 	Quaternion CalculateValue(const std::vector<KeyframeQuaternion>& keyframes, float time);
 
 	//Skeletonの作成
-	Skeleton CreateSkeleton();
+	Skeleton CreateSkeleton(const Node& rootNode);
 
 	//jointの作成
 	int32_t CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints);
 	
+	//SkinClusterの作成
+	SkinCluster CreateSkinCluster(ModelData& modelData,const Skeleton& skeleton);
 	/// <summary>
 	/// リソース作成
 	/// </summary>
@@ -67,10 +69,16 @@ public:
 	void CreateResource();
 
 	/// <summary>
-	/// 更新
+	/// Skeletonの更新
 	/// </summary>
 	/// <param name="skeleton"></param>
-	void Update(Skeleton& skeleton);
+	void SkeletonUpdate(Skeleton& skeleton);
+
+	/// <summary>
+	/// SkinClusterの更新
+	/// </summary>
+	/// <param name="skinCluster"></param>
+	void SkinClusterUpdate(SkinCluster& skinCluster,const Skeleton& skeleton);
 
 	/// <summary>
 	/// アニメーションに適用する
@@ -78,39 +86,45 @@ public:
 	/// <param name="skeleton"></param>
 	/// <param name="animation"></param>
 	/// <param name="animationTime"></param>
-	void ApplyAnimation(Skeleton& skeleton, float animationTime);
+	void ApplyAnimation(Skeleton& skeleton, const Animation& animation, float animationTime);
 
 	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="camera"></param>
-	void Playback(WorldTransform& worldTransform, CameraRole& camera);
+	void Draw(WorldTransform& worldTransform, CameraRole& camera);
 
 
 #pragma region Setter
 
-	void SetModel(const std::string& directoryPath, const std::string& filename) { animation = LoadAnimationFile(directoryPath, filename); }
+	void SetModel(const std::string& directoryPath, const std::string& filename) { animation_= LoadAnimationFile(directoryPath, filename); }
 
-	void SetAnimation(const Animation& animation_) { animation = animation_; }
+	void SetAnimation(const Animation& animation) { animation_= animation_; }
 
-	void SetModelData(const ModelData& modelData_) { modelData = modelData_; }
+	void SetModelData(const ModelData& modelData) { modelData_ = modelData_; }
 
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 
+	void SetanimationTime(float animationTime) { animationTime_ = animationTime; }
 
 #pragma endregion
 
 private:
-	Animation animation;//アニメーション
-	ModelData modelData;
-	Skeleton skeleton;
-	float animationTime = 0.0f;
+	Animation animation_;//アニメーション
+	ModelData modelData_;
+	Skeleton skeleton_;
+	float animationTime_ = 0.0f;
 	Resource resource_ = {};
-	D3D12_VERTEX_BUFFER_VIEW AnimationVertexBufferView_{};
-	D3D12_INDEX_BUFFER_VIEW indexBufferViewSprite_{};
+	D3D12_VERTEX_BUFFER_VIEW VertexBufferView_{};
+	D3D12_INDEX_BUFFER_VIEW IndexBufferView_{};
 	uint32_t index_ = 0;
 	uint32_t texHandle_ = 0;
-	TransformationMatrix* transformData_ = {};
+	uint32_t srvIndex_ = 0;
+	SkinCluster skinCluster_;
+	Property property_{};
+	Material* materialData_ = nullptr;
+	Vector4 color_ = {};
+	DirectionalLight* directionalLightData_ = nullptr;
 
 };
 

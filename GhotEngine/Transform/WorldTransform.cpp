@@ -1,42 +1,44 @@
 #include "WorldTransform.h"
-#include "CameraRole.h"
 
-void WorldTransform::Initialize() {
-
+void WorldTransform::Initialize()
+{
+	// 単位行列を入れておく
+	world = MakeIdentityMatrix();
 	matWorld = MakeIdentityMatrix();
+	// 定数バッファ作成
+	CreateConstBuffer();
+	// mapする
+	Map();
+	// 転送
+	TransferMatrix();
 
 }
 
-void WorldTransform::TransferMatrix(Microsoft::WRL::ComPtr<ID3D12Resource>& wvpResource, CameraRole& viewProjection) {
-
-	TransformationMatrix* wvp = {};
-	matWorld = Multiply(matWorld, Multiply(viewProjection.matView, viewProjection.matProjection));
-	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvp));
-	wvp->WVP = matWorld;
-	wvp->World = worldMatrix;
-
-}
-
-void WorldTransform::STransferMatrix(Microsoft::WRL::ComPtr<ID3D12Resource>& wvpResource, CameraRole& viewProjection)
+void WorldTransform::CreateConstBuffer()
 {
-	TransformationMatrix* wvp = {};
-	sMatWorld = Multiply(matWorld, Multiply(viewProjection.sMatView, viewProjection.sMatProjection));
-	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvp));
-	wvp->WVP = sMatWorld;
-	wvp->World = worldMatrix;
+	constBuff = CreateResource::CreateBufferResource(sizeof(ConstBufferDataWorldTransform));
 }
 
-void WorldTransform::ATransferMatrix(Microsoft::WRL::ComPtr<ID3D12Resource>& wvpResource, CameraRole& cameraRole)
+void WorldTransform::Map()
 {
+	constBuff.Get()->Map(0, nullptr, reinterpret_cast<void**>(&constMap));
 }
 
-void WorldTransform::UpdateMatrix() {
+void WorldTransform::TransferMatrix()
+{
+	constMap->world = world;
+	constMap->matWorld = matWorld;
+	constMap->WorldInverseTranspose = Transpose(Inverse(matWorld));
+}
+
+void WorldTransform::UpdateMatrix()
+{
 
 	matWorld = MakeAffineMatrix(scale, rotate, translate);
-	worldMatrix = MakeAffineMatrix(scale, rotate, translate);
-
-	if (parent_) {
-		matWorld = Multiply(matWorld, parent_->matWorld);
+	// 親があれば親のワールド行列を掛ける
+	if (parent) {
+		matWorld = Multiply(matWorld, parent->matWorld);
 	}
 
+	TransferMatrix();
 }

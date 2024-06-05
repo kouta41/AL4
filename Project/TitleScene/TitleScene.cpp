@@ -18,13 +18,13 @@ void TitleScene::Initialize(){
 	animation = matio->LoadAnimationFile("./resources", "sneakWalk.gltf");
 	matio->SetTexHandle(texHandle_);
 	matio->Initialize(model, animation);
-	skeleton = matio->CreateSkeleton();
 }
 
 void TitleScene::Update() {	
 	animationTime += 1.0f / 60.0f;
-	matio->ApplyAnimation(skeleton, animationTime);
-	matio->Update(skeleton);
+	animationTime = fmod(animationTime, 1.0f);
+	matio->SetanimationTime(animationTime);
+
 	worldTransform.UpdateMatrix();
 	camera.UpdateMatrix();
 }
@@ -38,6 +38,6 @@ void TitleScene::Draw(){
 		ImGui::TreePop();
 	}
 	ImGui::End();
-	matio->Playback(worldTransform, camera);
+	matio->Draw(worldTransform,camera);
 //	model_->Draw(worldTransform, camera);
 }

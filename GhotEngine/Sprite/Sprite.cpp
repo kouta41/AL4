@@ -133,7 +133,7 @@ void Sprite::Draw()
 	worldTransform_.translate.x = GetPosition().x;
 	worldTransform_.translate.y = GetPosition().y;
 	worldTransform_.UpdateMatrix();
-	worldTransform_.STransferMatrix(resource_.wvpResource, camera_);
+	worldTransform_.TransferMatrix();
 
 	Property property = GraphicsPipeline::GetInstance()->GetPSO().Sprite2D;
 
