@@ -13,6 +13,8 @@
     <FxCompile Include="GhotEngine\ShaderFile\Object3d.PS.hlsl" />
     <FxCompile Include="GhotEngine\ShaderFile\Particle.PS.hlsl" />
     <FxCompile Include="GhotEngine\ShaderFile\Particle.VS.hlsl" />
+    <FxCompile Include="GhotEngine\Particle\CopyImage.VS.hlsl" />
+    <FxCompile Include="GhotEngine\Particle\CopyImage.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -383,9 +385,6 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="GhotEngine\ShaderFile\Object3d.hlsli">
-      <Filter>GhotEngine\ShaderFile</Filter>
-    </None>
     <None Include="externals\assimp\include\assimp\color4.inl" />
     <None Include="externals\assimp\include\assimp\config.h.in" />
     <None Include="externals\assimp\include\assimp\vector3.inl" />
