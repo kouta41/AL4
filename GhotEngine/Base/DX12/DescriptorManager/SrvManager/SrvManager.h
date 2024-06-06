@@ -36,14 +36,27 @@ public:
 	void CreatePostProcessSrv(Microsoft::WRL::ComPtr<ID3D12Resource> resource, uint32_t index);
 
 	/// <summary>
+	/// DescriptorHeapのCPU用
+	/// </summary>
+	/// <param name="index"></param>
+	/// <returns></returns>
+	D3D12_CPU_DESCRIPTOR_HANDLE GetDescriptorHeapForCPU(uint32_t index);
+
+	/// <summary>
+	/// DescriptorHeapのGPU用
+	/// </summary>
+	/// <param name="index"></param>
+	/// <returns></returns>
+	D3D12_GPU_DESCRIPTOR_HANDLE GetDescriptorHeapForGPU(uint32_t index);
+
+	/// <summary>
 	/// srvのgpuhandleの位置をずらす
 	/// </summary>
 	void ShiftIndex();
 
 #pragma region getter
 
-	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle(uint32_t texHandle);
-	D3D12_GPU_DESCRIPTOR_HANDLE GetInstancingGPUHandle(uint32_t texHandle);
+
 	uint32_t GetIndex() { return index_; }
 
 #pragma endregion
@@ -62,10 +75,8 @@ private:
 
 private:
 
-	D3D12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV_[MAX_SRV];
-	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV_[MAX_SRV];
-	D3D12_CPU_DESCRIPTOR_HANDLE instancingSrvHandleCPU_[MAX_SRV];
-	D3D12_GPU_DESCRIPTOR_HANDLE instancingSrvHandleGPU_[MAX_SRV];
-	uint32_t index_;
+
+	
+	uint32_t index_ = 0;
 
 };

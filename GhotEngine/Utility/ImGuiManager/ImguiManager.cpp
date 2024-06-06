@@ -1,4 +1,5 @@
 #include "ImGuiManager.h"
+#include <DescriptorManager/SrvManager/SrvManager.h>
 
 #include "DirectX12.h"
 #include "Window.h"
@@ -18,13 +19,16 @@ void ImGuiManager::Initialize(WinApp* winApp, DirectXCommon* dxCommon) {
 	// ImGuiのスタイルを設定
 	ImGui::StyleColorsDark();
 	// プラットフォームとレンダラーのバックエンドを設定する
+	uint32_t index = SrvManager::GetInstance()->GetIndex();
+	SrvManager::GetInstance()->ShiftIndex();
+	D3D12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV = SrvManager::GetInstance()->GetDescriptorHeapForCPU(index);
+	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV = SrvManager::GetInstance()->GetDescriptorHeapForGPU(index);
 	ImGui_ImplWin32_Init(winApp->GetHwnd());
 	ImGui_ImplDX12_Init(
 		dxCommon_->GetDevice(), static_cast<int>(dxCommon_->GetBufferCount().BufferCount),
 		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, DescriptorManager::GetInstance()->GetSRV(),
-		DescriptorManager::GetInstance()->GetSRV()->GetCPUDescriptorHandleForHeapStart(),
-		DescriptorManager::GetInstance()->GetSRV()->GetGPUDescriptorHandleForHeapStart());
-
+		cpuDescHandleSRV,
+		gpuDescHandleSRV);
 }
 
 void ImGuiManager::Finalize() {

@@ -37,7 +37,7 @@ void Object3DPlacer::Draw(WorldTransform worldTransform, CameraRole camera)
 	// wvp用のCBufferの場所を設定
 	//worldTransform.TransferMatrix();
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle_));
 
 
 	if (model_) {

@@ -119,8 +119,8 @@ void ParticleSystem::Draw(std::list<Particle>& particles, const CameraRole& came
 	// マテリアルCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
 	// instancing用のCBufferの場所を設定
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(1, SrvManager::GetInstance()->GetInstancingGPUHandle(index_));
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(1, SrvManager::GetInstance()->GetDescriptorHeapForGPU(index_));
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle_));
 	// 描画。(DrawCall/ドローコール)。
 	DirectXCommon::GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), numInstance, 0, 0);
 }

@@ -142,11 +142,10 @@ SkinCluster Matio::CreateSkinCluster(ModelData& modelData, const Skeleton& skele
     WeelForGPU* mappedPalette = nullptr;
     skinCluster.paletteResource->Map(0, nullptr, reinterpret_cast<void**>(&mappedPalette));
     skinCluster.mappedPalette = { mappedPalette,skeleton.joints.size() };
-    SrvManager::GetInstance()->ShiftIndex(); // srvのindexの位置を空いてる次にずらす
     srvIndex_ = SrvManager::GetInstance()->GetIndex();
-    skinCluster.paletteSrvHandle.first = DescriptorManager::GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(), DescriptorManager::GetInstance()->GetDescSize().SRV, srvIndex_);
-    skinCluster.paletteSrvHandle.second = DescriptorManager::GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(), DescriptorManager::GetInstance()->GetDescSize().SRV, srvIndex_);
-
+    SrvManager::GetInstance()->ShiftIndex(); // srvのindexの位置を空いてる次にずらす
+    skinCluster.paletteSrvHandle.first = SrvManager::GetInstance()->GetDescriptorHeapForCPU(srvIndex_);
+    skinCluster.paletteSrvHandle.second = SrvManager::GetInstance()->GetDescriptorHeapForGPU(srvIndex_);
 
     //palette用のsrvを作成。StructuredBufferでアクセスしやすいようにする
     D3D12_SHADER_RESOURCE_VIEW_DESC paletteSrvDesc{};
@@ -304,7 +303,8 @@ void Matio::Draw(WorldTransform& worldTransform, CameraRole& camera) {
    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.constBuff->GetGPUVirtualAddress());
    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, camera.constBuff_->GetGPUVirtualAddress());
-   DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(4, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
+   auto test = SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle_);
+   DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle_));
 
    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.directionalLightResource->GetGPUVirtualAddress());
 
@@ -318,7 +318,7 @@ void Matio::Draw(WorldTransform& worldTransform, CameraRole& camera) {
     };
     DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 2, vbvs); // VBVを設定
     DirectXCommon::GetCommandList()->IASetIndexBuffer(&IndexBufferView_); // IBVを設定
-    DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, skinCluster_.paletteSrvHandle.second);
+    DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(4, skinCluster_.paletteSrvHandle.second);
 
     // 描画。(DrawCall/ドローコール)。
     DirectXCommon::GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1, 0, 0, 0);

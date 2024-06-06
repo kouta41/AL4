@@ -404,6 +404,13 @@ Property GraphicsPipeline::CreateParticle(Microsoft::WRL::ComPtr<ID3D12Device> d
 	descriptorRangeForInstancing[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
 	descriptorRangeForInstancing[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
+	// DescriptorRange
+	D3D12_DESCRIPTOR_RANGE descriptorRangeForTexture[1] = {};
+	descriptorRangeForTexture[0].BaseShaderRegister = 0; // 0から始まる
+	descriptorRangeForTexture[0].NumDescriptors = 1; // 数は1つ
+	descriptorRangeForTexture[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
+	descriptorRangeForTexture[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
+
 	// RootParameter作成
 	D3D12_ROOT_PARAMETER rootParameters[3] = {};
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -415,8 +422,8 @@ Property GraphicsPipeline::CreateParticle(Microsoft::WRL::ComPtr<ID3D12Device> d
 	rootParameters[1].DescriptorTable.NumDescriptorRanges = _countof(descriptorRangeForInstancing);
 	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptortableを使う
 	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
-	rootParameters[2].DescriptorTable.pDescriptorRanges = descriptorRangeForInstancing; // Tableの中身の配列を指定
-	rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(descriptorRangeForInstancing); // Tableで利用する数
+	rootParameters[2].DescriptorTable.pDescriptorRanges = descriptorRangeForTexture; // Tableの中身の配列を指定
+	rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(descriptorRangeForTexture); // Tableで利用する数
 
 	descriptionRootSignature.pParameters = rootParameters;
 	descriptionRootSignature.NumParameters = _countof(rootParameters);
@@ -542,6 +549,11 @@ Property GraphicsPipeline::CreateSkinng(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
 	descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
+	D3D12_DESCRIPTOR_RANGE descriptorRangeForSkininng[1] = {};
+	descriptorRangeForSkininng[0].BaseShaderRegister = 0; // 0から始まる
+	descriptorRangeForSkininng[0].NumDescriptors = 1; // 数は1つ
+	descriptorRangeForSkininng[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
+	descriptorRangeForSkininng[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
 	// RootParameter作成
 	D3D12_ROOT_PARAMETER rootParameters[6] = {};
@@ -557,14 +569,14 @@ Property GraphicsPipeline::CreateSkinng(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	rootParameters[2].Descriptor.ShaderRegister = 1;
 
 	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
+	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParameters[3].DescriptorTable.pDescriptorRanges = descriptorRange;
 	rootParameters[3].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
 
 	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptortableを使う
-	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
-	rootParameters[4].DescriptorTable.pDescriptorRanges = descriptorRange; // Tableの中身の配列を指定
-	rootParameters[4].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange); // Tableで利用する数
+	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX; // PixelShaderで使う
+	rootParameters[4].DescriptorTable.pDescriptorRanges = descriptorRangeForSkininng; // Tableの中身の配列を指定
+	rootParameters[4].DescriptorTable.NumDescriptorRanges = _countof(descriptorRangeForSkininng); // Tableで利用する数
 
 	rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV; // CBVを使う
 	rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // pixelshaderを使う

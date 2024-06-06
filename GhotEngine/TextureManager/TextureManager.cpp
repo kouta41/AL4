@@ -15,7 +15,6 @@ uint32_t TextureManager::Load(const std::string& fileName) {
 
 	// 新しいのならindexをずらして新しく作る
 	uint32_t newIndex = SrvManager::GetInstance()->GetIndex();
-	newIndex++;
 	SrvManager::GetInstance()->ShiftIndex();
 	TextureManager::GetInstance()->fileHandleMap[fileName] = newIndex;
 	LoadTexture(fileName, newIndex);
@@ -42,8 +41,6 @@ DirectX::ScratchImage TextureManager::LoadTexture(const std::string& filePath) {
 
 void TextureManager::LoadTexture(const std::string& filePath, uint32_t index)
 {
-
-	index = SrvManager::GetInstance()->GetIndex();
 	DirectX::ScratchImage mipImages = LoadTexture(filePath);
 	TextureManager::GetInstance()->metadata_[index] = mipImages.GetMetadata();
 
