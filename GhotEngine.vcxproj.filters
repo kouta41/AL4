@@ -13,8 +13,6 @@
     <FxCompile Include="GhotEngine\ShaderFile\Object3d.PS.hlsl" />
     <FxCompile Include="GhotEngine\ShaderFile\Particle.PS.hlsl" />
     <FxCompile Include="GhotEngine\ShaderFile\Particle.VS.hlsl" />
-    <FxCompile Include="GhotEngine\Particle\CopyImage.VS.hlsl" />
-    <FxCompile Include="GhotEngine\Particle\CopyImage.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
