@@ -108,13 +108,13 @@ Quaternion Matio::CalculateValue(const std::vector<KeyframeQuaternion>& keyframe
 
 Skeleton Matio::CreateSkeleton(const Node& rootNode){
     Skeleton skeleton;
-    skeleton_.root = CreateJoint(rootNode, {}, skeleton_.joints);
+    skeleton.root = CreateJoint(rootNode, {}, skeleton.joints);
 
     //名前とindexのマッピングを行いアクセスしやすくする
-    for (const Joint& joint : skeleton_.joints) {
-        skeleton_.jointMap.emplace(joint.name, joint.index);
+    for (const Joint& joint : skeleton.joints) {
+        skeleton.jointMap.emplace(joint.name, joint.index);
     }
-    return skeleton_;
+    return skeleton;
 }
 
 int32_t Matio::CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints){
@@ -324,27 +324,3 @@ void Matio::Draw(WorldTransform& worldTransform, CameraRole& camera) {
     DirectXCommon::GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1, 0, 0, 0);
 
 }
-/*
-
- Property property = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
-
-    // Rootsignatureを設定。PSOに設定してるけど別途設定が必要
-    DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property.rootSignature_.Get());
-    DirectXCommon::GetCommandList()->SetPipelineState(property.graphicsPipelineState_.Get()); // PSOを設定
-
-    // 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
-    DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    // マテリアルCBufferの場所を設定
-    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
-
-    // wvp用のCBufferの場所を設定
-//    worldTransform.TransferMatrix(resource_.wvpResource, camera);
-    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
-    DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
-
-    DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &AnimationVertexBufferView_); // VBVを設定
-    DirectXCommon::GetCommandList()->IASetIndexBuffer(&indexBufferViewSprite_); // IBVを設定
-
-    // 描画。(DrawCall/ドローコール)。
-    DirectXCommon::GetCommandList()->DrawInstanced(UINT(modelData.vertices.size()), 1, 0, 0);*/
-
