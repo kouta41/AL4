@@ -1,5 +1,6 @@
 #include "DirectX12.h"
 #include "StringUtility.h"
+#include <thread>
 
 DirectXCommon* DirectXCommon::GetInstance() {
 	static DirectXCommon instance;
@@ -10,20 +11,21 @@ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> DirectXCommon::commandList_;
 
 // 初期化
 void DirectXCommon::Initialize(WinApp* winApp) {
-	//FPS固定初期化
-	InitializeFixFPS();
-
 	// nullptrチェック
 	assert(winApp);
 
 	winApp_ = winApp;
 
+	// FPS固定初期化
+	InitializeFixFPS();
 	// dxgiDevice 初期化
 	InitializeDxgi();
 	// コマンド
 	InitializeCommand();
 	// スワップチェーン
 	CreateSwapChain();
+	// descriptorheapを作る
+	DescriptorManager::GetInstance()->Initialize();
 	// RTV
 	CreateRenderTargetView();
 	// Fence
@@ -71,7 +73,7 @@ void DirectXCommon::PreDraw() {
 	float clearColor[] = { 0.1f, 0.25f, 0.5f, 1.0f };
 	commandList_->ClearRenderTargetView(rtvHandles[backBufferIndex_], clearColor, 0, nullptr);
 
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descriptorHeaps[] = { srvHeap_.Get() };
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descriptorHeaps[] = { DescriptorManager::GetInstance()->GetSRV() };
 	commandList_->SetDescriptorHeaps(1, descriptorHeaps->GetAddressOf());
 
 	commandList_->RSSetViewports(1, &viewport); // viewportを設定
@@ -99,9 +101,6 @@ void DirectXCommon::PostDraw() {
 	// GPUとOSに画面の交換を行うように通知する
 	swapChain_->Present(1, 0);
 
-	//FPS固定
-	UpdateFixFPS();
-
 	// Fenceの値を更新
 	fenceVal_++;
 	// GPUがここまでたどり着いたときに、Fenceの値を指定した値に代入するようにSignalを送る
@@ -116,6 +115,8 @@ void DirectXCommon::PostDraw() {
 
 	}
 
+	// FPS固定
+	UpdateFixFPS();
 
 	// 次のフレーム用のコマンドリストを準備
 	hr_ = commandAllocator_->Reset();
@@ -280,9 +281,6 @@ Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> DirectXCommon::CreateDescriptorHeap
 // RTV作成
 void DirectXCommon::CreateRenderTargetView() {
 
-	rtvHeap_ = CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 2, false);
-	srvHeap_ = CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 128, true);
-
 	// SwapChainからResourceを引っ張ってくる
 	hr_ = swapChain_->GetBuffer(0, IID_PPV_ARGS(&swapChainResources[0]));
 	// うまく取得できなければ起動できない
@@ -295,13 +293,13 @@ void DirectXCommon::CreateRenderTargetView() {
 	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 	// ディスクリプタの先頭を取得する
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvStartHandle = rtvHeap_->GetCPUDescriptorHandleForHeapStart();
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvStartHandle = DescriptorManager::GetInstance()->GetRTV()->GetCPUDescriptorHandleForHeapStart();
 	// RTVを2つ作るのでディスクリプタを2つ用意
 	// まず１つ目を作る。１つ目は最初のところに作る。作る場所をこちらで指定してあげる必要がある
-	rtvHandles[0] = rtvStartHandle;
+	rtvHandles[0] = DescriptorManager::GetInstance()->GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetRTV(), DescriptorManager::GetInstance()->GetDescSize().RTV, 0);
 	device_->CreateRenderTargetView(swapChainResources[0].Get(), &rtvDesc, rtvHandles[0]);
-	// 2つ目のディスクリプタハンドルを得る（自力で）
-	rtvHandles[1].ptr = rtvHandles[0].ptr + device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	// 2つ目のディスクリプタハンドルを得る
+	rtvHandles[1] = DescriptorManager::GetInstance()->GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetRTV(), DescriptorManager::GetInstance()->GetDescSize().RTV, 1);
 	// 2つ目を作る
 	device_->CreateRenderTargetView(swapChainResources[1].Get(), &rtvDesc, rtvHandles[1]);
 }
@@ -318,14 +316,12 @@ void DirectXCommon::CreateFence() {
 	// FenceのSignalを持つためのイベントを作成する
 	fenceEvent_ = CreateEvent(NULL, FALSE, FALSE, NULL);
 	assert(fenceEvent_ != nullptr);
-
-
 }
 
 void DirectXCommon::ClearDepthBuffer()
 {
 	// 描画先のRTVとDSVを設定する
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap_->GetCPUDescriptorHandleForHeapStart();
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = DescriptorManager::GetInstance()->GetDSV()->GetCPUDescriptorHandleForHeapStart();
 	commandList_->OMSetRenderTargets(1, &rtvHandles[backBufferIndex_], false, &dsvHandle);
 	// 指定した深度で画面全体をクリアする
 	commandList_->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
@@ -333,9 +329,6 @@ void DirectXCommon::ClearDepthBuffer()
 
 void DirectXCommon::CreateDepthBuffer()
 {
-	// dsvHeap用のヒープ
-	dsvHeap_ = CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
-
 	// 生成するResourceの設定
 	D3D12_RESOURCE_DESC resourceDesc{};
 	resourceDesc.Width = 1280; // Textureの幅
@@ -353,7 +346,7 @@ void DirectXCommon::CreateDepthBuffer()
 
 	// 深度値のクリア設定
 	D3D12_CLEAR_VALUE depthClearValue{};
-	depthClearValue.DepthStencil.Depth = 1.0f; // 1.0f（最大値）でクリア
+	depthClearValue.DepthStencil.Depth = 1.0f; // 1.0f最大値）でクリア
 	depthClearValue.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // フォーマット。Resourceと合わせる
 
 	// Resourceの生成
@@ -371,36 +364,40 @@ void DirectXCommon::CreateDepthBuffer()
 	dsvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // Format。基本的にはResourceに合わせる
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D; // 2dTexture
 	// DSVHeapの先頭にDSVを作る
-	device_->CreateDepthStencilView(depthBuffer_.Get(), &dsvDesc, dsvHeap_->GetCPUDescriptorHandleForHeapStart());
+	device_->CreateDepthStencilView(depthBuffer_.Get(), &dsvDesc, DescriptorManager::GetInstance()->GetDSV()->GetCPUDescriptorHandleForHeapStart());
 
 
 }
 
-void DirectXCommon::InitializeFixFPS(){
-	//現在時間を記録する
+void DirectXCommon::InitializeFixFPS()
+{
+	// 現在時間を記録する
 	reference_ = std::chrono::steady_clock::now();
+
+
 }
 
-void DirectXCommon::UpdateFixFPS(){
-	//1/60秒ぴったりの時間
+void DirectXCommon::UpdateFixFPS()
+{
+	// 1/ 60秒ぴったりの時間
 	const std::chrono::microseconds kMinTime(uint64_t(1000000.0f / 60.0f));
-	//1/60秒よりわずかに短い時間
+	// 1/ 60秒よりわずかに短い時間
 	const std::chrono::microseconds kMinCheckTime(uint64_t(1000000.0f / 65.0f));
 
-	//現在時間を取得する
+	// 現在時間を取得する
 	std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
-	//前回記録からの経過時間を取得する
-	std::chrono::microseconds elapsed =
-		std::chrono::duration_cast<std::chrono::microseconds>(now - reference_);
+	// 前回の記録からの経過時間を取得する
+	std::chrono::microseconds elapsed = std::chrono::duration_cast<std::chrono::microseconds>(now - reference_);
 
-	//1/60(よりわずかに短い時間)経っていない場合
-	if (elapsed < kMinTime) {
-		//1/60経過するまで微小なスリープを繰り返す
+	// 1 / 60秒 (よりわずかに短い時間) 経ってない場合
+	if (elapsed < kMinCheckTime) {
+		// 1 / 60秒経過するまで微小なスリープを繰り返す
 		while (std::chrono::steady_clock::now() - reference_ < kMinTime) {
-			//1マイクロ秒スリープ
+			// 1マイクロ秒スリープ
 			std::this_thread::sleep_for(std::chrono::microseconds(1));
 		}
 	}
-	//現在の時間を記録する
+	// 現在の時間を記録する
 	reference_ = std::chrono::steady_clock::now();
+
 }

@@ -17,12 +17,21 @@ struct Property {
 struct PipelineState {
 	Property Object3D;
 	Property Sprite2D;
+	Property Particle;
+	Property Animation;
+	Property CopyImage;
+};
+
+enum Light {
+	None,
+	Point,
+	Spot
 };
 
 // BlendMode
 enum BlendMode {
 	BlendNormal,
-
+	BlendAdd,
 };
 
 class GraphicsPipeline {
@@ -74,6 +83,14 @@ private:
 
 	static Property CreateSprite2D(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	static Property CreateParticle(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreateSkinng(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreateCopyImage(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+
 	PipelineState pso = {};
 
 };
+
