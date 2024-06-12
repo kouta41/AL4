@@ -73,6 +73,8 @@ class CreateResource {
 public:
 	// Resource作成
 	static Microsoft::WRL::ComPtr<ID3D12Resource> CreateBufferResource(size_t sizeInBytes);
+
+	Microsoft::WRL::ComPtr<ID3D12Resource>  CreateRenderTextureResource(DXGI_FORMAT format, const Vector4& clearColor);
 	// IBV
 	static D3D12_INDEX_BUFFER_VIEW CreateIndexBufferView(Microsoft::WRL::ComPtr<ID3D12Resource> resource, size_t sizeInBytes);
 	// VBV

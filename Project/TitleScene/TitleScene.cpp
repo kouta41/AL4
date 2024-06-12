@@ -12,7 +12,6 @@ void TitleScene::Initialize(){
 
 
 	texHandle_ = TextureManager::Load("resources/white.png");
-	matio = std::make_unique<Matio>();
 
 	//model = model_->LoadGLTFFile("./resources", "Walk.gltf");
 	//animation = matio->LoadAnimationFile("./resources", "Walk.gltf");
@@ -33,6 +32,7 @@ void TitleScene::Update() {
 //	animationTime = 2.0f;
 	animationTime = std::fmod(animationTime, animation.duration);
 	matio->SetanimationTime(animationTime);
+
 
 	worldTransform.UpdateMatrix();
 	camera.UpdateMatrix();
