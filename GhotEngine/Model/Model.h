@@ -60,12 +60,12 @@ struct VertexWeightData {
 };
 
 struct JointWeightData {
-	Matrix4x4 inveerseBindPoseMatrix;
+	Matrix4x4 inverseBindPoseMatrix;
 	std::vector<VertexWeightData> vertexWeights;
 };
 
 struct ModelData {
-	std::map<std::string, JointWeightData> skinCluaterData;
+	std::map<std::string, JointWeightData> skinClusterData;
 	std::vector<VertexData> vertices;
 	std::vector<uint32_t> indices;
 	MaterialData material;

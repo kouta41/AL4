@@ -1,6 +1,7 @@
 #pragma once
 #include "Matrix4x4.h"
 #include "Vector3.h"
+#include "Vector4.h"
 
 #include <format>
 #include<cmath>
@@ -94,6 +95,8 @@ Vector3 Subtract(const Vector3& v1, const Vector3& v2);
 //線形補間
 Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
 
+Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t);
+
 // 内積
 float Dot(const Vector3& v1, const Vector3& v2);
 
@@ -120,4 +123,17 @@ Vector3 RotateVector(const Vector3& vector, const Quaternion& quaternion);
 // quaternionから回転行列を求める
 Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion);
 // 球面線形補間
-Quaternion Lerp(const Quaternion& q0, const Quaternion& q1, float t);
+Quaternion SLerp(const Quaternion& q0, const Quaternion& q1, float t);
+
+
+
+
+// 演算子のオーバーロード
+Matrix4x4 operator*(const Matrix4x4& a, const Matrix4x4& b);
+Vector3 operator+(const Vector3& a, const Vector3& b);
+Vector3 operator+(const Vector3& a, const float& b);
+Vector3 operator-(const Vector3& a, const Vector3& b);
+Vector3 operator-(const Vector3& a, const float& b);
+Vector3 operator*(const float& a, const Vector3& b);
+Vector3 operator/(const Vector3& a, const float& b);
+Vector3 operator*(const Vector3& vec, const Matrix4x4& mat);

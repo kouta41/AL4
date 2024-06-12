@@ -205,7 +205,7 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Quaternion& rot, const Ve
 	Matrix4x4 Translate = MakeTranslateMatrix(translate);
 
 	// スケール、回転、平行移動の合成
-	Matrix4x4 Transform = Multiply(Multiply(Scale, Rotate), Translate);
+	Matrix4x4 Transform = Scale* Rotate *Translate;
 
 	return Transform;
 
@@ -439,17 +439,37 @@ Vector3 Subtract(const Vector3& v1, const Vector3& v2) {
 
 //線形補間
 Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t){
-	Vector3 result;
-	float h = Dot(v1, v2);
-	float Costheta = std::acos((h * (float)std::numbers::pi) / 180);
-	float Sintheta = std::sin(Costheta);
-	float Pstert = std::sin((1 - t) * Costheta) / Sintheta;
-	float Pend = std::sin(t * Costheta) / Sintheta;
-	result.x = (Pstert * v1.x + Pend * v2.x);
-	result.y = (Pstert * v1.y + Pend * v2.y);
-	result.z = (Pstert * v1.z + Pend * v2.z);
+	Vector3 p;
+	p.x = (1.0f - t) * v1.x + t * v2.x;
+	p.y = (1.0f - t) * v1.y + t * v2.y;
+	p.z = (1.0f - t) * v1.z + t * v2.z;
+	return p;
+}
 
-	return result;
+Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t){
+	Vector3 p;
+
+	Vector3 s;
+	Vector3 e;
+
+	s = Normalize(v1);
+	e = Normalize(v2);
+	float angle = acos(Dot(s, e));
+	// SinΘ
+	float SinTh = sin(angle);
+
+	// 補間係数
+	float Ps = sin(angle * (1 - t));
+	float Pe = sin(angle * t);
+
+	p.x = (Ps * s.x + Pe * e.x) / SinTh;
+	p.y = (Ps * s.y + Pe * e.y) / SinTh;
+	p.z = (Ps * s.z + Pe * e.z) / SinTh;
+
+	p = Normalize(p);
+
+
+	return p;
 }
 
 // スカラー倍
@@ -620,7 +640,7 @@ Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion)
 	return result;
 }
 
-Quaternion Lerp(const Quaternion& q0, const Quaternion& q1, float t)
+Quaternion SLerp(const Quaternion& q0, const Quaternion& q1, float t)
 {
 	Quaternion result{};
 	Vector3 q0Vec = { q0.x,q0.y,q0.z };
@@ -652,4 +672,61 @@ Quaternion Lerp(const Quaternion& q0, const Quaternion& q1, float t)
 	}
 
 	return 	result;
+}
+
+
+
+
+// 演算子のオーバーロード
+
+Matrix4x4 operator*(const Matrix4x4& a, const Matrix4x4& b)
+{
+	return Multiply(a, b);
+}
+
+Vector3 operator+(const Vector3& a, const Vector3& b) {
+	Vector3 c = { a.x + b.x,a.y + b.y ,a.z + b.z };
+
+	return c;
+}
+
+Vector3 operator+(const Vector3& a, const float& b) {
+	Vector3 c = { a.x + b,a.y + b,a.z + b };
+
+	return c;
+}
+
+Vector3 operator-(const Vector3& a, const Vector3& b) {
+	Vector3 c = { a.x - b.x,a.y - b.y,a.z - b.z };
+
+	return c;
+}
+
+Vector3 operator-(const Vector3& a, const float& b) {
+	Vector3 c = { a.x - b,a.y - b,a.z - b };
+
+	return c;
+}
+
+Vector3 operator*(const float& a, const Vector3& b) {
+	Vector3 c = { a * b.x,a * b.y,a * b.z };
+
+	return c;
+}
+
+Vector3 operator/(const Vector3& a, const float& b) {
+	Vector3 c = { a.x / b , a.y / b, a.z / b };
+
+	return c;
+}
+
+Vector3 operator*(const Vector3& vec, const Matrix4x4& mat) {
+	Vector4 result = {
+		vec.x * mat.m[0][0] + vec.y * mat.m[1][0] + vec.z * mat.m[2][0] + mat.m[3][0],
+		vec.x * mat.m[0][1] + vec.y * mat.m[1][1] + vec.z * mat.m[2][1] + mat.m[3][1],
+		vec.x * mat.m[0][2] + vec.y * mat.m[1][2] + vec.z * mat.m[2][2] + mat.m[3][2],
+		vec.x * mat.m[0][3] + vec.y * mat.m[1][3] + vec.z * mat.m[2][3] + mat.m[3][3]
+	};
+
+	return { result.x / result.w, result.y / result.w, result.z / result.w };
 }

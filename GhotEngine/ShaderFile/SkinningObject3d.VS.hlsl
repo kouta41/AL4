@@ -73,12 +73,12 @@ Skinned Skinning(VertexShaderInput input)
 VertexShaderOutput main(VertexShaderInput input)
 {
     VertexShaderOutput output;
-    float32_t4x4 wvp = mul(gTransformationMatrix.matWorld, mul(gCameraMatrix.view, gCameraMatrix.projection));
+  float32_t4x4 wvp = mul(gTransformationMatrix.matWorld, mul(gCameraMatrix.view, gCameraMatrix.projection));
     Skinned skinned = Skinning(input);
     // Skinning結果を使って変換
     output.position = mul(skinned.position, wvp);
     output.texcoord = input.texcoord;
-    output.worldPosition = mul(skinned.position, gTransformationMatrix.matWorld).xyz;
+    output.worldPosition = mul(skinned.position, gTransformationMatrix.world).xyz;
     output.normal = normalize(mul(skinned.normal, (float32_t3x3) gTransformationMatrix.WorldInverseTranspose));
     return output;
 }

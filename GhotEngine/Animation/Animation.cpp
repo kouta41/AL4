@@ -38,6 +38,7 @@ Animation Matio::LoadAnimationFile(const std::string& directoryPath, const std::
     for (uint32_t channelIndex = 0; channelIndex < animationAssimp->mNumChannels; ++channelIndex) {
         aiNodeAnim* nodeAnimationAssimp = animationAssimp->mChannels[channelIndex];
         NodeAnimation& nodeAnimation = animation.nodeAnimations[nodeAnimationAssimp->mNodeName.C_Str()];
+        ///
         for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumPositionKeys; ++keyIndex) {
             aiVectorKey& keyAssimp = nodeAnimationAssimp->mPositionKeys[keyIndex];
             KeyframeVector3 keyframe;
@@ -56,7 +57,7 @@ Animation Matio::LoadAnimationFile(const std::string& directoryPath, const std::
             aiVectorKey& keyAssimp = nodeAnimationAssimp->mScalingKeys[keyIndex];
             KeyframeVector3 keyframe;
             keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);//ここも秒に変換
-            keyframe.value = { -keyAssimp.mValue.x,keyAssimp.mValue.y,keyAssimp.mValue.z };//右手→左手
+            keyframe.value = { keyAssimp.mValue.x,keyAssimp.mValue.y,keyAssimp.mValue.z };//右手→左手
             nodeAnimation.scale.push_back(keyframe);
         }
     }
@@ -97,7 +98,7 @@ Quaternion Matio::CalculateValue(const std::vector<KeyframeQuaternion>& keyframe
         if (keyframes[index].time <= time && time <= keyframes[nextIndex].time) {
             //範囲内を補間する
             float t = (time - keyframes[index].time) / (keyframes[nextIndex].time - keyframes[index].time);
-            return Lerp(keyframes[index].value, keyframes[nextIndex].value, t);
+            return SLerp(keyframes[index].value, keyframes[nextIndex].value, t);
         }
     }
 
@@ -175,13 +176,13 @@ SkinCluster Matio::CreateSkinCluster(ModelData& modelData, const Skeleton& skele
     std::generate(skinCluster.inverseBindPoseMatrices.begin(), skinCluster.inverseBindPoseMatrices.end(), MakeIdentityMatrix);
 
     //ModelDataを解析してInfluenceを埋める
-    for (const auto& jointWeight : modelData.skinCluaterData) {//modelのskinClusterの情報を解析
+    for (const auto& jointWeight : modelData.skinClusterData) {//modelのskinClusterの情報を解析
         auto it = skeleton.jointMap.find(jointWeight.first);//jointWeight.firstはjoint名なので、skeletonに対象となるjointが含まれているのか判断
         if (it == skeleton.jointMap.end()) {//そんな名前のjointは存在しない。なので次に回す
             continue;
         }
         //(*it).secondにはjointのindexが入っているので、該当のindexのinverseBindPoseMatrixを代入
-        skinCluster.inverseBindPoseMatrices[(*it).second] = jointWeight.second.inveerseBindPoseMatrix;
+        skinCluster.inverseBindPoseMatrices[(*it).second] = jointWeight.second.inverseBindPoseMatrix;
         for (const auto& vertexWeight : jointWeight.second.vertexWeights) {
             auto& currentInfluence = skinCluster.mappedInfluence[vertexWeight.vertexIndex];//該当のvertexIndexのinfluence情報を参照しておく
             for (uint32_t index = 0; index < kNumMakInfluence; ++index) {//空いているところに入れる
@@ -257,7 +258,7 @@ void Matio::SkeletonUpdate(Skeleton& skeleton){
     for (Joint& joint : skeleton.joints) {
         joint.localMatrix = MakeAffineMatrix(joint.transform.scale, joint.transform.rotate, joint.transform.translate);
         if (joint.parent) {//親がいれば親の行列をかける
-            joint.skeletonSpaceMatrix =Multiply( joint.localMatrix , skeleton.joints[*joint.parent].skeletonSpaceMatrix);
+            joint.skeletonSpaceMatrix =joint.localMatrix * skeleton.joints[*joint.parent].skeletonSpaceMatrix;
         } else {//親がいなければlocalMatrixとskeletonSpeaceMatrixは一致する
             joint.skeletonSpaceMatrix = joint.localMatrix;
         }
@@ -268,14 +269,13 @@ void Matio::SkinClusterUpdate(SkinCluster& skinCluster, const Skeleton& skeleton
     for (size_t jointIndex = 0; jointIndex < skeleton.joints.size(); ++jointIndex) {
         assert(jointIndex < skinCluster.inverseBindPoseMatrices.size());
         skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix =
-            Multiply(skinCluster.inverseBindPoseMatrices[jointIndex], skeleton.joints[jointIndex].skeletonSpaceMatrix);
+            skinCluster.inverseBindPoseMatrices[jointIndex] * skeleton.joints[jointIndex].skeletonSpaceMatrix;
         skinCluster.mappedPalette[jointIndex].skeletonSpaceInverseTransposeMatrix =
             Transpose(Inverse(skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix));
-
     }
 }
 
-void Matio::ApplyAnimation(Skeleton& skeleton, const Animation& animation, float animationTime){
+void Matio::ApplyAnimation(Skeleton& skeleton, const Animation& animation,float animationTime){
     for (Joint& joint : skeleton.joints) {
         //対象のJointのAnimationがあれば、値の適用を行う。下記のif文はC++17から可能になった初期化文付きのif文
         if (auto it = animation.nodeAnimations.find(joint.name); it != animation.nodeAnimations.end()) {
@@ -308,7 +308,7 @@ void Matio::Draw(WorldTransform& worldTransform, CameraRole& camera) {
 
    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.directionalLightResource->GetGPUVirtualAddress());
 
-    ApplyAnimation(skeleton_, animation_, animationTime_);
+    ApplyAnimation(skeleton_, animation_,animationTime_);
     SkeletonUpdate(skeleton_);
     SkinClusterUpdate(skinCluster_, skeleton_);
 

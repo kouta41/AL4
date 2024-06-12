@@ -137,7 +137,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 		for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
 			aiBone* bone = mesh->mBones[boneIndex];
 			std::string jointName = bone->mName.C_Str();
-			JointWeightData& jointWeightData = modelData.skinCluaterData[jointName];
+			JointWeightData& jointWeightData = modelData.skinClusterData[jointName];
 
 			aiMatrix4x4 bindPoseMatrixAssimp = bone->mOffsetMatrix.Inverse();
 			aiVector3D scale, translate;
@@ -145,7 +145,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 			bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
 			Matrix4x4 bindPoseMatrix = MakeAffineMatrix(
 				{ scale.x,scale.y,scale.z }, { rotate.x,-rotate.y,-rotate.z,rotate.w }, { -translate.x,translate.y,translate.z });
-			jointWeightData.inveerseBindPoseMatrix = Inverse(bindPoseMatrix);
+			jointWeightData.inverseBindPoseMatrix = Inverse(bindPoseMatrix);
 
 			for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
 				jointWeightData.vertexWeights.push_back({ bone->mWeights[weightIndex].mWeight,bone->mWeights[weightIndex].mVertexId });
@@ -184,11 +184,11 @@ ModelData Model::LoadGLTFFile(const std::string& directoryPath, const std::strin
 			aiVector3D& position = mesh->mVertices[vertexIndex];
 			aiVector3D& normal = mesh->mNormals[vertexIndex];
 			aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
-			//右手系ー＞左手系への変換
-			modelData.vertices[vertexIndex].position = { -position.x,position.y,position.z,1.0f };
-			modelData.vertices[vertexIndex].normal = { -normal.x,normal.y,normal.z };
-			modelData.vertices[vertexIndex].texcoord = { texcoord.x,texcoord.y };
+			modelData.vertices[vertexIndex].position = { -position.x, position.y, position.z, 1.0f };
+			modelData.vertices[vertexIndex].normal = { -normal.x, normal.y, normal.z };
+			modelData.vertices[vertexIndex].texcoord = { texcoord.x, texcoord.y };
 		}
+
 		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
 			aiFace& face = mesh->mFaces[faceIndex];
 			assert(face.mNumIndices == 3);
@@ -199,25 +199,26 @@ ModelData Model::LoadGLTFFile(const std::string& directoryPath, const std::strin
 			}
 		}
 
+		// skinCluster構築用のデータを取得
 		for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
 			aiBone* bone = mesh->mBones[boneIndex];
 			std::string jointName = bone->mName.C_Str();
-			JointWeightData& jointWeightData = modelData.skinCluaterData[jointName];
+			JointWeightData& jointWeightData = modelData.skinClusterData[jointName];
 
 			aiMatrix4x4 bindPoseMatrixAssimp = bone->mOffsetMatrix.Inverse();
 			aiVector3D scale, translate;
 			aiQuaternion rotate;
 			bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
-			Matrix4x4 bindPoseMatrix = MakeAffineMatrix(
-				{ scale.x,scale.y,scale.z }, { rotate.x,-rotate.y,-rotate.z,rotate.w }, { -translate.x,translate.y,translate.z });
-			jointWeightData.inveerseBindPoseMatrix = Inverse(bindPoseMatrix);
+			Matrix4x4 bindPoseMatrix = MakeAffineMatrix({ scale.x,scale.y,scale.z }, { rotate.x,-rotate.y,-rotate.z,rotate.w }, { -translate.x,translate.y,translate.z });
+			jointWeightData.inverseBindPoseMatrix = Inverse(bindPoseMatrix);
 
 			for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
-				jointWeightData.vertexWeights.push_back({ bone->mWeights[weightIndex].mWeight,bone->mWeights[weightIndex].mVertexId });
+				jointWeightData.vertexWeights.push_back({ bone->mWeights[weightIndex].mWeight, bone->mWeights[weightIndex].mVertexId });
 			}
 		}
 
 	}
+
 	for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; ++materialIndex) {
 		aiMaterial* material = scene->mMaterials[materialIndex];
 		if (material->GetTextureCount(aiTextureType_DIFFUSE) != 0) {
@@ -316,13 +317,13 @@ SkinCluster Model::CreateSkinCluster(const Microsoft::WRL::ComPtr<ID3D12Device>&
 	std::generate(skinCluster.inverseBindPoseMatrices.begin(), skinCluster.inverseBindPoseMatrices.end(), MakeIdentityMatrix);
 
 	//ModelDataを解析してInfluenceを埋める
-	for (const auto& jointWeight : modelData_.skinCluaterData) {//modelのskinClusterの情報を解析
+	for (const auto& jointWeight : modelData_.skinClusterData) {//modelのskinClusterの情報を解析
 		auto it = skeleton_.jointMap.find(jointWeight.first);//jointWeight.firstはjoint名なので、skeletonに対象となるjointが含まれているのか判断
 		if (it == skeleton_.jointMap.end()) {//そんな名前のjointは存在しない。なので次に回す
 			continue;
 		}
 		//(*it).secondにはjointのindexが入っているので、該当のindexのinverseBindPoseMatrixを代入
-		skinCluster.inverseBindPoseMatrices[(*it).second] = jointWeight.second.inveerseBindPoseMatrix;
+		skinCluster.inverseBindPoseMatrices[(*it).second] = jointWeight.second.inverseBindPoseMatrix;
 		for (const auto& vertexWeight : jointWeight.second.vertexWeights) {
 			auto& currentInfluence = skinCluster.mappedInfluence[vertexWeight.vertexIndex];//該当のvertexIndexのinfluence情報を参照しておく
 			for (uint32_t index = 0; index < kNumMakInfluence; ++index) {//空いているところに入れる
