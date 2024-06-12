@@ -77,7 +77,6 @@ void GraphicsPipeline::CreatePipeline(PipelineState& pso) {
 	pso.Sprite2D = CreateSprite2D(device.Get(), L"Sprite2D");
 	pso.Particle = CreateParticle(device.Get(), L"Particle");
 	pso.Animation = CreateSkinng(device.Get(), L"SkinningObject3d");
-	pso.CopyImage = CreateCopyImage(device.Get(), L"CopyImage");
 
 
 }
