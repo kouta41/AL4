@@ -23,15 +23,24 @@ public:
 
 private:
 	WorldTransform worldTransform;
+	WorldTransform worldTransform1;
+
 	CameraRole camera;
 
 
 	ModelData model{};
 	Animation animation{};
+	ModelData model_1{};
+	Animation animation_1{};
 	Skeleton skeleton{};
-	std::unique_ptr<Matio> matio;
+	std::unique_ptr<Matio> matio_;
 	std::unique_ptr<Model> model_;
+	std::unique_ptr<Matio> matio_1;
+	//std::unique_ptr<Model> model_1;
+
 	uint32_t texHandle_ = 0;
 
 	float animationTime = 0.0f;
+	float animationTime1 = 0.0f;
+
 };
