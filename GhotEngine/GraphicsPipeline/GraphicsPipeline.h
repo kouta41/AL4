@@ -20,6 +20,7 @@ struct PipelineState {
 	Property Particle;
 	Property Animation;
 	Property CopyImage;
+	Property Skybox;
 };
 
 enum Light {
@@ -88,6 +89,8 @@ private:
 	static Property CreateSkinng(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 	static Property CreateCopyImage(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreateSkybox(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 
 	PipelineState pso = {};
