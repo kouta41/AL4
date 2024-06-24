@@ -7,6 +7,7 @@
 #include "Sprite/Sprite.h"
 #include "Animation/Animation.h"
 #include "Object3D.h"
+#include "Skybox/Skybox.h"
 
 class TitleScene : public IScene
 {
@@ -38,8 +39,10 @@ private:
 	std::unique_ptr<Matio> matio_1;
 	//std::unique_ptr<Model> model_1;
 
-	uint32_t texHandle_ = 0;
+	std::unique_ptr<Skybox> Skybox_;
 
+	uint32_t texHandle_ = 0;
+	uint32_t SkyboxTex_ = 0;
 	float animationTime = 0.0f;
 	float animationTime1 = 0.0f;
 

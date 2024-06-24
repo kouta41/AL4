@@ -4,13 +4,13 @@
 #include "TextureManager.h"
 #include "IModelState.h"
 
-class Skybox : public IModelState {
+class Skybox  {
 public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="state"></param>
-	void Initialize(Model* state)override;
+	void Initialize();
 
 	/// <summary>
 	/// 描画
@@ -18,7 +18,7 @@ public:
 	/// <param name="worldTransform"></param>
 	/// <param name="viewProjection"></param>
 	/// <param name="texHandle"></param>
-	void Draw(WorldTransform worldTransform, CameraRole cameraRole, uint32_t texHandle)override;
+	void Draw(WorldTransform worldTransform, CameraRole cameraRole, uint32_t texHandle);
 
 private:
 

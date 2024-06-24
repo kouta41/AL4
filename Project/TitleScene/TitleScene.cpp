@@ -17,6 +17,7 @@ void TitleScene::Initialize(){
 
 
 	texHandle_ = TextureManager::Load("resources/white.png");
+	//SkyboxTex_ = TextureManager::Load("rostock_laage_airport_4k.dds");
 
 	matio_ = std::make_unique<Matio>();
 	matio_1 = std::make_unique<Matio>();
@@ -38,6 +39,10 @@ void TitleScene::Initialize(){
 	matio_1->Initialize(model_1, animation_1);
 	matio_1->SetTexHandle(texHandle_);
 	worldTransform1.translate = { -2.0f,0.0f,-50.0f };
+
+
+	Skybox_ = std::make_unique<Skybox>();
+	Skybox_->Initialize();
 }
 
 void TitleScene::Update() {	
@@ -97,5 +102,5 @@ void TitleScene::Draw(){
 	matio_->Draw(worldTransform,camera);
 //	model_->Draw(worldTransform, camera);
 
-
+	Skybox_->Draw(worldTransform, camera, texHandle_);
 }

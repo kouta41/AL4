@@ -1,6 +1,6 @@
 #include "Skybox.h"
 
-void Skybox::Initialize(Model* state){
+void Skybox::Initialize(){
 	resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * 8);
 
 	VBV = CreateResource::CreateVertexBufferView(resource_.vertexResource, sizeof(VertexData) * 8, 8);
@@ -64,7 +64,6 @@ void Skybox::Initialize(Model* state){
 	directionalLightData->direction = Normalize({ 0.0f, -1.0f, 0.0f });
 	directionalLightData->intensity = 1.0f;
 
-	state;
 }
 
 void Skybox::Draw(WorldTransform worldTransform, CameraRole cameraRole, uint32_t texHandle){
@@ -84,7 +83,7 @@ void Skybox::Draw(WorldTransform worldTransform, CameraRole cameraRole, uint32_t
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle));
 	// 平行光源
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(3, resource_.directionalLightResource->GetGPUVirtualAddress());
+	//DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(3, resource_.directionalLightResource->GetGPUVirtualAddress());
 	// 描画。(DrawCall/ドローコール)。
-	DirectXCommon::GetCommandList()->DrawIndexedInstanced(36, 1, 0, 0, 0);
+	DirectXCommon::GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
 }
