@@ -39,6 +39,10 @@ private:
 	std::unique_ptr<Matio> matio_1;
 	//std::unique_ptr<Model> model_1;
 
+
+	std::unique_ptr<Object3DPlacer> model__;
+
+
 	std::unique_ptr<Skybox> Skybox_;
 
 	uint32_t texHandle_ = 0;

@@ -15,45 +15,55 @@ void TitleScene::Initialize(){
 	worldTransform1.Initialize();
 	camera.Initialize();
 
-
+	ModelManager::LoadObjModel("cube.obj");
 	texHandle_ = TextureManager::Load("resources/white.png");
+
+	model__ = std::make_unique<Object3DPlacer>();
+	model__->Initialize();
+	model__->SetModel("cube.obj");
+	model__->SetTexHandle(texHandle_);
+
 	//SkyboxTex_ = TextureManager::Load("rostock_laage_airport_4k.dds");
 
-	matio_ = std::make_unique<Matio>();
-	matio_1 = std::make_unique<Matio>();
+//	matio_ = std::make_unique<Matio>();
+//	matio_1 = std::make_unique<Matio>();
 
-	model_1 = model_->LoadGLTFFile("./resources", "Walk.gltf");
-	animation_1 = matio_->LoadAnimationFile("./resources", "Walk.gltf");
+//	model_1 = model_->LoadGLTFFile("./resources", "Walk.gltf");
+//	animation_1 = matio_->LoadAnimationFile("./resources", "Wal//k.gltf");
 
-	model = model_->LoadGLTFFile("./resources","sneakWalk.gltf");
-	animation = matio_->LoadAnimationFile("./resources", "sneakWalk.gltf");
+//	model = model_->LoadGLTFFile("./resources","sneakWalk.gltf");
+//	animation = matio_->LoadAnimationFile("./resources", "sneakWalk.gltf");
 
 	//model = model_->LoadGLTFFile("./resources", "simpleSkin.gltf");
 	//animation = matio->LoadAnimationFile("./resources", "simpleSkin.gltf");
 
-	matio_->Initialize(model, animation);
-	matio_->SetTexHandle(texHandle_);
-	worldTransform.translate = { 2.0f,0.0f,-50.0f };
+	//matio_->Initialize(model, animation);
+	//matio_->SetTexHandle(texHandle_);
+	//worldTransform.translate = { 2.0f,0.0f,-50.0f };
 
 
-	matio_1->Initialize(model_1, animation_1);
-	matio_1->SetTexHandle(texHandle_);
-	worldTransform1.translate = { -2.0f,0.0f,-50.0f };
+	//matio_1->Initialize(model_1, animation_1);
+	//matio_1->SetTexHandle(texHandle_);
+	//worldTransform1.translate = { -2.0f,0.0f,-50.0f };
 
 
-	Skybox_ = std::make_unique<Skybox>();
-	Skybox_->Initialize();
+	//Skybox_ = std::make_unique<Skybox>();
+	//Skybox_->Initialize();
+
+
+
+	
 }
 
 void TitleScene::Update() {	
 	animationTime += 1.0f / 60.0f;
 	animationTime1 += 1.0f / 60.0f;
 
-	animationTime = std::fmod(animationTime, animation.duration);
+	/*animationTime = std::fmod(animationTime, animation.duration);
 	matio_->SetanimationTime(animationTime);
 
 	animationTime1 = std::fmod(animationTime1, animation_1.duration);
-	matio_1->SetanimationTime(animationTime1);
+	matio_1->SetanimationTime(animationTime1)*/;
 
 	worldTransform1.UpdateMatrix();
 	worldTransform.UpdateMatrix();
@@ -81,6 +91,7 @@ void TitleScene::Draw(){
 
 	///デバック場面
 
+	model__->Draw(worldTransform, camera);
 
 
 	ImGui::Begin("Player");
@@ -99,8 +110,8 @@ void TitleScene::Draw(){
 
 
 //	matio_1->Draw(worldTransform1, camera);
-	matio_->Draw(worldTransform,camera);
+//	matio_->Draw(worldTransform,camera);
 //	model_->Draw(worldTransform, camera);
 
-	Skybox_->Draw(worldTransform, camera, texHandle_);
+//	Skybox_->Draw(worldTransform, camera, texHandle_);
 }
