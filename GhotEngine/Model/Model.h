@@ -122,6 +122,7 @@ public:
 
 
 #pragma endregion
+public:
 
 	/// <summary>
 	/// Objファイルを読む
@@ -138,6 +139,23 @@ public:
 	/// <param name="filename"></param>
 	/// <returns></returns>
 	ModelData LoadGLTFFile(const std::string& directoryPath, const std::string& filename);
+
+
+	/// <summary>
+	/// アニメーションのObjファイルを読む
+	/// </summary>
+	/// <param name="directoryPath"></param>
+	/// <param name="filename"></param>
+	/// <returns></returns>
+	ModelData LoadAnimationObjFile(const std::string& directoryPath, const std::string& filename);
+
+	/// <summary>
+	/// アニメーションのGLTFファイルを読む
+	/// </summary>
+	/// <param name="directoryPath"></param>
+	/// <param name="filename"></param>
+	/// <returns></returns>
+	ModelData LoadAnimationGLTFFile(const std::string& directoryPath, const std::string& filename);
 
 	/// <summary>
 	/// mtlファイルを読む
