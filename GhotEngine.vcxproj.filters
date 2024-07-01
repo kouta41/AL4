@@ -112,6 +112,8 @@
     <ClCompile Include="GhotEngine\Skybox\Skybox.cpp" />
     <ClCompile Include="GhotEngine\Particle\Particle.cpp" />
     <ClCompile Include="GhotEngine\Animation\Animation.cpp" />
+    <ClCompile Include="Project\Player\PlayerCore\PlayerCore.cpp" />
+    <ClCompile Include="Project\Player\PlayerCrust\PlayerCrust.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GhotEngine\CameraRole\CameraRole.h">
@@ -316,6 +318,8 @@
     <ClInclude Include="GhotEngine\Skybox\Skybox.h" />
     <ClInclude Include="GhotEngine\Particle\Particle.h" />
     <ClInclude Include="GhotEngine\Animation\Animation.h" />
+    <ClInclude Include="Project\Player\PlayerCore\PlayerCore.h" />
+    <ClInclude Include="Project\Player\PlayerCrust\PlayerCrust.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GhotEngine">

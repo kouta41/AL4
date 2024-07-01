@@ -58,7 +58,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)GhotEngine\CameraRole;$(ProjectDir)GhotEngine\Math;$(ProjectDir)GhotEngine\Base\DX12;$(ProjectDir)GhotEngine\Base\Window;$(ProjectDir)externals\imgui;$(ProjectDir)GhotEngine\Utility;$(ProjectDir)GhotEngine\CreateResource;$(ProjectDir)GhotEngine\GraphicsPipeline;$(ProjectDir)GhotEngine\Input;$(ProjectDir)GhotEngine\ShaderFile;$(ProjectDir)GhotEngine\Transform;$(ProjectDir)externals\assimp\include;$(ProjectDir)GhotEngine\Model;$(ProjectDir)GhotEngine\Particle;$(ProjectDir)GhotEngine\Sprite;$(ProjectDir)GhotEngine\TextureManager;$(ProjectDir)GhotEngine\Utility\ImGuiManager;$(ProjectDir)Project\GameManager;$(ProjectDir)Project\GameScenen;$(ProjectDir)Project\IsScen;$(ProjectDir)Project\TitleScene;$(ProjectDir)GhotEngine;$(ProjectDir)Project\Collider;$(ProjectDir)externals\DirectXTex;$(ProjectDir)Project\Enemy;$(ProjectDir)Project\EnemyBullet;$(ProjectDir)Project\Player;$(ProjectDir)Project\PlayerBullet;$(ProjectDir)Project\RailCamera;$(ProjectDir)Project\Skydome;$(ProjectDir)Project\TimeCall;$(ProjectDir)GhotEngine\Object3D;$(ProjectDir)GhotEngin\Animation;$(ProjectDir)GhotEngin\Skybox</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)GhotEngine\CameraRole;$(ProjectDir)GhotEngine\Math;$(ProjectDir)GhotEngine\Base\DX12;$(ProjectDir)GhotEngine\Base\Window;$(ProjectDir)externals\imgui;$(ProjectDir)GhotEngine\Utility;$(ProjectDir)GhotEngine\CreateResource;$(ProjectDir)GhotEngine\GraphicsPipeline;$(ProjectDir)GhotEngine\Input;$(ProjectDir)GhotEngine\ShaderFile;$(ProjectDir)GhotEngine\Transform;$(ProjectDir)externals\assimp\include;$(ProjectDir)GhotEngine\Model;$(ProjectDir)GhotEngine\Particle;$(ProjectDir)GhotEngine\Sprite;$(ProjectDir)GhotEngine\TextureManager;$(ProjectDir)GhotEngine\Utility\ImGuiManager;$(ProjectDir)Project\GameManager;$(ProjectDir)Project\GameScenen;$(ProjectDir)Project\IsScen;$(ProjectDir)Project\TitleScene;$(ProjectDir)GhotEngine;$(ProjectDir)Project\Collider;$(ProjectDir)externals\DirectXTex;$(ProjectDir)Project\Enemy;$(ProjectDir)Project\EnemyBullet;$(ProjectDir)Project\Player;$(ProjectDir)Project\PlayerBullet;$(ProjectDir)Project\RailCamera;$(ProjectDir)Project\Skydome;$(ProjectDir)Project\TimeCall;$(ProjectDir)GhotEngine\Object3D;$(ProjectDir)GhotEngin\Animation;$(ProjectDir)GhotEngin\Skybox;$(ProjectDir)Project\Player\PlayerCrust;$(ProjectDir)Project\Player\PlayerCore</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -87,7 +87,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)GhotEngine\CameraRole;$(ProjectDir)GhotEngine\Math;$(ProjectDir)GhotEngine\Base\DX12;$(ProjectDir)GhotEngine\Base\Window;$(ProjectDir)externals\imgui;$(ProjectDir)GhotEngine\Utility;$(ProjectDir)GhotEngine\CreateResource;$(ProjectDir)GhotEngine\GraphicsPipeline;$(ProjectDir)GhotEngine\Input;$(ProjectDir)GhotEngine\ShaderFile;$(ProjectDir)GhotEngine\Transform;$(ProjectDir)externals\assimp\include;$(ProjectDir)GhotEngine\Model;$(ProjectDir)GhotEngine\Particle;$(ProjectDir)GhotEngine\Sprite;$(ProjectDir)GhotEngine\TextureManager;$(ProjectDir)GhotEngine\Utility\ImGuiManager;$(ProjectDir)Project\GameManager;$(ProjectDir)Project\GameScenen;$(ProjectDir)Project\IsScen;$(ProjectDir)Project\TitleScene;$(ProjectDir)GhotEngine;$(ProjectDir)Project\Collider;$(ProjectDir)externals\DirectXTex;$(ProjectDir)Project\Enemy;$(ProjectDir)Project\EnemyBullet;$(ProjectDir)Project\Player;$(ProjectDir)Project\PlayerBullet;$(ProjectDir)Project\RailCamera;$(ProjectDir)Project\Skydome;$(ProjectDir)Project\TimeCall;$(ProjectDir)GhotEngine\Object3D;$(ProjectDir)GhotEngin\Animation;$(ProjectDir)GhotEngin\Skybox</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)GhotEngine\CameraRole;$(ProjectDir)GhotEngine\Math;$(ProjectDir)GhotEngine\Base\DX12;$(ProjectDir)GhotEngine\Base\Window;$(ProjectDir)externals\imgui;$(ProjectDir)GhotEngine\Utility;$(ProjectDir)GhotEngine\CreateResource;$(ProjectDir)GhotEngine\GraphicsPipeline;$(ProjectDir)GhotEngine\Input;$(ProjectDir)GhotEngine\ShaderFile;$(ProjectDir)GhotEngine\Transform;$(ProjectDir)externals\assimp\include;$(ProjectDir)GhotEngine\Model;$(ProjectDir)GhotEngine\Particle;$(ProjectDir)GhotEngine\Sprite;$(ProjectDir)GhotEngine\TextureManager;$(ProjectDir)GhotEngine\Utility\ImGuiManager;$(ProjectDir)Project\GameManager;$(ProjectDir)Project\GameScenen;$(ProjectDir)Project\IsScen;$(ProjectDir)Project\TitleScene;$(ProjectDir)GhotEngine;$(ProjectDir)Project\Collider;$(ProjectDir)externals\DirectXTex;$(ProjectDir)Project\Enemy;$(ProjectDir)Project\EnemyBullet;$(ProjectDir)Project\Player;$(ProjectDir)Project\PlayerBullet;$(ProjectDir)Project\RailCamera;$(ProjectDir)Project\Skydome;$(ProjectDir)Project\TimeCall;$(ProjectDir)GhotEngine\Object3D;$(ProjectDir)GhotEngin\Animation;$(ProjectDir)GhotEngin\Skybox;$(ProjectDir)Project\Player\PlayerCrust;$(ProjectDir)Project\Player\PlayerCore</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -147,6 +147,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="GhotEngine\TextureManager\TextureManager.cpp" />
     <ClCompile Include="Project\PlayerBullet\PlayerBullet.cpp" />
     <ClCompile Include="Project\Player\Player.cpp" />
+    <ClCompile Include="Project\Player\PlayerCore\PlayerCore.cpp" />
+    <ClCompile Include="Project\Player\PlayerCrust\PlayerCrust.cpp" />
     <ClCompile Include="Project\RailCamera\RailCamera.cpp" />
     <ClCompile Include="Project\Skydome\Skydome.cpp" />
     <ClCompile Include="Project\TimeCall\TimedCall.cpp" />
@@ -285,6 +287,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="GhotEngine\TextureManager\TextureManager.h" />
     <ClInclude Include="Project\PlayerBullet\PlayerBullet.h" />
     <ClInclude Include="Project\Player\Player.h" />
+    <ClInclude Include="Project\Player\PlayerCore\PlayerCore.h" />
+    <ClInclude Include="Project\Player\PlayerCrust\PlayerCrust.h" />
     <ClInclude Include="Project\RailCamera\RailCamera.h" />
     <ClInclude Include="Project\Skydome\Skydome.h" />
     <ClInclude Include="Project\TimeCall\TimedCall.h" />

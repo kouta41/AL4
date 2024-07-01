@@ -8,10 +8,21 @@
 #include "ModelCube.h"
 #include "Input.h"
 #include "ImGuiManager/ImGuiManager.h"
-#include "PlayerBullet.h"
+#include "PlayerCrust.h"
+#include "PlayerCore.h"
 #include "Collider.h"
 #include "CollisionConfig.h"
 #include "ModelManager.h"
+
+
+#define MAX_PLAYER_CHIPS 7
+
+enum Type {
+	EMPTY,///空
+	CORE,///核
+	CRUST,///外殻
+};
+
 
 /// <summary>
 /// プレイヤー
@@ -39,58 +50,55 @@ public: // メンバ関数
 	/// </summary>
 	void Update();
 
-	/// <summary>
-	/// 攻撃
-	/// </summary>
-	void Attack();
+	
 
 	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw(CameraRole viewProjection_);
-	void DrawUI();
+
 	//衝突判定
 	void OnCollision();
 
-	//弾リストを取得
-	const std::list<PlayerBullet*>& GetPlayerBullsts()const { return bullets_; }
+	
 	//ワールド座標系を取得
 	Vector3 GetWorldPosition();
-	Vector3 GetWorldPosition3DReticle();
 
-	/// <summary>
-	/// 親となるワールドトランスフォームをセット
-	/// </summary>
-	/// <param name="parent"></param>
-	void setParent(const WorldTransform* parent);
-
-
-
-	void Reticle(const CameraRole& viewProjection_, const Vector2& pos);
+	//プレイヤーのポジションのセッティング
+	void SetplayerLocation_(std::vector<std::vector<int32_t>> playerLocation) { playerLocation_ = playerLocation; }
 
 private: // メンバ変数
 
 	WorldTransform worldTransform_;
 	CameraRole viewProjection_;
 
-	//3Dレティクル用ワールドトランスフォーム
-	WorldTransform worldTransform3DReticle_;
+	std::vector<std::vector<int32_t>> playerLocation_;
+	///核
+	std::list<PlayerCore*> cores_;
+	///外殻
+	std::list<PlayerCrust*> crusts_;
+	
 
-	//3Dモデル
-	std::unique_ptr<Object3DPlacer> model_;
-	std::unique_ptr<Object3DPlacer> modelBullet_;
+	Vector3 position_;
+	
+
+	WorldTransform worldTransform;
+
+	//速度
+	Vector3 velocity_;
 
 
+	int popplayerPosition_ = 0;
+
+	int popCountCore_ = 0;
+
+	int popCountcrust_ = 0;
 	//キーボード入力
 	Input* input_ = nullptr;
-
-	//弾
-	std::list<PlayerBullet*> bullets_;
 
 	//テクスチャハンドル
 	uint32_t texHandle_ = 0;
 	uint32_t texHandleBullet_ = 0;
 	uint32_t textureReticle_ = 0;
-	// 2Dレティクル用スプライト
-	std::unique_ptr<Sprite> sprite2DReticle_;
+	
 };

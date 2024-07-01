@@ -121,7 +121,6 @@ void GameScene::Draw() {
 	for (EnemyBullet* bullet : enemyBullets_) {
 		bullet->Draw(viewProjection_);
 	}
-	player_->DrawUI();
 
 	//if (flag == false) {
 	sprite2_->Draw();
@@ -232,8 +231,7 @@ void GameScene::AddEnemy(Enemy* enemy){
 
 
 void GameScene::CheckAllCollisions(){
-	// 自弾リストの取得
-	const std::list<PlayerBullet*>& playerBullets = player_->GetPlayerBullsts();
+	
 	// 敵弾リストの取得
 	const std::list<EnemyBullet*>& enemyBullets = enemyBullets_;
 	// 敵リストの取得
@@ -241,10 +239,7 @@ void GameScene::CheckAllCollisions(){
 	// 自機のコライダーを登録
 	collisionManager_->AddCollider(player_.get());
 	
-	// 自機の弾
-	for (PlayerBullet* bullet : playerBullets) {
-		collisionManager_->AddCollider(bullet);
-	}
+
 	// 敵機の弾
 	for (EnemyBullet* bullet : enemyBullets) {
 		collisionManager_->AddCollider(bullet);

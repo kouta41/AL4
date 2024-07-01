@@ -25,29 +25,13 @@ public:
 
 private:
 	WorldTransform worldTransform;
-	WorldTransform worldTransform1;
 
 	CameraRole camera;
-
-
-	ModelData model{};
-	Animation animation{};
-	ModelData model_1{};
-//	Animation animation_1{};
-//	Skeleton skeleton{};
-	std::unique_ptr<Motion> motion_;
-	std::unique_ptr<Model> model_;
-//	std::unique_ptr<Matio> matio_1;
-	//std::unique_ptr<Model> model_1;
 
 	//プレイヤー
 	std::unique_ptr<Player> player_{};
 
-	std::unique_ptr<Skybox> Skybox_;
 
 	uint32_t texHandle_ = 0;
-	uint32_t SkyboxTex_ = 0;
-	float animationTime = 0.0f;
-	float animationTime1 = 0.0f;
 
 };
