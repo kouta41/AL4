@@ -109,9 +109,9 @@
     <ClCompile Include="Project\EnemyBullet\EnemyBullet.cpp" />
     <ClCompile Include="Project\Enemy\Enemy.cpp" />
     <ClCompile Include="GhotEngine\Object3D\Object3D.cpp" />
-    <ClCompile Include="GhotEngine\Animation\Animation.cpp" />
     <ClCompile Include="GhotEngine\Skybox\Skybox.cpp" />
     <ClCompile Include="GhotEngine\Particle\Particle.cpp" />
+    <ClCompile Include="GhotEngine\Animation\Animation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GhotEngine\CameraRole\CameraRole.h">
@@ -313,9 +313,9 @@
     <ClInclude Include="Project\EnemyBullet\EnemyBullet.h" />
     <ClInclude Include="Project\Enemy\Enemy.h" />
     <ClInclude Include="GhotEngine\Object3D\Object3D.h" />
-    <ClInclude Include="GhotEngine\Animation\Animation.h" />
     <ClInclude Include="GhotEngine\Skybox\Skybox.h" />
     <ClInclude Include="GhotEngine\Particle\Particle.h" />
+    <ClInclude Include="GhotEngine\Animation\Animation.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GhotEngine">

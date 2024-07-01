@@ -94,7 +94,6 @@ struct SkinCluster {
 	std::pair<D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE> paletteSrvHandle;
 };
 
-
 class Model {
 public:
 
@@ -122,7 +121,6 @@ public:
 
 
 #pragma endregion
-public:
 
 	/// <summary>
 	/// Objファイルを読む
@@ -140,23 +138,6 @@ public:
 	/// <returns></returns>
 	ModelData LoadGLTFFile(const std::string& directoryPath, const std::string& filename);
 
-
-	/// <summary>
-	/// アニメーションのObjファイルを読む
-	/// </summary>
-	/// <param name="directoryPath"></param>
-	/// <param name="filename"></param>
-	/// <returns></returns>
-	ModelData LoadAnimationObjFile(const std::string& directoryPath, const std::string& filename);
-
-	/// <summary>
-	/// アニメーションのGLTFファイルを読む
-	/// </summary>
-	/// <param name="directoryPath"></param>
-	/// <param name="filename"></param>
-	/// <returns></returns>
-	ModelData LoadAnimationGLTFFile(const std::string& directoryPath, const std::string& filename);
-
 	/// <summary>
 	/// mtlファイルを読む
 	/// </summary>
@@ -172,22 +153,9 @@ public:
 	/// <returns></returns>
 	Node ReadNode(aiNode* node);
 
-	/// <summary>
-	/// SkinClusterの生成
-	/// </summary>
-	/// <param name="device_"></param>
-	/// <param name="skeleton_"></param>
-	/// <param name="modelData_"></param>
-	/// <param name="descriptorHeap_"></param>
-	/// <param name="descriptorSize_"></param>
-	/// <returns></returns>
-	SkinCluster CreateSkinCluster(const Microsoft::WRL::ComPtr<ID3D12Device>& device_, const Skeleton& skeleton_, const
-		ModelData& modelData_, const Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& descriptorHeap_, uint32_t descriptorSize_);
 private: // メンバ変数
 
 	ModelData modelData_;
 	Resource resource_ = {};
-	ID3D12Resource* indexResource_;
-	D3D12_VERTEX_BUFFER_VIEW VertexBufferView_{};
-	D3D12_INDEX_BUFFER_VIEW indexBufferViewSprite_{};
+	D3D12_VERTEX_BUFFER_VIEW objVertexBufferView_{};
 };

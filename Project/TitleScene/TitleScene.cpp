@@ -15,36 +15,21 @@ void TitleScene::Initialize(){
 	worldTransform1.Initialize();
 	camera.Initialize();
 
-	ModelManager::LoadObjModel("cube.obj");
 	texHandle_ = TextureManager::Load("resources/white.png");
+	ModelManager::LoadObjModel("cube.obj");
+	ModelManager::LoadObjModel("skydome.obj");
 
-	model__ = std::make_unique<Object3DPlacer>();
-	model__->Initialize();
-	model__->SetModel("cube.obj");
-	model__->SetTexHandle(texHandle_);
+	//自キャラの生成
+	player_ = std::make_unique<Player>();
+	// 自キャラの初期化
+	player_->Initialize();
 
 	//SkyboxTex_ = TextureManager::Load("rostock_laage_airport_4k.dds");
 
-//	matio_ = std::make_unique<Matio>();
-//	matio_1 = std::make_unique<Matio>();
-
-//	model_1 = model_->LoadGLTFFile("./resources", "Walk.gltf");
-//	animation_1 = matio_->LoadAnimationFile("./resources", "Wal//k.gltf");
-
-//	model = model_->LoadGLTFFile("./resources","sneakWalk.gltf");
-//	animation = matio_->LoadAnimationFile("./resources", "sneakWalk.gltf");
-
-	//model = model_->LoadGLTFFile("./resources", "simpleSkin.gltf");
-	//animation = matio->LoadAnimationFile("./resources", "simpleSkin.gltf");
-
-	//matio_->Initialize(model, animation);
-	//matio_->SetTexHandle(texHandle_);
-	//worldTransform.translate = { 2.0f,0.0f,-50.0f };
-
-
-	//matio_1->Initialize(model_1, animation_1);
-	//matio_1->SetTexHandle(texHandle_);
-	//worldTransform1.translate = { -2.0f,0.0f,-50.0f };
+	motion_ = std::make_unique<Motion>();
+	motion_->Initialize("sneakWalk.gltf");
+	motion_->SetTexHandle(texHandle_);
+	worldTransform.translate = { 2.0f,0.0f,-50.0f };
 
 
 	//Skybox_ = std::make_unique<Skybox>();
@@ -59,16 +44,18 @@ void TitleScene::Update() {
 	animationTime += 1.0f / 60.0f;
 	animationTime1 += 1.0f / 60.0f;
 
-	/*animationTime = std::fmod(animationTime, animation.duration);
-	matio_->SetanimationTime(animationTime);
+	animationTime = std::fmod(animationTime, animation.duration);
+	motion_->SetanimationTime(animationTime);
 
-	animationTime1 = std::fmod(animationTime1, animation_1.duration);
-	matio_1->SetanimationTime(animationTime1)*/;
+	//animationTime1 = std::fmod(animationTime1, animation_1.duration);
+	//matio_1->SetanimationTime(animationTime1)*/;
 
 	worldTransform1.UpdateMatrix();
 	worldTransform.UpdateMatrix();
 	camera.UpdateMatrix();
 
+	//プレイヤーの更新
+	player_->Update();
 
 	XINPUT_STATE joyState{};
 		if (Input::GetInstance()->GetJoystickState(joyState)) {
@@ -91,8 +78,8 @@ void TitleScene::Draw(){
 
 	///デバック場面
 
-	model__->Draw(worldTransform, camera);
-
+	//プレイヤーの描画
+	player_->Draw(camera);
 
 	ImGui::Begin("Player");
 	if (ImGui::TreeNode("worldTransform")) {
@@ -110,7 +97,7 @@ void TitleScene::Draw(){
 
 
 //	matio_1->Draw(worldTransform1, camera);
-//	matio_->Draw(worldTransform,camera);
+	motion_->Draw(worldTransform,camera);
 //	model_->Draw(worldTransform, camera);
 
 //	Skybox_->Draw(worldTransform, camera, texHandle_);

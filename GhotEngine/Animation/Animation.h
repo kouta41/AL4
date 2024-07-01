@@ -1,9 +1,26 @@
 #pragma once
 #include "Mathfunction.h"
-#include "Model.h"
 #include "WorldTransform.h"
 #include "CameraRole.h"
+#include "assimp/Importer.hpp"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
+#include "GraphicsPipeline.h"
+#include <DescriptorManager/SrvManager/SrvManager.h>
 #include <map>
+#include <optional>
+#include <span>
+#include <numbers>
+#include <map>
+#include <fstream>
+#include <sstream>
+#include "IModelState.h"
+#include "ModelSphere.h"
+#include "Vector2.h"
+#include "ImGuiManager.h"
+
+
+
 
 template<typename tValue>
 struct Keyframe {
@@ -25,28 +42,40 @@ struct AnimationCurve {
 	std::vector<Keyframe<tValue>> keyframes;
 };
 
-struct Animation{
+struct Animation {
 	float duration;//アニメーション全体の尺(単位は秒)
 	//NodeAnimationの集合。Node名でひけるようにしておく
 	std::map<std::string, NodeAnimation> nodeAnimations;
 };
 
-
-class Matio 
+class Motion
 {
 public:
-	Matio();
-	~Matio();
+	Motion();
+	~Motion();
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="directoryPath"></param>
 	/// <param name="filename"></param>
 	/// <returns></returns>
-	void Initialize(ModelData modeldata, Animation animation);
+	void Initialize(const std::string& fileName);
 
 	//アニメーションの解析
 	Animation LoadAnimationFile(const std::string& directoryPath, const std::string& filename);
+
+	/// <summary>
+	/// アニメーションのObjファイルを読む
+	ModelData LoadAnimationObjFile(const std::string& directoryPath, const std::string& filename);
+
+	/// <summary>
+	/// アニメーションのGLTFファイルを読む
+	ModelData LoadAnimationGLTFFile(const std::string& directoryPath, const std::string& filename);
+
+	/// <summary>
+	/// ノードを読む
+	Node ReadNode(aiNode* node);
+
 
 	//任意の時刻の値を取得する(Vecter3)ver
 	Vector3 CalculateValue(const std::vector<KeyframeVector3>& keyframes, float time);

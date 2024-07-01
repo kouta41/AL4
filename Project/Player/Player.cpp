@@ -126,9 +126,9 @@ void Player::Attack(){
 
 void Player::Draw(CameraRole viewProjection_){
 	model_->Draw(worldTransform_, viewProjection_);
-	for (PlayerBullet* bullet_ : bullets_) {
-		bullet_->Draw(viewProjection_);
-	}
+	//for (PlayerBullet* bullet_ : bullets_) {
+	//	bullet_->Draw(viewProjection_);
+	//}
 	ImGui::Begin("Player");
 	if (ImGui::TreeNode("worldTransform")) {
 		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, 100, 100);

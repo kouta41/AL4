@@ -5,9 +5,10 @@
 #include "TextureManager.h"
 #include "ModelManager.h"
 #include "Sprite/Sprite.h"
-#include "Animation/Animation.h"
 #include "Object3D.h"
+#include "Animation/Animation.h"
 #include "Skybox/Skybox.h"
+#include "Player.h"
 
 class TitleScene : public IScene
 {
@@ -32,16 +33,15 @@ private:
 	ModelData model{};
 	Animation animation{};
 	ModelData model_1{};
-	Animation animation_1{};
-	Skeleton skeleton{};
-	std::unique_ptr<Matio> matio_;
+//	Animation animation_1{};
+//	Skeleton skeleton{};
+	std::unique_ptr<Motion> motion_;
 	std::unique_ptr<Model> model_;
-	std::unique_ptr<Matio> matio_1;
+//	std::unique_ptr<Matio> matio_1;
 	//std::unique_ptr<Model> model_1;
 
-
-	std::unique_ptr<Object3DPlacer> model__;
-
+	//プレイヤー
+	std::unique_ptr<Player> player_{};
 
 	std::unique_ptr<Skybox> Skybox_;
 
