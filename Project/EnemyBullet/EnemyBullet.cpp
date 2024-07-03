@@ -19,7 +19,7 @@ void EnemyBullet::Initialize(uint32_t texHandle_, const Vector3& position, const
 	//Z方向に伸びた形状
 	worldTransform_.scale.x = 0.5f;
 	worldTransform_.scale.y = 0.5f;
-	worldTransform_.scale.z = 3.0f;
+	worldTransform_.scale.z = 1.5f;
 
 	worldTransform_.rotate.y = std::atan2(velocity.x, velocity.z);
 	float VelocityXZ = sqrt((velocity.x * velocity.x) + (velocity.z * velocity.z));
@@ -34,9 +34,10 @@ void EnemyBullet::Update() {
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
 	}
-
+	
 	// 玉のホーミング
-	toPlayer = Subtract(player_->GetWorldPosition(), worldTransform_.translate);
+	
+	toPlayer = Subtract(coresPos_, worldTransform_.translate);
 	toPlayer = Normalize(toPlayer);
 	velocity_ = Normalize(velocity_);
 	velocity_ = Lerp(velocity_, toPlayer, 0.1f);

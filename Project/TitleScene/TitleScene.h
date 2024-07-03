@@ -9,6 +9,9 @@
 #include "Animation/Animation.h"
 #include "Skybox/Skybox.h"
 #include "Player.h"
+#include "Enemy.h"
+#include "CollisionManager.h"
+
 
 class TitleScene : public IScene
 {
@@ -23,6 +26,10 @@ public:
 
 	void Draw()override;
 
+	/// <summary>
+	///	当たり判定
+	/// </summary>
+	void CheckAllCollisions();
 private:
 	WorldTransform worldTransform;
 
@@ -30,6 +37,12 @@ private:
 
 	//プレイヤー
 	std::unique_ptr<Player> player_{};
+	//敵
+	std::unique_ptr<Enemy> enemy_{};
+
+
+	//CorisionManager
+	CollisionManager* collisionManager_;
 
 
 	uint32_t texHandle_ = 0;

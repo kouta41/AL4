@@ -23,6 +23,15 @@ void TitleScene::Initialize(){
 	// 自キャラの初期化
 	player_->Initialize();
 	
+	
+	//敵キャラの生成
+	enemy_ = std::make_unique<Enemy>();
+	// 敵キャラの初期化
+	enemy_->Initialize();
+
+	//当たり判定の初期化
+	collisionManager_ = new CollisionManager();
+
 }
 
 void TitleScene::Update() {	
@@ -32,6 +41,13 @@ void TitleScene::Update() {
 	//プレイヤーの更新
 	player_->Update();
 
+	//敵の更新
+	enemy_->Update();
+	//enemy_->SetPlayer(player_.get());
+	enemy_->SetPlayerCorepos(player_->GetPlayerCoreWorldPosition());
+
+	//当たり判定
+	CheckAllCollisions();
 	XINPUT_STATE joyState{};
 		if (Input::GetInstance()->GetJoystickState(joyState)) {
 			if ((joyState.Gamepad.sThumbLX < CUSTOM_DEADZONE && joyState.Gamepad.sThumbLX > -CUSTOM_DEADZONE) && (joyState.Gamepad.sThumbLY < CUSTOM_DEADZONE && joyState.Gamepad.sThumbLY > -CUSTOM_DEADZONE)) {
@@ -56,5 +72,27 @@ void TitleScene::Draw(){
 	//プレイヤーの描画
 	player_->Draw(camera);
 
+	enemy_->Draw(camera);
+}
+
+void TitleScene::CheckAllCollisions(){
+	// 敵弾リストの取得
+	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetEnemyBullsts();
+	for (EnemyBullet* bullet : enemyBullets) {
+		collisionManager_->AddCollider(bullet);
+	}
+	// プレイヤーの外殻リストの取得
+	const std::list<PlayerCore*>& playerCores = player_->GetPlayerCores();
+	for (PlayerCore* cores : playerCores) {
+		collisionManager_->AddCollider(cores);
+	}
+	// 敵弾リストの取得
+	const std::list<PlayerCrust*>& playerCrusts = player_->GetPlayerCrusts();
+	for (PlayerCrust* crusts : playerCrusts) {
+		collisionManager_->AddCollider(crusts);
+	}
+
+	collisionManager_->CheckAllCollisions();
+	collisionManager_->ClearCollider();
 
 }

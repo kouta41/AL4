@@ -10,6 +10,7 @@
 #include "Player.h"
 
 class Player;
+class PlayerCore;
 
 class EnemyBullet :public Collider {
 
@@ -37,6 +38,8 @@ public:
 	//自機座標
 	void SetPlayer(Player* player) { player_ = player; }
 
+	void SetPlayerCorepos(Vector3 cores) { coresPos_ = cores; }
+
 	//ワールド座標系を取得
 	Vector3 GetWorldPosition();
 private:
@@ -51,10 +54,17 @@ private:
 	//速度
 	Vector3 velocity_;
 	Vector3 toPlayer;
+
+
+	//自機
 	Player* player_;
 
+	///核
+	Vector3 coresPos_;
+	std::list<PlayerCore*> cores_;
+	
 	//寿命
-	static const int32_t kLifeTime = 150;
+	static const int32_t kLifeTime = 300;
 	//デスタイマー
 	int32_t deathTimer_ = kLifeTime;
 	//デスフラグ

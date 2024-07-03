@@ -16,17 +16,18 @@ void Player::Initialize() {
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
 
-	texHandle_ = TextureManager::Load("resources/uvChecker.png");
+	coreTexHandle_ = TextureManager::Load("resources/cube.jpg");
+	crustTexHandle_= TextureManager::Load("resources/uvChecker.png");
 
 
 	// 7×7のプレイヤーのデータ
 	playerLocation_ =
 	{
 		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,2,2,0,0},
-		{0,0,2,1,2,0,0},
-		{0,0,2,2,0,0,0},
+		{0,2,1,1,1,2,0},
+		{0,2,2,2,2,2,0},
+		{0,2,2,1,2,2,0},
+		{0,2,2,2,2,2,0},
 		{0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0},
 	};
@@ -36,16 +37,16 @@ void Player::Initialize() {
 			if (playerLocation_[i][j] == CORE) {
 				PlayerCore* newCore = new PlayerCore();
 				// 初期化
-				newCore->Initialize(texHandle_);
+				newCore->Initialize(coreTexHandle_);
 				position_ = { worldTransform_.translate.x,worldTransform_.translate.y,worldTransform_.translate.z };
-				newCore->SetWorldPosition({ worldTransform_.translate.x + (float(j * 2.1-6)), worldTransform_.translate.y - (float(i * 2.1-6)), worldTransform_.translate.z });
+				newCore->SetWorldPosition({ worldTransform_.translate.x + (float(j * 2.1 - MAX_PLAYER_CHIPS - 1)), worldTransform_.translate.y - (float(i * 2.1 - MAX_PLAYER_CHIPS - 1)), worldTransform_.translate.z });
 				cores_.push_back(newCore);
 			}
 			if (playerLocation_[i][j] == CRUST) {
 				PlayerCrust* newCrust = new PlayerCrust();
 				//初期化
-				newCrust->Initialize(texHandle_);
-				newCrust->SetWorldPosition({ worldTransform_.translate.x + (float(j * 2.1-6)), worldTransform_.translate.y - (float(i * 2.1-6)), worldTransform_.translate.z });
+				newCrust->Initialize(crustTexHandle_);
+				newCrust->SetWorldPosition({ worldTransform_.translate.x + (float(j * 2.1 - MAX_PLAYER_CHIPS - 1)), worldTransform_.translate.y - (float(i * 2.1 - MAX_PLAYER_CHIPS - 1)), worldTransform_.translate.z });
 				crusts_.push_back(newCrust);
 			}
 		}
@@ -90,6 +91,33 @@ void Player::Update(){
 		crust_->Update(velocity_);
 	}
 
+
+	/*
+		//デスフラグの立った弾を削除
+	bullets_.remove_if([](EnemyBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+		});
+		*/
+	//デスラグが立つと削除
+	cores_.remove_if([](PlayerCore* core) {
+		if (core->IsDead()) {
+			delete core;
+			return true;
+		}
+		return false;
+		});
+	crusts_.remove_if([](PlayerCrust* crust) {
+		if (crust->IsDead()) {
+			delete crust;
+			return true;
+		}
+		return false;
+		});
+
 }
 
 
@@ -129,6 +157,16 @@ Vector3 Player::GetWorldPosition(){
 	worldPos.y = worldTransform_.matWorld.m[3][1];
 	worldPos.z = worldTransform_.matWorld.m[3][2];
 
+	return worldPos;
+}
+
+Vector3 Player::GetPlayerCoreWorldPosition()
+{
+	Vector3 worldPos;
+
+	for (PlayerCore* core_ : cores_) {
+		worldPos = core_->GetWorldPosition();
+	}
 	return worldPos;
 }
 

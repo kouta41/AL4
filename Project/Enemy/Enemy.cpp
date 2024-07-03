@@ -15,46 +15,25 @@ void Enemy::Initialize(){
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
 
-	texHandle_ = TextureManager::Load("resources/uvChecker.png");
+	texHandle_ = TextureManager::Load("resources/enemy.png");
 	texHandleBullet_ = TextureManager::Load("resources/black.png");
 
 	model_ = std::make_unique<Object3DPlacer>();
 	model_->Initialize();
 	model_->SetModel("cube.obj");
 	model_->SetTexHandle(texHandle_);
-
-
-	worldTransform_.translate = { 25.0f,3.0f,100.0f };
-
+ 
 	//衝突属性を設定
 	SetcollisiionAttribute_(kCollitionAttributeEnemy);
 	//衝突対象を自分以外の属性以外に設定
 	SetCollisionMask_(~kCollitionAttributeEnemy);
 
-	state_ = new EnemyStateApproach();
-
-	//最初の状態
-	state_ = new EnemyStateApproach();
-
-	ApproachInitialize();
-}
-;
+	worldTransform_.translate = { 0,-10,0 };
+};
 
 void Enemy::Update(){
 	worldTransform_.UpdateMatrix();
 	viewProjection_.UpdateMatrix();
-	state_->Update(this);
-	for (TimedCall* timedCall_ : timedCalls_) {
-		timedCall_->Update();
-	}
-	timedCalls_.remove_if([](TimedCall* timedCall_) {
-		if (timedCall_->IsConpleted()) {
-			delete timedCall_;
-			return true;
-		}
-		return false;
-		});
-
 
 	//デスフラグの立った弾を削除
 	bullets_.remove_if([](EnemyBullet* bullet) {
@@ -65,43 +44,66 @@ void Enemy::Update(){
 		return false;
 		});
 
+	if (input_->PressedKey(DIK_SPACE)) {
+		Fire();
+	}
+
+
 	for (EnemyBullet* bullet_ : bullets_) {
 		bullet_->Update();
 	}
 }
 
 void Enemy::Fire(){
-		assert(player_);
-		const float kBulletSpeed = 1.0f;
-		Vector3 playerPosition = player_->GetWorldPosition();
-		Vector3 enemyPosition = this->GetWorldPosition();
-		Vector3 Bulletvelocity = Subtract(playerPosition, enemyPosition);
-		Bulletvelocity = Normalize(Bulletvelocity);
-		Bulletvelocity.x *= kBulletSpeed;
-		Bulletvelocity.y *= kBulletSpeed;
-		Bulletvelocity.z *= kBulletSpeed;
-		//弾の生成＆初期化
-		EnemyBullet* newBullet = new EnemyBullet();
+	assert(player_);
+	const float kBulletSpeed = 1.0f;
+	Vector3 playerPosition = coresPos_;
+	Vector3 enemyPosition = this->GetWorldPosition();
+	Vector3 Bulletvelocity = Subtract(playerPosition, enemyPosition);
+	Bulletvelocity = Normalize(Bulletvelocity);
+	Bulletvelocity.x *= kBulletSpeed;
+	Bulletvelocity.y *= kBulletSpeed;
+	Bulletvelocity.z *= kBulletSpeed;
+	//弾の生成＆初期化
+	EnemyBullet* newBullet = new EnemyBullet();
 
-		newBullet->Initialize(texHandleBullet_, worldTransform_.translate, Bulletvelocity);
-		newBullet->SetPlayer(player_);
-		bullets_.push_back(newBullet);
+	newBullet->Initialize(texHandleBullet_, worldTransform_.translate, Bulletvelocity);
+	newBullet->SetPlayerCorepos(coresPos_);
+	bullets_.push_back(newBullet);
 }
 
+
+
 void Enemy::Draw(CameraRole viewProjection_){
-	model_->Draw(worldTransform_, viewProjection_);
 	// 弾描画
 	for (EnemyBullet* bullet : bullets_) {
 		bullet->Draw(viewProjection_);
 	}
+
+	model_->Draw(worldTransform_, viewProjection_);
+
+	ImGui::Begin("Enemy");
+	if (ImGui::TreeNode("worldTransform")) {
+		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, 100, 100);
+		ImGui::DragFloat3("rotate", &worldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat3("scale", &worldTransform_.scale.x, 0.01f, 0, 10);
+		ImGui::TreePop();
+	}
+	if (ImGui::TreeNode("pos")) {
+		ImGui::DragFloat3("translate", &kFireInterval.x, 0.1f, 100, 100);
+		
+		ImGui::TreePop();
+	}
+	ImGui::End();
 }
 
-void Enemy::Move(){
-	worldTransform_.translate = Add(worldTransform_.translate, velocity_);
-}
 
 void Enemy::OnCollision(){
 	isDead_ = true;
+}
+
+void Enemy::CheckAllCollisions(){
+
 }
 
 
@@ -111,25 +113,6 @@ void Enemy::SetVelocity(float x, float y, float z) {
 	velocity_.z = z;
 }
 
-void Enemy::ApproachUpdate()
-{
-	Fire();
-	timedCalls_.push_back(new TimedCall(std::bind(&Enemy::ApproachUpdate, this), 60));
-}
-
-void Enemy::ApproachInitialize(){
-	timedCalls_.push_back(new TimedCall(std::bind(&Enemy::ApproachUpdate, this), 60));
-}
-
-void Enemy::LeaveInitialize(){
-	timedCalls_.remove_if([](TimedCall* timedCall_) {
-		if (timedCall_ != nullptr) {
-			delete timedCall_;
-			return true;
-		}
-		return false;
-		});
-}
 
 Vector3 Enemy::GetWorldPosition()
 {
@@ -140,29 +123,4 @@ Vector3 Enemy::GetWorldPosition()
 	worldPos.z = worldTransform_.matWorld.m[3][2];
 
 	return worldPos;
-}
-
-void Enemy::ChangeState(BaseEnemyState* newState) {
-	delete state_;
-	state_ = newState;
-}
-
-
-void EnemyStateApproach::Update(Enemy* pEnemy) {
-	pEnemy->SetVelocity(0.0f, 0.f, -0.2f);
-	//既定の位置に達したら離脱
-	if (pEnemy->GetWorldTransform().z < 0.0f) {
-		pEnemy->LeaveInitialize();
-		pEnemy->ChangeState(new EnemyStateLeave());
-	}
-	//移動
-	pEnemy->Move();
-}
-
-
-void EnemyStateLeave::Update(Enemy* pEnemy) {
-
-	pEnemy->SetVelocity(-0.2f, 0.2f, 0.0f);
-	//移動
-	pEnemy->Move();
 }

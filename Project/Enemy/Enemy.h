@@ -12,31 +12,13 @@
 #include <cassert>
 #include "Collider.h"
 #include "Object3D.h"
+#include "CollisionManager.h"
 
-enum class Phase {
-	Approach,	//接近
-	Leave,		//離脱
-};
 
 class Player;
 class GameScene;
 class Enemy;
-
-class BaseEnemyState {
-public:
-	virtual void Update(Enemy* pEnemy) = 0;
-};
-
-class EnemyStateApproach :public BaseEnemyState {
-public:
-	void Update(Enemy* pEnemy);
-};
-
-class EnemyStateLeave :public BaseEnemyState {
-public:
-	void Update(Enemy* pEnemy);
-};
-
+class PlayerCore;
 
 class Enemy:public Collider {
 
@@ -63,7 +45,7 @@ public: // メンバ関数
 	void Update();
 
 	/// <summary>
-	/// 攻撃
+	/// 弾の発射
 	/// </summary>
 	void Fire();
 
@@ -72,10 +54,12 @@ public: // メンバ関数
 	/// </summary>
 	void Draw(CameraRole viewProjection_);
 
-	void Move();
 
 	//衝突判定
 	void OnCollision();
+
+	//当たり判定
+	void CheckAllCollisions();
 
 	//弾リストを取得
 	const std::list<EnemyBullet*>& GetEnemyBullsts()const { return bullets_; }
@@ -83,22 +67,15 @@ public: // メンバ関数
 	//ワールド座標系を取得
 	Vector3 GetWorldPosition();
 
-	void ChangeState(BaseEnemyState* newState);
 
 	void SetVelocity(float x, float y, float z);
 
-	void SetPlayer(Player* player) { player_ = player; }
-
-	//フェーズごとのアップデート
-	void ApproachUpdate();
-	//フェーズごとの初期化
-	void ApproachInitialize();
-	void LeaveInitialize();
-
-	Vector3 GetWorldTransform() { return worldTransform_.translate; }
-	Vector3 GetVelocity() { return velocity_; }
 
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
+
+	void SetPlayer(Player* player) { player_ = player; }
+
+	void SetPlayerCorepos(Vector3 cores) { coresPos_ = cores; }
 
 private: // メンバ変数
 
@@ -116,25 +93,24 @@ private: // メンバ変数
 	std::list<EnemyBullet*> bullets_;
 
 	//移動速度
-	Vector3 velocity_;
-
-	//フェーズ
-	Phase phase_ = Phase::Approach;
+	Vector3 velocity_ = { 1,1,1 };
 	 
 	//テクスチャハンドル
 	uint32_t texHandle_ = 0;
 	uint32_t texHandleBullet_ = 0;
 
-	//ステート
-	BaseEnemyState* state_;
 
 	std::list<TimedCall*> timedCalls_;
 
 	//発射間隔
-	int kFireInterval = 60;
+	Vector3 kFireInterval = { 0,0,0 };
 
 	//自機
 	Player* player_;
+
+	///核
+	Vector3 coresPos_;
+	std::list<PlayerCore*> cores_;
 
 	//ゲームシーン
 	GameScene* gameScene_ = nullptr;

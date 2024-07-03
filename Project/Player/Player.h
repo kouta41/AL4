@@ -67,6 +67,14 @@ public: // メンバ関数
 	//プレイヤーのポジションのセッティング
 	void SetplayerLocation_(std::vector<std::vector<int32_t>> playerLocation) { playerLocation_ = playerLocation; }
 
+	//ワールド座標系を取得
+	Vector3 GetPlayerCoreWorldPosition();
+
+	//核リストを取得
+	const std::list<PlayerCore*>& GetPlayerCores()const { return cores_; }
+	//外殻リストを取得
+	const std::list<PlayerCrust*>& GetPlayerCrusts()const { return crusts_; }
+
 private: // メンバ変数
 
 	WorldTransform worldTransform_;
@@ -97,8 +105,8 @@ private: // メンバ変数
 	Input* input_ = nullptr;
 
 	//テクスチャハンドル
-	uint32_t texHandle_ = 0;
-	uint32_t texHandleBullet_ = 0;
-	uint32_t textureReticle_ = 0;
+	uint32_t coreTexHandle_ = 0;
+	uint32_t crustTexHandle_ = 0;
+
 	
 };
