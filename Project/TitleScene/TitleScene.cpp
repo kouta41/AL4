@@ -44,7 +44,7 @@ void TitleScene::Update() {
 	animationTime += 1.0f / 60.0f;
 	animationTime1 += 1.0f / 60.0f;
 
-	animationTime = std::fmod(animationTime, animation.duration);
+	animationTime = std::fmod(animationTime, motion_->GetAnimation().duration);
 	motion_->SetanimationTime(animationTime);
 
 	//animationTime1 = std::fmod(animationTime1, animation_1.duration);

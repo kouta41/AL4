@@ -138,6 +138,13 @@ public:
 
 #pragma endregion
 
+
+#pragma region Getter
+
+	Animation GetAnimation() { return animation_; }
+
+#pragma endregion
+
 private:
 	Animation animation_;//アニメーション
 	ModelData modelData_;
