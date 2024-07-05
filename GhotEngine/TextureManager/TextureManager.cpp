@@ -83,6 +83,7 @@ ID3D12Resource* TextureManager::CreateTextureResource(const DirectX::TexMetadata
 	heapProperties.Type = D3D12_HEAP_TYPE_CUSTOM; // 細かい設定を行う
 	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // WriteBackポリシーでCPUアクセス可能
 	heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
+
 	// Resourceの作成
 	ID3D12Resource* resource = nullptr;
 	HRESULT hr = device->CreateCommittedResource(
@@ -97,6 +98,8 @@ ID3D12Resource* TextureManager::CreateTextureResource(const DirectX::TexMetadata
 	return resource;
 
 }
+
+
 
 void TextureManager::UploadTextureData(Microsoft::WRL::ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages) {
 	// Meta情報を取得

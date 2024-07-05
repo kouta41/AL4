@@ -38,6 +38,9 @@ public: // メンバ関数
 	// ウィンドウクラスの取得
 	WNDCLASS GetWc() const { return wc; }
 
+	int32_t GetkWindowWidth()const { return kWindowWidth; } // 横
+	int32_t GetkWindowHeight()const { return kWindowHeight; }
+
 private: // メンバ関数
 	WinApp() = default;
 	~WinApp() = default;

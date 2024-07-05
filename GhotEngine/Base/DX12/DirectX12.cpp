@@ -302,6 +302,12 @@ void DirectXCommon::CreateRenderTargetView() {
 	rtvHandles[1] = DescriptorManager::GetInstance()->GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetRTV(), DescriptorManager::GetInstance()->GetDescSize().RTV, 1);
 	// 2つ目を作る
 	device_->CreateRenderTargetView(swapChainResources[1].Get(), &rtvDesc, rtvHandles[1]);
+
+	const Vector4 kRenderTargetClearValue{ 1.0f,0.0f,0.0f,1.0f }; // 一旦わかりやすいように赤
+	auto renderTextureResource_ = CreateRenderTextureResource(
+		WinApp::kWindowWidth, WinApp::kWindowHeight,
+		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, kRenderTargetClearValue);
+	device_->CreateRenderTargetView(renderTextureResource_.Get(), &rtvDesc, rtvHandles[2]);
 }
 
 
@@ -367,6 +373,52 @@ void DirectXCommon::CreateDepthBuffer()
 	device_->CreateDepthStencilView(depthBuffer_.Get(), &dsvDesc, DescriptorManager::GetInstance()->GetDSV()->GetCPUDescriptorHandleForHeapStart());
 
 
+}
+
+void DirectXCommon::tempRender(){
+
+}
+
+Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::CreateRenderTextureResource(int32_t width, int32_t height, DXGI_FORMAT format, const Vector4& clearColor){
+
+	Microsoft::WRL::ComPtr<ID3D12Device> device = DirectXCommon::GetInstance()->GetDevice();
+
+	// 生成するResourceの設定
+	D3D12_RESOURCE_DESC resourceDesc{};
+	resourceDesc.Width = width; //Textureの幅
+	resourceDesc.Height = height; // Textureの高さ
+	resourceDesc.MipLevels = 1; // mipmapの数
+	resourceDesc.DepthOrArraySize = 1; // 奥行き or 配列Textireの配列数
+	resourceDesc.Format = format; // DepthStencilとして利用可能なフォーマット
+	resourceDesc.SampleDesc.Count = 1; // サンプリングカウント。1固定。
+	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D; // 2次元
+	resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET; // DepthStencilとして使う通知
+
+	// 利用するHeapの設定
+	D3D12_HEAP_PROPERTIES heapProperties{};
+	heapProperties.Type = D3D12_HEAP_TYPE_CUSTOM; // 細かい設定を行う
+	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // WriteBackポリシーでCPUアクセス可能
+	heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
+
+	// 深度値のクリア設定
+	D3D12_CLEAR_VALUE clearValue;
+	clearValue.Format = format; // フォーマットResourceと合わせる
+	clearValue.Color[0] = clearColor.x;
+	clearValue.Color[1] = clearColor.y;
+	clearValue.Color[2] = clearColor.z;
+	clearValue.Color[3] = clearColor.w;
+
+	Microsoft::WRL::ComPtr <ID3D12Resource> resource = nullptr;
+	HRESULT hr = device->CreateCommittedResource(
+		&heapProperties, //Heapの設定
+		D3D12_HEAP_FLAG_NONE, // Heapの特殊な設定。特になし。
+		&resourceDesc, // Resourceの設定
+		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, // 深度地を書き込む状態にしておく
+		&clearValue, // Clear最適値
+		IID_PPV_ARGS(&resource));
+	assert(SUCCEEDED(hr));
+
+	return resource;
 }
 
 void DirectXCommon::InitializeFixFPS()

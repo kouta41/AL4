@@ -13,6 +13,7 @@
 #pragma comment(lib, "dxguid.lib")
 #include "Window.h"
 #include "DescriptorManager/DescriptorManager.h"
+#include "Vector4.h"
 
 class DirectXCommon {
 public: // メンバ関数
@@ -68,7 +69,11 @@ public: // メンバ関数
 	/// 深度バッファ生成
 	void CreateDepthBuffer();
 
+	//RenderTexture
+	void tempRender();
 
+
+	Microsoft::WRL::ComPtr<ID3D12Resource> CreateRenderTextureResource( int32_t width, int32_t height, DXGI_FORMAT format, const Vector4& clearColor);
 
 private: // メンバ関数
 	DirectXCommon() = default;
