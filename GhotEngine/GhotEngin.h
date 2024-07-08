@@ -8,6 +8,7 @@
 #include "TextureManager.h"
 #include "Input.h"
 #include "GameManager.h"
+#include "PostProcess/PostProcess.h"
 
 class Engine {
 public:
@@ -31,4 +32,5 @@ private:
 	DirectXCommon* dxCommon_;
 	ImGuiManager* imguiManager_;
 	std::unique_ptr<GameManager> gameManager_;
+	PostProcess* post_;
 };

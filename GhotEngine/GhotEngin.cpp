@@ -23,6 +23,7 @@ void Engine::Initialize() {
 	//ゲームシーンの初期化
 	gameManager_ = std::make_unique<GameManager>();
 	
+	post_ = new PostProcess();
 
 	// ImGuiの初期化
 	imguiManager_ = ImGuiManager::GetInstance();
@@ -60,6 +61,9 @@ void Engine::Run() {
 		imguiManager_->End();
 
 		imguiManager_->Draw();
+
+		post_->Draw();
+
 		// 描画後処理
 		dxCommon_->PostDraw();
 

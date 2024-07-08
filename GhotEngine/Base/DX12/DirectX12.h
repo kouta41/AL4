@@ -60,6 +60,7 @@ public: // メンバ関数
 	// RTV
 	void CreateRenderTargetView();
 
+	void CrateRenderTexture();
 	// fence作成
 	void CreateFence();
 
@@ -96,6 +97,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue_;
 	Microsoft::WRL::ComPtr<IDXGISwapChain4> swapChain_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> swapChainResources[2];
+	Microsoft::WRL::ComPtr < ID3D12Resource> renderTextureResource_ = nullptr;
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
 	Microsoft::WRL::ComPtr<ID3D12Resource> depthBuffer_;
 	Microsoft::WRL::ComPtr<ID3D12Fence> fence_;
@@ -103,7 +105,7 @@ private:
 	HANDLE fenceEvent_;
 	D3D12_RESOURCE_BARRIER barrier{};
 	HRESULT hr_;
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles[2];
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles[3];
 	// ビューポート
 	D3D12_VIEWPORT viewport{};
 	// シザー矩形
@@ -111,5 +113,6 @@ private:
 	UINT backBufferIndex_;
 	// 記録時間	(FPS固定用)
 	std::chrono::steady_clock::time_point reference_;
+	uint32_t renderindex_;
 
 };

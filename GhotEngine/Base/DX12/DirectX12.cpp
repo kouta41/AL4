@@ -1,6 +1,7 @@
 #include "DirectX12.h"
 #include "StringUtility.h"
 #include <thread>
+#include <DescriptorManager/SrvManager/SrvManager.h>
 
 DirectXCommon* DirectXCommon::GetInstance() {
 	static DirectXCommon instance;
@@ -28,6 +29,9 @@ void DirectXCommon::Initialize(WinApp* winApp) {
 	DescriptorManager::GetInstance()->Initialize();
 	// RTV
 	CreateRenderTargetView();
+
+	//
+
 	// Fence
 	CreateFence();
 	// depth
@@ -303,11 +307,15 @@ void DirectXCommon::CreateRenderTargetView() {
 	// 2つ目を作る
 	device_->CreateRenderTargetView(swapChainResources[1].Get(), &rtvDesc, rtvHandles[1]);
 
+	rtvHandles[2] = DescriptorManager::GetInstance()->GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetRTV(), DescriptorManager::GetInstance()->GetDescSize().RTV, 2);
 	const Vector4 kRenderTargetClearValue{ 1.0f,0.0f,0.0f,1.0f }; // 一旦わかりやすいように赤
-	auto renderTextureResource_ = CreateRenderTextureResource(
+	renderTextureResource_ = CreateRenderTextureResource(
 		WinApp::kWindowWidth, WinApp::kWindowHeight,
 		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, kRenderTargetClearValue);
 	device_->CreateRenderTargetView(renderTextureResource_.Get(), &rtvDesc, rtvHandles[2]);
+}
+
+void DirectXCommon::CrateRenderTexture(){
 }
 
 
