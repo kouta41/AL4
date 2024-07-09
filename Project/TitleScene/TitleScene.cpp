@@ -15,7 +15,7 @@ void TitleScene::Initialize(){
 	camera.Initialize();
 
 	texHandle_ = TextureManager::Load("resources/white.png");
-	SkyboxTex_ = TextureManager::Load("rostock_laage_airport_4k.dds");
+	SkyboxTex_ = TextureManager::Load("resources/rostock_laage_airport_4k.dds");
 
 	ModelManager::LoadObjModel("cube.obj");
 	ModelManager::LoadObjModel("skydome.obj");

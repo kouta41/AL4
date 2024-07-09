@@ -41,7 +41,7 @@ private:
 
 	static ID3D12Resource* CreateTextureResource(const DirectX::TexMetadata& metadata);
 
-	static Microsoft::WRL::ComPtr<ID3D12Resource> UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
+	static Microsoft::WRL::ComPtr<ID3D12Resource> UploadTextureData(Microsoft::WRL::ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages);
 
 
 private: // メンバ変数
