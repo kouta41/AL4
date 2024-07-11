@@ -26,10 +26,7 @@ public: // メンバ関数
 	// 描画コマンドリストの取得
 	static ID3D12GraphicsCommandList* GetCommandList() { return commandList_.Get(); }
 
-	static Microsoft::WRL::ComPtr<ID3D12CommandQueue> GetcommandQueue() { return commandQueue_; }
-
-	static Microsoft::WRL::ComPtr<ID3D12CommandAllocator> GetcommandAllocator() {return commandAllocator_;}
-
+	
 	DXGI_SWAP_CHAIN_DESC1 GetBufferCount() { return swapChainDesc; }
 
 	/// <summary>
@@ -91,8 +88,8 @@ private:
 	Microsoft::WRL::ComPtr<IDXGIFactory7> dxgiFactory_;
 	Microsoft::WRL::ComPtr<ID3D12Device> device_;
 	static Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList_;
-	static Microsoft::WRL::ComPtr<ID3D12CommandAllocator> commandAllocator_;
-	static Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue_;
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> commandAllocator_;
+	Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue_;
 	Microsoft::WRL::ComPtr<IDXGISwapChain4> swapChain_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> swapChainResources[2];
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};

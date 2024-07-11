@@ -42,7 +42,6 @@ DirectX::ScratchImage TextureManager::LoadTexture(const std::string& filePath) {
 	DirectX::ScratchImage mipImages{};
 	if (DirectX::IsCompressed(image.GetMetadata().format)) {
 		mipImages = std::move(image);
-		assert(SUCCEEDED(hr));
 	}
 	else {
 		hr = DirectX::GenerateMipMaps(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DirectX::TEX_FILTER_SRGB, 4, mipImages);
@@ -60,15 +59,11 @@ void TextureManager::LoadTexture(const std::string& filePath, uint32_t index)
 
 	// SRV作成
 	TextureManager::GetInstance()->texResource[index] = CreateTextureResource(TextureManager::GetInstance()->metadata_[index]);
-	Microsoft::WRL::ComPtr<ID3D12Resource> intermediateResource = UploadTextureData(TextureManager::GetInstance()->texResource[index].Get(), mipImages);
-	SrvManager::GetInstance()->CreateTextureSrv(TextureManager::GetInstance()->texResource[index], TextureManager::GetInstance()->metadata_[index], index);
+	TextureManager::GetInstance()->intermediateResource[index] = UploadTextureData(TextureManager::GetInstance()->texResource[index].Get(), mipImages);
+	SrvManager::GetInstance()->CreateTextureSrv(TextureManager::GetInstance()->intermediateResource[index].Get(), TextureManager::GetInstance()->metadata_[index], index);
 
-	Microsoft::WRL::ComPtr<ID3D12CommandList> commandLists[] = { DirectXCommon::GetCommandList() };
-	DirectXCommon::GetcommandQueue()->ExecuteCommandLists(1, commandLists->GetAddressOf());
-
-	DirectXCommon::GetcommandAllocator()->Reset();
 	DirectXCommon::GetCommandList()->Close();
-	intermediateResource->Release();
+	TextureManager::GetInstance()->intermediateResource[index]->Release();
 }
 
 
@@ -88,8 +83,8 @@ ID3D12Resource* TextureManager::CreateTextureResource(const DirectX::TexMetadata
 	// 利用するHeapの設定。非常に特殊な運用。02_04exで一般的なケース版がある
 	D3D12_HEAP_PROPERTIES heapProperties{};
 	heapProperties.Type = D3D12_HEAP_TYPE_DEFAULT; // 細かい設定を行う
-	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // WriteBackポリシーでCPUアクセス可能
-	heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
+	//heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // WriteBackポリシーでCPUアクセス可能
+	//heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
 
 	// Resourceの作成
 	ID3D12Resource* resource = nullptr;
