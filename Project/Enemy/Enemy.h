@@ -14,6 +14,10 @@
 #include "Object3D.h"
 #include "CollisionManager.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 
 class Player;
 class GameScene;
@@ -117,5 +121,7 @@ private: // メンバ変数
 
 	//デスフラグ
 	bool isDead_ = false;
+
+	Vector3 popPosisin;
 };
 

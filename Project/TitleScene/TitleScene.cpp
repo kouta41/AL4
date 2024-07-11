@@ -13,6 +13,7 @@ TitleScene::~TitleScene() {
 void TitleScene::Initialize(){
 	worldTransform.Initialize();
 	camera.Initialize();
+	camera.translate = { -2,0,-110 };
 
 	texHandle_ = TextureManager::Load("resources/white.png");
 	ModelManager::LoadObjModel("cube.obj");
@@ -32,6 +33,8 @@ void TitleScene::Initialize(){
 	//当たり判定の初期化
 	collisionManager_ = new CollisionManager();
 
+	// シングルトンインスタンスを取得する
+	input_ = Input::GetInstance();
 }
 
 void TitleScene::Update() {	
@@ -63,12 +66,19 @@ void TitleScene::Update() {
 
 		}
 
+		
 }
 
 void TitleScene::Draw(){
 
 	///デバック場面
-
+	ImGui::Begin("Camera");
+	if (ImGui::TreeNode("worldTransform")) {
+		ImGui::DragFloat3("translate", &camera.translate.x, 0.1f, 100, 100);
+		
+		ImGui::TreePop();
+	}
+	ImGui::End();
 	//プレイヤーの描画
 	player_->Draw(camera);
 

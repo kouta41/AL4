@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "CollisionManager.h"
+#include "Input.h"
 
 
 class TitleScene : public IScene
@@ -44,6 +45,8 @@ private:
 	//CorisionManager
 	CollisionManager* collisionManager_;
 
+	//キーボード入力
+	Input* input_ = nullptr;
 
 	uint32_t texHandle_ = 0;
 

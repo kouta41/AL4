@@ -28,7 +28,11 @@ void Enemy::Initialize(){
 	//衝突対象を自分以外の属性以外に設定
 	SetCollisionMask_(~kCollitionAttributeEnemy);
 
-	worldTransform_.translate = { 0,-10,0 };
+	worldTransform_.translate = { 0,0,0 };
+	// 乱数生成器を初期化
+	popPosisin = { float(rand() % 10),float(rand() % 10 - 11),0 };
+	worldTransform_.translate = popPosisin;
+	srand(int(time(0)));
 };
 
 void Enemy::Update(){
@@ -43,19 +47,58 @@ void Enemy::Update(){
 		}
 		return false;
 		});
-
+	srand((unsigned int)time(NULL)); 	
 	if (input_->PressedKey(DIK_SPACE)) {
+		// 乱数生成器を初期化
+		popPosisin = { float(rand() % 45 - 22),float(rand() % 10 - 14),0 };
+		worldTransform_.translate = popPosisin;
+		srand(int(time(0)));
 		Fire();
 	}
 
 
+	if (input_->PressedKey(DIK_W)) {
+		// 乱数生成器を初期化
+		popPosisin = { float(rand() % 45 - 22),float((rand() % 11) + 15),0 };
+		worldTransform_.translate = popPosisin;
+		srand(int(time(0)));
+		Fire();
+	}
+	if (input_->PressedKey(DIK_S)) {
+		// 乱数生成器を初期化
+		popPosisin = { float(rand() % 45 - 22),float(rand() % 10 - 14),0 };
+		worldTransform_.translate = popPosisin;
+		srand(int(time(0)));
+		Fire();
+	}
+
+	if (input_->PressedKey(DIK_A)) {
+		// 乱数生成器を初期化
+		popPosisin = { float((rand() % 11) - 45),float((rand() % 51) - 25),0 };
+		worldTransform_.translate = popPosisin;
+		srand(int(time(0)));
+		Fire();
+	}
+
+	if (input_->PressedKey(DIK_D)) {
+		// 乱数生成器を初期化
+		popPosisin = { float((rand() % 16) + 30),float((rand() % 51) - 25),0 };
+		worldTransform_.translate = popPosisin;
+		srand(int(time(0)));
+		Fire();
+	}
 	for (EnemyBullet* bullet_ : bullets_) {
 		bullet_->Update();
 	}
+
+	
+
 }
 
 void Enemy::Fire(){
 	assert(player_);
+	
+
 	const float kBulletSpeed = 1.0f;
 	Vector3 playerPosition = coresPos_;
 	Vector3 enemyPosition = this->GetWorldPosition();

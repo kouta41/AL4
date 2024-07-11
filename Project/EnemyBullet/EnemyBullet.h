@@ -64,7 +64,7 @@ private:
 	std::list<PlayerCore*> cores_;
 	
 	//寿命
-	static const int32_t kLifeTime = 300;
+	static const int32_t kLifeTime = 60*3;
 	//デスタイマー
 	int32_t deathTimer_ = kLifeTime;
 	//デスフラグ

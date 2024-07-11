@@ -93,6 +93,12 @@ void Player::Update(){
 
 
 	/*
+	
+	プレイヤーの移動制限は{-30~30,-15~15,0}
+	
+	*/
+
+	/*
 		//デスフラグの立った弾を削除
 	bullets_.remove_if([](EnemyBullet* bullet) {
 		if (bullet->IsDead()) {
