@@ -96,7 +96,6 @@ void Enemy::Update(){
 }
 
 void Enemy::Fire(){
-	assert(player_);
 	
 
 	const float kBulletSpeed = 1.0f;

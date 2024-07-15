@@ -129,19 +129,7 @@ void Player::Update(){
 
 
 void Player::Draw(CameraRole viewProjection_){
-	
-	ImGui::Begin("Player1");
-	if (ImGui::TreeNode("worldTransform")) {
-		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, 100, 100);
-		ImGui::DragFloat3("rotate", &worldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &worldTransform_.scale.x, 0.01f, 0, 10);
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("Velocity_")) {
-		ImGui::DragFloat3("速度", &velocity_.x, 0.1f, 100, 100);
-		ImGui::TreePop();
-	}
-	ImGui::End();
+
 
 	for (PlayerCore* core_ : cores_) {
 		core_->Draw(viewProjection_);

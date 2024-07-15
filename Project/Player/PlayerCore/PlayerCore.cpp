@@ -31,6 +31,15 @@ void PlayerCore::Update(Vector3 velocity){
 void PlayerCore::Draw(CameraRole viewProjection_){
 	model_->Draw(worldTransform_, viewProjection_);
 
+	ImGui::Begin("PlayerCore");
+	if (ImGui::TreeNode("worldTransform")) {
+		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, 100, 100);
+		ImGui::DragFloat3("rotate", &worldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat3("scale", &worldTransform_.scale.x, 0.01f, 0, 10);
+		ImGui::TreePop();
+	}
+	ImGui::End();
+
 }
 
 void PlayerCore::OnCollision(){
