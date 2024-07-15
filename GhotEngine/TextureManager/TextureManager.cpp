@@ -60,6 +60,7 @@ void TextureManager::LoadTexture(const std::string& filePath, uint32_t index)
 	// SRV作成
 	TextureManager::GetInstance()->texResource[index] = CreateTextureResource(TextureManager::GetInstance()->metadata_[index]);
 	TextureManager::GetInstance()->intermediateResource[index] = UploadTextureData(TextureManager::GetInstance()->texResource[index].Get(), mipImages);
+
 	SrvManager::GetInstance()->CreateTextureSrv(TextureManager::GetInstance()->intermediateResource[index].Get(), TextureManager::GetInstance()->metadata_[index], index);
 
 	DirectXCommon::GetCommandList()->Close();
@@ -110,7 +111,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> TextureManager::UploadTextureData(Microso
 	DirectX::PrepareUpload(device.Get(), mipImages.GetImages(), mipImages.GetImageCount(), mipImages.GetMetadata(), subresources);
 	uint64_t intermediateSize = GetRequiredIntermediateSize(texture.Get(), 0, UINT(subresources.size()));
 	Microsoft::WRL::ComPtr<ID3D12Resource> intermediateResource = CreateResource::CreateBufferResource(intermediateSize);
-	UpdateSubresources(DirectXCommon::GetCommandList(), texture.Get(), intermediateResource.Get(), 0, 0, UINT(subresources.size()), subresources.data());
+	UpdateSubresources(DirectXCommon::GetInstance()->GetCommandList(), texture.Get(), intermediateResource.Get(), 0, 0, UINT(subresources.size()), subresources.data());
 	//Tetureへの転送後は利用できるよう、D3D12_RESOURCE_STATE_COPY_DESTからD3D12_RESOURCE_STATE_GENERIC_READへResourceStateを変更する
 	D3D12_RESOURCE_BARRIER barrier{};
 	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
@@ -119,7 +120,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> TextureManager::UploadTextureData(Microso
 	barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
 	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
 	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_GENERIC_READ;
-	DirectXCommon::GetCommandList()->ResourceBarrier(1, &barrier);
+	DirectXCommon::GetInstance()->GetCommandList()->ResourceBarrier(1, &barrier);
 	return intermediateResource;
 
 }
