@@ -1,9 +1,9 @@
 #include "Skybox.h"
 
 void Skybox::Initialize(){
-	resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * 8);
+	resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * 19);
 
-	VBV = CreateResource::CreateVertexBufferView(resource_.vertexResource, sizeof(VertexData) * 8, 8);
+	VBV = CreateResource::CreateVertexBufferView(resource_.vertexResource, sizeof(VertexData) * 19, 19);
 
 	// 頂点リソースにデータを書き込む
 	VertexData* vertexData = nullptr;
@@ -28,8 +28,9 @@ void Skybox::Initialize(){
 	vertexData[9].position = { 1.0f,1.0f,1.0f,1.0f };
 	vertexData[10].position = { -1.0f,-1.0f,1.0f,1.0f };
 	vertexData[11].position = { 1.0f,-1.0f,1.0f,1.0f };
+
 	//後面。描画インデックスは[12,13,14][14,12,15]で内側を向く
-	vertexData[12].position = { -1.0f,1.0f,-1.0f,1.0f };
+	vertexData[12].position = { -1.0f,1.0f,-1.0f,1.0f }; 
 	vertexData[13].position = { 1.0f,1.0f,-1.0f,1.0f };
 	vertexData[14].position = { -1.0f,-1.0f,-1.0f,1.0f };
 	vertexData[15].position = { 1.0f,-1.0f,-1.0f,1.0f };
@@ -67,23 +68,26 @@ void Skybox::Initialize(){
 }
 
 void Skybox::Draw(WorldTransform worldTransform, CameraRole cameraRole, uint32_t texHandle){
-	worldTransform.TransferMatrix();
 
-	Property property = GraphicsPipeline::GetInstance()->GetPSO().Skybox;
+	Property property_ = GraphicsPipeline::GetInstance()->GetPSO().Skybox;
+
 
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
-	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property.rootSignature_.Get());
-	DirectXCommon::GetCommandList()->SetPipelineState(property.graphicsPipelineState_.Get()); // PSOを設定
-	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &VBV); // VBVを設定
+	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
+	DirectXCommon::GetCommandList()->SetPipelineState(property_.graphicsPipelineState_.Get()); // PSOを設定
+
 	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// マテリアルCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.constBuff->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, cameraRole.constBuff_->GetGPUVirtualAddress());
 	// wvp用のCBufferの場所を設定
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle));
-	// 平行光源
-	//DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(3, resource_.directionalLightResource->GetGPUVirtualAddress());
+	//worldTransform.TransferMatrix();
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle));
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(4, resource_.directionalLightResource->GetGPUVirtualAddress());
+
+	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &VBV); // VBVを設定
 	// 描画。(DrawCall/ドローコール)。
-	DirectXCommon::GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
+	DirectXCommon::GetCommandList()->DrawIndexedInstanced(19, 1, 0, 0,0);
 }

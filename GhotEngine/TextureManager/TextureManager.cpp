@@ -61,10 +61,7 @@ void TextureManager::LoadTexture(const std::string& filePath, uint32_t index)
 	TextureManager::GetInstance()->texResource[index] = CreateTextureResource(TextureManager::GetInstance()->metadata_[index]);
 	TextureManager::GetInstance()->intermediateResource[index] = UploadTextureData(TextureManager::GetInstance()->texResource[index].Get(), mipImages);
 
-	SrvManager::GetInstance()->CreateTextureSrv(TextureManager::GetInstance()->intermediateResource[index].Get(), TextureManager::GetInstance()->metadata_[index], index);
-
-	DirectXCommon::GetCommandList()->Close();
-	TextureManager::GetInstance()->intermediateResource[index]->Release();
+	SrvManager::GetInstance()->CreateTextureSrv(TextureManager::GetInstance()->texResource[index].Get(), TextureManager::GetInstance()->metadata_[index], index);
 }
 
 

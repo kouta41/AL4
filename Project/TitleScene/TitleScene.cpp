@@ -29,11 +29,10 @@ void TitleScene::Initialize(){
 	motion_ = std::make_unique<Motion>();
 	motion_->Initialize("sneakWalk.gltf");
 	motion_->SetTexHandle(texHandle_);
-	worldTransform.translate = { 2.0f,0.0f,-50.0f };
 
 
-	//Skybox_ = std::make_unique<Skybox>();
-	//Skybox_->Initialize();
+	Skybox_ = std::make_unique<Skybox>();
+	Skybox_->Initialize();
 
 
 
@@ -74,7 +73,7 @@ void TitleScene::Draw(){
 	///デバック場面
 
 	//プレイヤーの描画
-	player_->Draw(camera);
+//	player_->Draw(camera);
 
 	ImGui::Begin("Player");
 	if (ImGui::TreeNode("worldTransform")) {
@@ -88,11 +87,20 @@ void TitleScene::Draw(){
 
 	ImGui::End();
 
+	ImGui::Begin("Camera");
+	if (ImGui::TreeNode("worldTransform")) {
+		ImGui::DragFloat3("translate", &camera.translate.x, 0.1f, 100, 100);
+		ImGui::DragFloat3("rotate", &camera.rotate.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat3("scale", &camera.scale.x, 0.01f, 0, 10);
+		ImGui::TreePop();
+	}
 
+
+	ImGui::End();
 
 //	matio_1->Draw(worldTransform1, camera);
 	motion_->Draw(worldTransform,camera);
 //	model_->Draw(worldTransform, camera);
 
-//	Skybox_->Draw(worldTransform, camera, SkyboxTex_);
+	Skybox_->Draw(worldTransform, camera, SkyboxTex_);
 }
