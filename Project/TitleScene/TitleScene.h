@@ -10,6 +10,7 @@
 #include "Skybox/Skybox.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Skydome.h"
 #include "CollisionManager.h"
 #include "Input.h"
 
@@ -41,6 +42,9 @@ private:
 	//敵
 	std::unique_ptr<Enemy> enemy_{};
 
+	//天球
+	std::unique_ptr<Skydome> skydome_{};
+
 
 	//CorisionManager
 	CollisionManager* collisionManager_;
@@ -48,6 +52,8 @@ private:
 	//キーボード入力
 	Input* input_ = nullptr;
 
+	//テクスチャハンドル
 	uint32_t texHandle_ = 0;
+	uint32_t SkydometexHandle_ = 0;
 
 };

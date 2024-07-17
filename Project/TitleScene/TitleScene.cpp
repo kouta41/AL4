@@ -16,6 +16,8 @@ void TitleScene::Initialize(){
 	camera.translate = { -2,0,-110 };
 
 	texHandle_ = TextureManager::Load("resources/white.png");
+	SkydometexHandle_ = TextureManager::Load("resources/skydome.jpg");
+
 	ModelManager::LoadObjModel("cube.obj");
 	ModelManager::LoadObjModel("skydome.obj");
 
@@ -30,6 +32,12 @@ void TitleScene::Initialize(){
 	// 敵キャラの初期化
 	enemy_->Initialize();
 
+
+	//天球の生成
+	skydome_ = std::make_unique<Skydome>();
+	//天球の初期化
+	skydome_->Initialize(SkydometexHandle_);
+
 	//当たり判定の初期化
 	collisionManager_ = new CollisionManager();
 
@@ -40,6 +48,8 @@ void TitleScene::Initialize(){
 void TitleScene::Update() {	
 	worldTransform.UpdateMatrix();
 	camera.UpdateMatrix();
+	//天球の更新
+	skydome_->Update();
 
 	//プレイヤーの更新
 	player_->Update();
@@ -75,14 +85,20 @@ void TitleScene::Draw(){
 	ImGui::Begin("Camera");
 	if (ImGui::TreeNode("worldTransform")) {
 		ImGui::DragFloat3("translate", &camera.translate.x, 0.1f, 100, 100);
-		
+		ImGui::DragFloat("rotateX", &camera.rotate.x, 0.1f, 100, 100);
+		ImGui::DragFloat("rotateY", &camera.rotate.y, 0.1f, 100, 100);
+		ImGui::DragFloat("rotateZ", &camera.rotate.z, 0.1f, 100, 100);
+
 		ImGui::TreePop();
 	}
 	ImGui::End();
 	//プレイヤーの描画
 	player_->Draw(camera);
-
+	//敵の描画
 	enemy_->Draw(camera);
+
+	//天球の描画
+	skydome_->Draw(camera);
 }
 
 void TitleScene::CheckAllCollisions(){
