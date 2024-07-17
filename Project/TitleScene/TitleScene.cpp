@@ -34,6 +34,8 @@ void TitleScene::Initialize(){
 	Skybox_ = std::make_unique<Skybox>();
 	Skybox_->Initialize();
 
+	worldTransform.translate = {};
+	camera.translate={ 0,0,0};
 
 
 	
@@ -99,7 +101,7 @@ void TitleScene::Draw(){
 	ImGui::End();
 
 //	matio_1->Draw(worldTransform1, camera);
-	motion_->Draw(worldTransform,camera);
+//	motion_->Draw(worldTransform,camera);
 //	model_->Draw(worldTransform, camera);
 
 	Skybox_->Draw(worldTransform, camera, SkyboxTex_);

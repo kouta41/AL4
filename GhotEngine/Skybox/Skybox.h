@@ -22,6 +22,7 @@ public:
 
 private:
 
+	D3D12_INDEX_BUFFER_VIEW IBV{};
 	D3D12_VERTEX_BUFFER_VIEW VBV{};
 	Resource resource_ = {};
 	WorldTransform worldTransform_ = {};
