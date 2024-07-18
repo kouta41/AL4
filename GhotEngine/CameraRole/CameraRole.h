@@ -2,6 +2,8 @@
 #include "Mathfunction.h"
 #include "CreateResource.h"
 
+
+
 struct CameraRole {
 
 	// 定数バッファ用データ構造体

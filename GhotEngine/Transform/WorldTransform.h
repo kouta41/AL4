@@ -17,6 +17,8 @@ struct ConstBufferDataWorldTransform {
 	Matrix4x4 world; // world
 	Matrix4x4 WorldInverseTranspose;//worldの逆行列
 };
+
+
 struct WorldTransform {
 	// 定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuff;

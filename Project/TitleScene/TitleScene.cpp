@@ -12,6 +12,7 @@ TitleScene::~TitleScene() {
 
 void TitleScene::Initialize(){
 	worldTransform.Initialize();
+	worldTransform1.Initialize();
 	camera.Initialize();
 
 	texHandle_ = TextureManager::Load("resources/white.png");
@@ -29,12 +30,11 @@ void TitleScene::Initialize(){
 	motion_ = std::make_unique<Motion>();
 	motion_->Initialize("sneakWalk.gltf");
 	motion_->SetTexHandle(texHandle_);
-
+	worldTransform.translate = { 0,-0.7f,6.0f };
 
 	Skybox_ = std::make_unique<Skybox>();
 	Skybox_->Initialize();
 
-	worldTransform.translate = {};
 	camera.translate={ 0,0,0};
 
 
@@ -48,6 +48,7 @@ void TitleScene::Update() {
 	motion_->SetanimationTime(animationTime);
 
 	worldTransform.UpdateMatrix();
+	worldTransform1.UpdateMatrix();
 	camera.UpdateMatrix();
 
 	//プレイヤーの更新
@@ -101,8 +102,8 @@ void TitleScene::Draw(){
 	ImGui::End();
 
 //	matio_1->Draw(worldTransform1, camera);
-//	motion_->Draw(worldTransform,camera);
+	motion_->Draw(worldTransform,camera);
 //	model_->Draw(worldTransform, camera);
 
-	Skybox_->Draw(worldTransform, camera, SkyboxTex_);
+	Skybox_->Draw(worldTransform1, camera, SkyboxTex_);
 }

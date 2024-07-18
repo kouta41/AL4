@@ -160,8 +160,8 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 	CreateRootSignature(device, descriptionRootSignature, property);
 
 	// InputLayout
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
-	inputElementDescs[0].SemanticName = "POSITION";
+	D3D12_INPUT_ELEMENT_DESC inputElementDescs[4] = {};
+	inputElementDescs[0].SemanticName = "SV_POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
 	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
@@ -173,6 +173,11 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 	inputElementDescs[2].SemanticIndex = 0;
 	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 	inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+	inputElementDescs[3].SemanticName = "POSITION";
+	inputElementDescs[3].SemanticIndex = 0;
+	inputElementDescs[3].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	inputElementDescs[3].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
 	inputLayoutDesc.NumElements = _countof(inputElementDescs);

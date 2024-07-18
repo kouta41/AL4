@@ -12,7 +12,12 @@ struct DirectionalLight
     float intensity;
 };
 
+
+
 ConstantBuffer<Material> gMaterial : register(b0);
+
+TextureCube<float32_t4> gEnvironmentTexture : register(t1);
+
 struct PixelShaderOutput
 {
     float32_t4 color : SV_TARGET0;
@@ -42,7 +47,12 @@ PixelShaderOutput main(VertexShaderOutput input)
     {
         output.color = gMaterial.color * textureColor;
     }
-
+    
+    float32_t3 cameraToPosition = normalize(input.worldPosition - gCameraMatrix.worldPosition);
+    float32_t3 reflectedVector = reflect(cameraToPosition, normalize(input.normal));
+    float32_t4 environmentColor = gEnvironmentTexture.Sample(gSampler, reflectedVector);
+    
+    output.color.rgb += environmentColor.rgb;
     return output;
 
 };
