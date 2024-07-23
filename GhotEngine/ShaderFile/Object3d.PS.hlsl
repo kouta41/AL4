@@ -22,9 +22,7 @@ struct CameraMatrix
 
 ConstantBuffer<Material> gMaterial : register(b0);
 
-TextureCube<float32_t4> gEnvironmentTexture : register(t1);
 
-ConstantBuffer<CameraMatrix> gCameraMatrix : register(b2);
 
 
 struct PixelShaderOutput
@@ -35,13 +33,23 @@ struct PixelShaderOutput
 
 ConstantBuffer<DirectionalLight> gDirectionalLight : register(b1);
 
+ConstantBuffer<CameraMatrix> gCameraMatrix : register(b2);
+
 Texture2D<float32_t4> gTexture : register(t0);
+TextureCube<float32_t4> gEnvironmentTexture : register(t1);
+
 SamplerState gSampler : register(s0);
 
 PixelShaderOutput main(VertexShaderOutput input)
 {
     PixelShaderOutput output;
     float32_t4 textureColor = gTexture.Sample(gSampler, input.texcoord);
+    
+    float32_t3 cameraToPosition = normalize(input.worldPosition - gCameraMatrix.worldPosition);
+    float32_t3 reflectedVector = reflect(cameraToPosition, normalize(input.normal));
+    float32_t4 environmentColor = gEnvironmentTexture.Sample(gSampler, reflectedVector);
+    
+    
     if (gMaterial.enableLighting != 0)
     {
 	    // half lambert
@@ -51,19 +59,20 @@ PixelShaderOutput main(VertexShaderOutput input)
 	    //float cos = saturate(dot(normalize(input.normal), -gDirectionalLight.direction));
         output.color.rgb = gMaterial.color.rgb * textureColor.rgb * gDirectionalLight.color.rgb * cos * gDirectionalLight.intensity;
         output.color.a = gMaterial.color.a * textureColor.a;
+        
+        
+       // output.color.rgb += environmentColor.rgb;
     }
     else
     {
+      
         output.color = gMaterial.color * textureColor;
         
-        float32_t3 cameraToPosition = normalize(input.worldPosition - gCameraMatrix.worldPosition);
-        float32_t3 reflectedVector = reflect(cameraToPosition, normalize(input.normal));
-        float32_t4 environmentColor = gEnvironmentTexture.Sample(gSampler, reflectedVector);
     
-        output.color.rgb += environmentColor.rgb;
     }
     
    
+       
     
     return output;
 

@@ -114,7 +114,7 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 	// DescriptorRange
 	D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
 	descriptorRange[0].BaseShaderRegister = 0; // 0から始まる
-	descriptorRange[0].NumDescriptors = 1; // 数は1つ
+	descriptorRange[0].NumDescriptors = 2; // 数は1つ
 	descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
 	descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
@@ -123,6 +123,7 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParameters[0].Descriptor.ShaderRegister = 0;
+
 	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
 	rootParameters[1].Descriptor.ShaderRegister = 0;
@@ -139,6 +140,8 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV; // CBVを使う
 	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // pixelshaderを使う
 	rootParameters[4].Descriptor.ShaderRegister = 1; // レジスタ番号1を使う
+
+
 	descriptionRootSignature.pParameters = rootParameters;
 	descriptionRootSignature.NumParameters = _countof(rootParameters);
 
