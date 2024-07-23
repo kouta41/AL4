@@ -86,6 +86,8 @@ private: // メンバ変数
 	Vector2 textureLeftTop_ = {};
 	Vector2 textureSize_ = {};
 	uint32_t texHandle_ = 0;
+	DirectionalLight* directionalLightData_ = nullptr;
+	Vector4 color_ = {};
 
 private:
 

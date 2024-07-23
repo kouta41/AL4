@@ -12,7 +12,6 @@
 #include "Enemy.h"
 #include "Skydome.h"
 #include "CollisionManager.h"
-#include "Input.h"
 
 
 class TitleScene : public IScene
@@ -37,17 +36,10 @@ private:
 
 	CameraRole camera;
 
-	//プレイヤー
-	std::unique_ptr<Player> player_{};
-	//敵
-	std::unique_ptr<Enemy> enemy_{};
 
-	//天球
-	std::unique_ptr<Skydome> skydome_{};
+	std::unique_ptr<Sprite> sprite_;
 
-
-	//CorisionManager
-	CollisionManager* collisionManager_;
+	Vector2 pos = { 0,0 };
 
 	//キーボード入力
 	Input* input_ = nullptr;

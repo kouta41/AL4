@@ -1,5 +1,6 @@
 #include "Sprite.h"
 #include "Vector4.h"
+#include <Object3D.h>
 
 CameraRole Sprite::camera_;
 
@@ -23,7 +24,19 @@ void Sprite::StaticUpdate()
 /// </summary>
 void Sprite::Initialize(uint32_t texHandle) {
 
+	worldTransform_.Initialize();
+
 	texHandle_ = texHandle;
+
+
+	// 平行光源用のリソース
+	resource_.directionalLightResource = CreateResource::CreateBufferResource(sizeof(DirectionalLight));
+	// 書き込むためのアドレスを取得
+	resource_.directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
+	directionalLightData_->color = { color_ };
+	directionalLightData_->direction = Normalize({ 0.0f, -1.0f, 0.0f });
+	directionalLightData_->intensity = 1.0f;
+
 
 	// indexResourceSprite
 	resource_.indexResource = CreateResource::CreateBufferResource(sizeof(uint32_t) * 6);
@@ -48,6 +61,8 @@ void Sprite::Initialize(uint32_t texHandle) {
 	*materialData_ = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
+
+
 
 	AdjustTextureSize(texHandle_);
 
@@ -83,16 +98,31 @@ void Sprite::CreateVertex()
 
 
 	// 1枚目の三角形
-	vertexDataSprite[0].position = { left, bottom,0.0f, 1.0f }; // 左下
-	vertexDataSprite[0].texcoord = { tex_left, tex_bottom };
-	vertexDataSprite[1].position = { left, top, 0.0f, 1.0f }; // 左上
-	vertexDataSprite[1].texcoord = { tex_left, tex_top };
-	vertexDataSprite[2].position = { right, bottom, 0.0f,1.0f }; // 右下
-	vertexDataSprite[2].texcoord = { tex_right, tex_bottom };
-	// 2枚目の三角形
-	vertexDataSprite[3].position = { right, top, 0.0f, 1.0f }; // 右上
-	vertexDataSprite[3].texcoord = { tex_right, tex_top };
+	vertexDataSprite[1].position = { left, bottom,0.0f, 1.0f }; // 左下
+	vertexDataSprite[1].texcoord = { tex_left, tex_bottom };
 
+	vertexDataSprite[0].position = { left, top, 0.0f, 1.0f }; // 左上
+	vertexDataSprite[0].texcoord = { tex_left, tex_top };
+
+	vertexDataSprite[3].position = { right, bottom, 0.0f,1.0f }; // 右下
+	vertexDataSprite[3].texcoord = { tex_right, tex_bottom };
+
+	// 2枚目の三角形
+	vertexDataSprite[2].position = { right, top, 0.0f, 1.0f }; // 右上
+	vertexDataSprite[2].texcoord = { tex_right, tex_top };
+
+	//vertexDataSprite[0].position = { left, bottom,0.0f, 1.0f }; // 左下
+	//vertexDataSprite[0].texcoord = { tex_left, tex_bottom };
+
+	//vertexDataSprite[1].position = { left, top, 0.0f, 1.0f }; // 左上
+	//vertexDataSprite[1].texcoord = { tex_left, tex_top };
+
+	//vertexDataSprite[2].position = { right, bottom, 0.0f,1.0f }; // 右下
+	//vertexDataSprite[2].texcoord = { tex_right, tex_bottom };
+
+	//// 2枚目の三角形
+	//vertexDataSprite[3].position = { right, top, 0.0f, 1.0f }; // 右上
+	//vertexDataSprite[3].texcoord = { tex_right, tex_top };
 }
 
 
@@ -103,12 +133,12 @@ void Sprite::CreateVertex()
 /// <returns></returns>
 Sprite* Sprite::Create(uint32_t texHandle, Vector2 position, Vector4 color)
 {
+	
 	Sprite* sprite = new Sprite;
 	sprite->Initialize(texHandle);
 	sprite->SetPosition(position);
 	sprite->SetColor(color);
-
-
+	
 	return sprite;
 }
 
@@ -147,8 +177,11 @@ void Sprite::Draw()
 	// マテリアルCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
 	// wvp用のCBufferの場所を設定
+	//DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform_.constBuff->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle_));
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(3, resource_.directionalLightResource->GetGPUVirtualAddress());
+
 	// 描画。(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
 	DirectXCommon::GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
 
