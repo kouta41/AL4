@@ -38,7 +38,7 @@ public:
 	//自機座標
 	void SetPlayer(Player* player) { player_ = player; }
 
-	void SetPlayerCorepos(Vector3 cores) { coresPos_ = cores; }
+	void SetTargetpos(Vector3 Targetcores) { TargetPos_ = Targetcores; }
 
 	//ワールド座標系を取得
 	Vector3 GetWorldPosition();
@@ -60,8 +60,10 @@ private:
 	Player* player_;
 
 	///核
-	Vector3 coresPos_;
 	std::list<PlayerCore*> cores_;
+	
+	//目標対象
+	Vector3 TargetPos_;
 	
 	//寿命
 	static const int32_t kLifeTime = 60*3;

@@ -108,5 +108,9 @@ private: // メンバ変数
 	uint32_t coreTexHandle_ = 0;
 	uint32_t crustTexHandle_ = 0;
 
-	
+	//移動制限フラグ
+	bool isWstop_ = false;
+	bool isAstop_ = false;
+	bool isSstop_ = false;
+	bool isDstop_ = false;
 };

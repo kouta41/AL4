@@ -53,7 +53,7 @@ void Enemy::Update(){
 		popPosisin = { float(rand() % 45 - 22),float(rand() % 10 - 14),0 };
 		worldTransform_.translate = popPosisin;
 		srand(int(time(0)));
-		Fire();
+		LockonFire();
 	}
 
 
@@ -61,32 +61,64 @@ void Enemy::Update(){
 		// 乱数生成器を初期化
 		popPosisin = { float(rand() % 45 - 22),float((rand() % 11) + 15),0 };
 		worldTransform_.translate = popPosisin;
-		srand(int(time(0)));
-		Fire();
+		//(int(time(0)));
+		srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
+
+		LockonFire();
 	}
 	if (input_->PressedKey(DIK_S)) {
 		// 乱数生成器を初期化
 		popPosisin = { float(rand() % 45 - 22),float(rand() % 10 - 14),0 };
 		worldTransform_.translate = popPosisin;
-		srand(int(time(0)));
-		Fire();
+		//srand(int(time(0)));
+		srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
+
+		LockonFire();
 	}
 
 	if (input_->PressedKey(DIK_A)) {
 		// 乱数生成器を初期化
 		popPosisin = { float((rand() % 11) - 45),float((rand() % 51) - 25),0 };
 		worldTransform_.translate = popPosisin;
-		srand(int(time(0)));
-		Fire();
+		//srand(int(time(0)));
+		srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
+
+		LockonFire();
 	}
 
 	if (input_->PressedKey(DIK_D)) {
 		// 乱数生成器を初期化
 		popPosisin = { float((rand() % 16) + 30),float((rand() % 51) - 25),0 };
 		worldTransform_.translate = popPosisin;
-		srand(int(time(0)));
-		Fire();
+		//srand(int(time(0)));
+		srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
+
+		LockonFire();
 	}
+
+
+	if (input_->PressedKey(DIK_Q)) {
+		popPosisin = { float((rand() % 11) - 45),float((rand() % 51) - 25),0 };
+		worldTransform_.translate = popPosisin;
+		TargetPos_ = popPosisin;
+		TargetPos_.x = TargetPos_.x * (-1);
+		srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
+
+		LineFire();
+	}
+
+
+	if (input_->PressedKey(DIK_E)) {
+		popPosisin = { float((rand() % 16) + 30),float((rand() % 51) - 25),0 };
+		worldTransform_.translate = popPosisin;
+		TargetPos_ = popPosisin;
+		TargetPos_.x = TargetPos_.x * (-1);
+		srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
+
+		LineFire();
+	}
+
+
 	for (EnemyBullet* bullet_ : bullets_) {
 		bullet_->Update();
 	}
@@ -95,12 +127,13 @@ void Enemy::Update(){
 
 }
 
-void Enemy::Fire(){
-	
-
+/// <summary>
+/// 弾の発射(プレイヤーの核に向かっていく＿追尾はしない)
+/// </summary>
+void Enemy::LockonFire(){
 	const float kBulletSpeed = 1.0f;
 	Vector3 playerPosition = coresPos_;
-	Vector3 enemyPosition = this->GetWorldPosition();
+	Vector3 enemyPosition = worldTransform_.translate;
 	Vector3 Bulletvelocity = Subtract(playerPosition, enemyPosition);
 	Bulletvelocity = Normalize(Bulletvelocity);
 	Bulletvelocity.x *= kBulletSpeed;
@@ -110,7 +143,27 @@ void Enemy::Fire(){
 	EnemyBullet* newBullet = new EnemyBullet();
 
 	newBullet->Initialize(texHandleBullet_, worldTransform_.translate, Bulletvelocity);
-	newBullet->SetPlayerCorepos(coresPos_);
+	newBullet->SetTargetpos(coresPos_);
+	bullets_.push_back(newBullet);
+}
+
+/// <summary>
+/// 弾の発射(ステージの横から直線)
+/// </summary>
+void Enemy::LineFire(){
+	const float kBulletSpeed = 3.0f;
+	Vector3 playerPosition = TargetPos_;
+	Vector3 enemyPosition = worldTransform_.translate;
+	Vector3 Bulletvelocity = Subtract(playerPosition, enemyPosition);
+	Bulletvelocity = Normalize(Bulletvelocity);
+	Bulletvelocity.x *= kBulletSpeed;
+	Bulletvelocity.y *= kBulletSpeed;
+	Bulletvelocity.z *= kBulletSpeed;
+	//弾の生成＆初期化
+	EnemyBullet* newBullet = new EnemyBullet();
+
+	newBullet->Initialize(texHandleBullet_, worldTransform_.translate, Bulletvelocity);
+	newBullet->SetTargetpos(TargetPos_);
 	bullets_.push_back(newBullet);
 }
 

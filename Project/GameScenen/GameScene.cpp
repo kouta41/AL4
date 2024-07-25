@@ -57,7 +57,6 @@ void GameScene::Update(){
 
 	//敵の更新
 	enemy_->Update();
-	//enemy_->SetPlayer(player_.get());
 	enemy_->SetPlayerCorepos(player_->GetPlayerCoreWorldPosition());
 
 	//当たり判定

@@ -49,9 +49,14 @@ public: // メンバ関数
 	void Update();
 
 	/// <summary>
-	/// 弾の発射
+	/// 弾の発射(プレイヤーの核に向かっていく＿追尾はしない)
 	/// </summary>
-	void Fire();
+	void LockonFire();
+
+	/// <summary>
+	/// 弾の発射(ステージの横から直線)
+	/// </summary>
+	void LineFire();
 
 	/// <summary>
 	/// 描画
@@ -115,6 +120,9 @@ private: // メンバ変数
 	///核
 	Vector3 coresPos_;
 	std::list<PlayerCore*> cores_;
+
+	//目標対象
+	Vector3 TargetPos_ = { 0,0,0 };
 
 	//ゲームシーン
 	GameScene* gameScene_ = nullptr;

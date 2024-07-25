@@ -74,13 +74,17 @@ void Player::Update(){
 	if (input_->PushKey(DIK_RIGHT)) {
 		velocity_.x += 0.3f;
 	}
-	else if (input_->PushKey(DIK_LEFT)) {
+
+
+	if (isAstop_ == false && input_->PushKey(DIK_LEFT)) {
 		velocity_.x -= 0.3f;
 	}
+
+
 	if (input_->PushKey(DIK_UP)) {
 		velocity_.y += 0.3f;
 	}
-	else if (input_->PushKey(DIK_DOWN)) {
+	if (input_->PushKey(DIK_DOWN)) {
 		velocity_.y -= 0.3f;
 	}
 
@@ -98,16 +102,18 @@ void Player::Update(){
 	
 	*/
 
-	/*
-		//デスフラグの立った弾を削除
-	bullets_.remove_if([](EnemyBullet* bullet) {
-		if (bullet->IsDead()) {
-			delete bullet;
-			return true;
-		}
-		return false;
-		});
-		*/
+
+	//cores_.remove_if([](PlayerCore* core) {
+	//	if (core->isAstop()) {
+	//		this->isAstop_ = false;
+	//		return true;
+	//	}
+	//	return false;
+	//	});
+
+
+
+
 	//デスラグが立つと削除
 	cores_.remove_if([](PlayerCore* core) {
 		if (core->IsDead()) {

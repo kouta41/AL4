@@ -46,6 +46,22 @@ void PlayerCore::OnCollision(){
 	isDead_ = true;
 }
 
+void PlayerCore::MovementRestrictions(){
+	if (worldTransform_.translate.x < -30 ) {
+		isAstop_ = true;
+	}
+	if (worldTransform_.translate.x < 30) {
+		isDstop_ = true;
+	}
+
+	if (worldTransform_.translate.y < 15) {
+		isWstop_ = true;
+	}
+	if (worldTransform_.translate.y < -15) {
+		isSstop_ = true;
+	}
+}
+
 Vector3 PlayerCore::GetWorldPosition()
 {
 	Vector3 worldPos;

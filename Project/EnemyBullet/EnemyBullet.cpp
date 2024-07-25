@@ -37,13 +37,14 @@ void EnemyBullet::Update() {
 	
 	// 玉のホーミング
 	
-	toPlayer = Subtract(coresPos_, worldTransform_.translate);
+	toPlayer = Subtract(TargetPos_, worldTransform_.translate);
 	toPlayer = Normalize(toPlayer);
 	velocity_ = Normalize(velocity_);
 	velocity_ = Lerp(velocity_, toPlayer, 0.1f);
 	velocity_.x *= 0.5f;
 	velocity_.y *= 0.5f;
 	velocity_.z *= 0.5f;
+
 	// 玉の向き
 	worldTransform_.rotate.y = std::atan2(velocity_.x, velocity_.z);
 	float VelocityXZ = sqrt((velocity_.x * velocity_.x) + (velocity_.z * velocity_.z));

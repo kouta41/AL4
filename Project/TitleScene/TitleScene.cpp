@@ -37,12 +37,12 @@ void TitleScene::Update() {
 }
 
 void TitleScene::Draw(){
-	sprite_->Draw();
+//	sprite_->Draw();
 	
 
 	///デバック場面
-	ImGui::Begin("Sprite");
-	ImGui::DragFloat2("pos", &pos.x, 0.1f, 100, 100);
+	ImGui::Begin("SPACE");
+	ImGui::Text("ChangeScene");
 
 	ImGui::End();
 
