@@ -97,9 +97,19 @@ void TitleScene::Draw(){
 		ImGui::DragFloat3("scale", &camera.scale.x, 0.01f, 0, 10);
 		ImGui::TreePop();
 	}
-
+	ImGui::End();
+	
+	
+	directionalLightData_ = motion_->GetdirectionalLightData();
+	ImGui::Begin("Settings");
+		ImGui::DragFloat4("color", &directionalLightData_->color.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat3("direction", &directionalLightData_->direction.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat("intensity", &directionalLightData_->intensity, 0.01f, -6.28f, 6.28f);
 
 	ImGui::End();
+
+	motion_->SetdirectionalLightData(directionalLightData_);
+
 
 //	matio_1->Draw(worldTransform1, camera);
 	motion_->Draw(worldTransform,camera);

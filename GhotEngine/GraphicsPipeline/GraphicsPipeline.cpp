@@ -119,7 +119,7 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 	descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
 	// RootParameter作成
-	D3D12_ROOT_PARAMETER rootParameters[5] = {};
+	D3D12_ROOT_PARAMETER rootParameters[7] = {};
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParameters[0].Descriptor.ShaderRegister = 0;
@@ -140,6 +140,15 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV; // CBVを使う
 	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // pixelshaderを使う
 	rootParameters[4].Descriptor.ShaderRegister = 1; // レジスタ番号1を使う
+
+
+	rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV; // CBVを使う
+	rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // pixelshaderを使う
+	rootParameters[5].Descriptor.ShaderRegister = 2; // レジスタ番号2を使う
+
+	rootParameters[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV; // CBVを使う
+	rootParameters[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // pixelshaderを使う
+	rootParameters[6].Descriptor.ShaderRegister = 3; // レジスタ番号2を使う
 
 
 	descriptionRootSignature.pParameters = rootParameters;
@@ -163,8 +172,8 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 	CreateRootSignature(device, descriptionRootSignature, property);
 
 	// InputLayout
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[4] = {};
-	inputElementDescs[0].SemanticName = "SV_POSITION";
+	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
+	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
 	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
@@ -176,10 +185,7 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 	inputElementDescs[2].SemanticIndex = 0;
 	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 	inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElementDescs[3].SemanticName = "POSITION";
-	inputElementDescs[3].SemanticIndex = 0;
-	inputElementDescs[3].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	inputElementDescs[3].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+
 
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
@@ -458,6 +464,7 @@ Property GraphicsPipeline::CreateParticle(Microsoft::WRL::ComPtr<ID3D12Device> d
 
 	// InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
+
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
 	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -555,9 +562,10 @@ Property GraphicsPipeline::CreateSkinng(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	// DescriptorRange
 	D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
 	descriptorRange[0].BaseShaderRegister = 0; // 0から始まる
-	descriptorRange[0].NumDescriptors = 1; // 数は1つ
+	descriptorRange[0].NumDescriptors = 2; // 数は1つ
 	descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
 	descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
+
 
 	D3D12_DESCRIPTOR_RANGE descriptorRangeForSkininng[1] = {};
 	descriptorRangeForSkininng[0].BaseShaderRegister = 0; // 0から始まる
@@ -565,11 +573,13 @@ Property GraphicsPipeline::CreateSkinng(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	descriptorRangeForSkininng[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
 	descriptorRangeForSkininng[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
+
 	// RootParameter作成
-	D3D12_ROOT_PARAMETER rootParameters[6] = {};
+	D3D12_ROOT_PARAMETER rootParameters[8] = {};
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParameters[0].Descriptor.ShaderRegister = 0;
+
 	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
 	rootParameters[1].Descriptor.ShaderRegister = 0;
@@ -578,23 +588,32 @@ Property GraphicsPipeline::CreateSkinng(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
 	rootParameters[2].Descriptor.ShaderRegister = 1;
 
-	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-	rootParameters[3].DescriptorTable.pDescriptorRanges = descriptorRange;
-	rootParameters[3].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
+	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptortableを使う
+	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
+	rootParameters[3].DescriptorTable.pDescriptorRanges = descriptorRange; // Tableの中身の配列を指定
+	rootParameters[3].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange); // Tableで利用する数
 
 	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptortableを使う
 	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX; // PixelShaderで使う
 	rootParameters[4].DescriptorTable.pDescriptorRanges = descriptorRangeForSkininng; // Tableの中身の配列を指定
 	rootParameters[4].DescriptorTable.NumDescriptorRanges = _countof(descriptorRangeForSkininng); // Tableで利用する数
 
+
 	rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV; // CBVを使う
 	rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // pixelshaderを使う
 	rootParameters[5].Descriptor.ShaderRegister = 1; // レジスタ番号1を使う
 
+
+	rootParameters[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV; // CBVを使う
+	rootParameters[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // pixelshaderを使う
+	rootParameters[6].Descriptor.ShaderRegister = 2; // レジスタ番号2を使う
+
+	rootParameters[7].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV; // CBVを使う
+	rootParameters[7].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // pixelshaderを使う
+	rootParameters[7].Descriptor.ShaderRegister = 3; // レジスタ番号2を使う
+
 	descriptionRootSignature.pParameters = rootParameters;
 	descriptionRootSignature.NumParameters = _countof(rootParameters);
-
 
 	// Samplerの設定
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
@@ -640,6 +659,7 @@ Property GraphicsPipeline::CreateSkinng(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	inputElementDescs[4].InputSlot = 1;
 	inputElementDescs[4].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
 
+
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
 	inputLayoutDesc.NumElements = _countof(inputElementDescs);
@@ -664,7 +684,7 @@ Property GraphicsPipeline::CreateSkinng(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	vertexShaderBlob_ = compile_->CompileShader(L"GhotEngine/ShaderFile/" + shaderName + L".VS.hlsl", L"vs_6_0", dxcUtils, dxcCompiler, includeHandler);
 	assert(vertexShaderBlob_ != nullptr);
 
-	pixelShaderBlob_ = compile_->CompileShader(L"GhotEngine/ShaderFile/Object3d.PS.hlsl", L"ps_6_0", dxcUtils, dxcCompiler, includeHandler);
+	pixelShaderBlob_ = compile_->CompileShader(L"GhotEngine/ShaderFile/" L"Object3d.PS.hlsl", L"ps_6_0", dxcUtils, dxcCompiler, includeHandler);
 	assert(pixelShaderBlob_ != nullptr);
 
 	// PSO
@@ -701,6 +721,7 @@ Property GraphicsPipeline::CreateSkinng(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	assert(SUCCEEDED(hr));
 
 	return property;
+
 }
 
 Property GraphicsPipeline::CreateCopyImage(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)

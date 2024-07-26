@@ -136,12 +136,20 @@ public:
 
 	void SetanimationTime(float animationTime) { animationTime_ = animationTime; }
 
+
+	void Setcolor(Vector4 color) {color_=color; }
+
+	void SetdirectionalLightData(DirectionalLight* directionalLightData) { directionalLightData_= directionalLightData; }
+
 #pragma endregion
 
 
 #pragma region Getter
 
 	Animation GetAnimation() { return animation_; }
+
+	Vector4 Getcolor() { return color_; }
+	DirectionalLight* GetdirectionalLightData() {return directionalLightData_;}
 
 #pragma endregion
 
@@ -159,9 +167,9 @@ private:
 	SkinCluster skinCluster_;
 	Property property_{};
 	Material* materialData_ = nullptr;
-	Vector4 color_ = {};
+	Vector4 color_ = {1.0f,1.0f,1.0f,1.0f};
 	DirectionalLight* directionalLightData_ = nullptr;
-
+	PointLight* PointLightData_ = nullptr;
 };
 
 ///モデルの所と統合するかもしれ

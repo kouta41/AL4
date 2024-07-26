@@ -353,7 +353,7 @@ void Motion::CreateResource(){
     resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
     resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
     materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
-    materialData_->enableLighting = false;
+    materialData_->enableLighting = true;
     materialData_->shininess = 70.0f;
 
     // 平行光源用のリソース
@@ -365,6 +365,16 @@ void Motion::CreateResource(){
     directionalLightData_->intensity = 1.0f;
   //  resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
 
+
+     // 点光源用のリソース
+    resource_.pointLightResource = CreateResource::CreateBufferResource(sizeof(PointLight));
+    // 書き込むためのアドレスを取得
+    resource_.pointLightResource->Map(0, nullptr, reinterpret_cast<void**>(&PointLightData_));
+    PointLightData_->position = { 0.0f,2.0f,0.0f };
+    PointLightData_->color = { color_ };
+    PointLightData_->decay = 1.0f;
+    PointLightData_->intensity = 1.0f;
+    PointLightData_->radius = 1.0f;
 
     // VertexResource
     resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * modelData_.vertices.size());
@@ -458,8 +468,11 @@ void Motion::Draw(WorldTransform& worldTransform, CameraRole& camera) {
    DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle_));
 
    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.directionalLightResource->GetGPUVirtualAddress());
+   DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(6, camera.constBuff_->GetGPUVirtualAddress());
+   DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(7, resource_.pointLightResource->GetGPUVirtualAddress());
 
-    ApplyAnimation(skeleton_, animation_,animationTime_);
+
+   ApplyAnimation(skeleton_, animation_,animationTime_);
     SkeletonUpdate(skeleton_);
     SkinClusterUpdate(skinCluster_, skeleton_);
 

@@ -50,4 +50,7 @@ private:
 	float animationTime = 0.0f;
 	float animationTime1 = 0.0f;
 
+	Vector4 color_ = { 1.0f,1.0f,1.0f,1.0f };
+	DirectionalLight* directionalLightData_ = nullptr;
+
 };
