@@ -47,12 +47,15 @@ public: // メンバ関数
 	const Vector2& GetTextureLeftTop() const { return textureLeftTop_; }
 	// テクスチャ切り出しサイズ取得
 	const Vector2& GetTextureSize() const { return textureSize_; }
+	//
+	const WorldTransform& GetWorldTransform() const { return worldTransform_; }
 
 #pragma endregion 
 
 #pragma region Setter
 	// 座標の設定
 	void SetPosition(const Vector2& position) { position_ = position; }
+
 	// 色の設定
 	void SetColor(const Vector4& color) { *materialData_ = color; }
 	// アンカーポイントの設定
@@ -63,6 +66,10 @@ public: // メンバ関数
 	void SetTextureSize(const Vector2& textureSize) { textureSize_ = textureSize; }
 	// テクスチャハンドルの設定
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
+
+	//
+	void SetWorldTransform(const WorldTransform& worldTransform) { worldTransform_ = worldTransform; }
+
 #pragma endregion
 
 	/// <summary>
@@ -87,7 +94,7 @@ private: // メンバ変数
 	Vector2 textureSize_ = {};
 	uint32_t texHandle_ = 0;
 	DirectionalLight* directionalLightData_ = nullptr;
-	Vector4 color_ = {};
+	Vector4 color_ = {1.0f,1.0f,1.0f,1.0f};
 
 private:
 

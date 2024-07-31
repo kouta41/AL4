@@ -98,31 +98,31 @@ void Sprite::CreateVertex()
 
 
 	// 1枚目の三角形
-	vertexDataSprite[1].position = { left, bottom,0.0f, 1.0f }; // 左下
-	vertexDataSprite[1].texcoord = { tex_left, tex_bottom };
+	//vertexDataSprite[1].position = { left, bottom,0.0f, 1.0f }; // 左下
+	//vertexDataSprite[1].texcoord = { tex_left, tex_bottom };
 
-	vertexDataSprite[0].position = { left, top, 0.0f, 1.0f }; // 左上
-	vertexDataSprite[0].texcoord = { tex_left, tex_top };
+	//vertexDataSprite[0].position = { left, top, 0.0f, 1.0f }; // 左上
+	//vertexDataSprite[0].texcoord = { tex_left, tex_top };
 
-	vertexDataSprite[3].position = { right, bottom, 0.0f,1.0f }; // 右下
-	vertexDataSprite[3].texcoord = { tex_right, tex_bottom };
-
-	// 2枚目の三角形
-	vertexDataSprite[2].position = { right, top, 0.0f, 1.0f }; // 右上
-	vertexDataSprite[2].texcoord = { tex_right, tex_top };
-
-	//vertexDataSprite[0].position = { left, bottom,0.0f, 1.0f }; // 左下
-	//vertexDataSprite[0].texcoord = { tex_left, tex_bottom };
-
-	//vertexDataSprite[1].position = { left, top, 0.0f, 1.0f }; // 左上
-	//vertexDataSprite[1].texcoord = { tex_left, tex_top };
-
-	//vertexDataSprite[2].position = { right, bottom, 0.0f,1.0f }; // 右下
-	//vertexDataSprite[2].texcoord = { tex_right, tex_bottom };
+	//vertexDataSprite[3].position = { right, bottom, 0.0f,1.0f }; // 右下
+	//vertexDataSprite[3].texcoord = { tex_right, tex_bottom };
 
 	//// 2枚目の三角形
-	//vertexDataSprite[3].position = { right, top, 0.0f, 1.0f }; // 右上
-	//vertexDataSprite[3].texcoord = { tex_right, tex_top };
+	//vertexDataSprite[2].position = { right, top, 0.0f, 1.0f }; // 右上
+	//vertexDataSprite[2].texcoord = { tex_right, tex_top };
+
+	vertexDataSprite[0].position = { left, bottom,0.0f, 1.0f }; // 左下
+	vertexDataSprite[0].texcoord = { tex_left, tex_bottom };
+
+	vertexDataSprite[1].position = { left, top, 0.0f, 1.0f }; // 左上
+	vertexDataSprite[1].texcoord = { tex_left, tex_top };
+
+	vertexDataSprite[2].position = { right, bottom, 0.0f,1.0f }; // 右下
+	vertexDataSprite[2].texcoord = { tex_right, tex_bottom };
+
+	// 2枚目の三角形
+	vertexDataSprite[3].position = { right, top, 0.0f, 1.0f }; // 右上
+	vertexDataSprite[3].texcoord = { tex_right, tex_top };
 }
 
 
@@ -160,8 +160,8 @@ void Sprite::Draw()
 {
 
 	CreateVertex();
-	worldTransform_.translate.x = GetPosition().x;
-	worldTransform_.translate.y = GetPosition().y;
+	//worldTransform_.translate.x = GetPosition().x;
+	//worldTransform_.translate.y = GetPosition().y;
 	worldTransform_.UpdateMatrix();
 	worldTransform_.TransferMatrix();
 
@@ -177,14 +177,25 @@ void Sprite::Draw()
 	// マテリアルCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
 	// wvp用のCBufferの場所を設定
-	//DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform_.constBuff->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform_.constBuff->GetGPUVirtualAddress());
+	//DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle_));
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(3, resource_.directionalLightResource->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(4, camera_.sConstBuff->GetGPUVirtualAddress());
+
 
 	// 描画。(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
 	DirectXCommon::GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
 
+	ImGui::Begin("worldTransform");
+	if (ImGui::TreeNode("worldTransform")) {
+		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, 100, 100);
+		ImGui::DragFloat3("rotate", &worldTransform_.rotate.x, 0.01f, 100, 100);
+		ImGui::DragFloat3("scale", &worldTransform_.scale.x, 0.01f, 100, 100);
 
+
+		ImGui::TreePop();
+	}
+	ImGui::End();
 
 }

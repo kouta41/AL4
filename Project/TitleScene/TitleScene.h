@@ -34,10 +34,13 @@ public:
 private:
 	WorldTransform worldTransform;
 
+	WorldTransform spriteWorldTransform;
+
 	CameraRole camera;
 
-
+	bool flag = true;
 	std::unique_ptr<Sprite> sprite_;
+	std::unique_ptr<Sprite> sprite_1;
 
 	Vector2 pos = { 0,0 };
 
@@ -46,6 +49,8 @@ private:
 
 	//テクスチャハンドル
 	uint32_t texHandle_ = 0;
+	uint32_t texHandle_1 = 0;
+
 	uint32_t SkydometexHandle_ = 0;
 
 };

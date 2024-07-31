@@ -14,13 +14,17 @@ void TitleScene::Initialize(){
 	camera.Initialize();
 
 	texHandle_ = TextureManager::Load("resources/TitleDemo.png");
-	
+	texHandle_1 = TextureManager::Load("resources/TitleDemoStart.png");
+
 	Sprite::StaticInitialize();
 	sprite_.reset(Sprite::Create(texHandle_,{0,0}));
+	sprite_1.reset(Sprite::Create(texHandle_1, { 0,0 }));
+
 
 
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
+	flag = true;
 }
 
 void TitleScene::Update() {	
@@ -28,18 +32,29 @@ void TitleScene::Update() {
 	camera.UpdateMatrix();
 	Sprite::StaticUpdate();
 
-	sprite_->SetPosition(pos);
-
+	spriteWorldTransform = sprite_->GetWorldTransform();
 
 	if (input_->PushKey(DIK_SPACE)) {
-		sceneNo_ = GAME;
+		flag = false;
 	}
+
+	if (flag == false) {
+		spriteWorldTransform.rotate.x += 0.02f;
+
+	}
+
+	if (spriteWorldTransform.rotate.x >= 1.65f) {
+		sceneNo_ = GAME;
+
+	}
+	sprite_->SetWorldTransform(spriteWorldTransform);
+	sprite_1->SetWorldTransform(spriteWorldTransform);
+
 }
 
 void TitleScene::Draw(){
-//	sprite_->Draw();
-	
-
+	sprite_->Draw();
+	sprite_1->Draw();
 	///デバック場面
 	ImGui::Begin("SPACE");
 	ImGui::Text("ChangeScene");
