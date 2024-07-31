@@ -44,6 +44,10 @@ void GameScene::Initialize(){
 
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
+
+
+	gameTime = 0;
+
 }
 
 void GameScene::Update(){
@@ -78,13 +82,17 @@ void GameScene::Update(){
 
 	}
 
-
+	gameTime++;
+	if (gameTime >= 60 * 20) {
+		sceneNo_ = END;
+	}
 	if (input_->PushKey(DIK_C)) {
 		sceneNo_ = END;
 	}
 }
 
 void GameScene::Draw(){
+#ifdef RELEASE
 	///デバック場面
 	ImGui::Begin("Camera");
 	if (ImGui::TreeNode("worldTransform")) {
@@ -96,6 +104,9 @@ void GameScene::Draw(){
 		ImGui::TreePop();
 	}
 	ImGui::End();
+
+#endif // RELEASE
+
 	//プレイヤーの描画
 	player_->Draw(camera);
 	//敵の描画

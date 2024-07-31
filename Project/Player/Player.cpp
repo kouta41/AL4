@@ -38,15 +38,20 @@ void Player::Initialize() {
 				PlayerCore* newCore = new PlayerCore();
 				// 初期化
 				newCore->Initialize(coreTexHandle_);
-				position_ = { worldTransform_.translate.x,worldTransform_.translate.y,worldTransform_.translate.z };
-				newCore->SetWorldPosition({ worldTransform_.translate.x + (float(j * 2.1 - MAX_PLAYER_CHIPS - 1)), worldTransform_.translate.y - (float(i * 2.1 - MAX_PLAYER_CHIPS - 1)), worldTransform_.translate.z });
+				newCore->SetWorldPosition(
+					{ worldTransform_.translate.x + (float(j * 2.1 - MAX_PLAYER_CHIPS - 1)),
+					worldTransform_.translate.y - (float(i * 2.1 - MAX_PLAYER_CHIPS - 1)),
+					worldTransform_.translate.z });
 				cores_.push_back(newCore);
 			}
 			if (playerLocation_[i][j] == CRUST) {
 				PlayerCrust* newCrust = new PlayerCrust();
 				//初期化
 				newCrust->Initialize(crustTexHandle_);
-				newCrust->SetWorldPosition({ worldTransform_.translate.x + (float(j * 2.1 - MAX_PLAYER_CHIPS - 1)), worldTransform_.translate.y - (float(i * 2.1 - MAX_PLAYER_CHIPS - 1)), worldTransform_.translate.z });
+				newCrust->SetWorldPosition(
+					{ worldTransform_.translate.x + (float(j * 2.1 - MAX_PLAYER_CHIPS - 1)),
+					worldTransform_.translate.y - (float(i * 2.1 - MAX_PLAYER_CHIPS - 1)),
+					worldTransform_.translate.z });
 				crusts_.push_back(newCrust);
 			}
 		}

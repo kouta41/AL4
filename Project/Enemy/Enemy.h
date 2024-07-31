@@ -130,6 +130,13 @@ private: // メンバ変数
 	//デスフラグ
 	bool isDead_ = false;
 
+
+	//ポップフラグ
+	int pop = 0;
+	bool isFire_ = false;
+	int poprand = 0;
+
+
 	Vector3 popPosisin;
 };
 

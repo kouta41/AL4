@@ -56,6 +56,8 @@ void EnemyBullet::Update() {
 
 void EnemyBullet::Draw(const CameraRole& viewProjection_) {
 	model_->Draw(worldTransform_, viewProjection_);
+
+#ifdef RELEASE
 	ImGui::Begin("EnemyBullet");
 	if (ImGui::TreeNode("worldTransform")) {
 		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, 100, 100);
@@ -64,6 +66,9 @@ void EnemyBullet::Draw(const CameraRole& viewProjection_) {
 		ImGui::TreePop();
 	}
 	ImGui::End();
+
+#endif // RELEASE
+
 }
 
 void EnemyBullet::OnCollision(){

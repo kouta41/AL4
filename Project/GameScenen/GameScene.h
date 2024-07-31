@@ -67,4 +67,7 @@ private: // メンバ変数
 	uint32_t texHandle_ = 0;
 	uint32_t SkydometexHandle_ = 0;
 
+	float gameTime = 0;
+
+
 };

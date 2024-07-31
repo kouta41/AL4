@@ -56,6 +56,9 @@ void EndScene::Draw(){
 	sprite_->Draw();
 	//sprite_1->Draw();
 	///デバック場面
+
+#ifdef RELEASE
+
 	ImGui::Begin("SPACE");
 	ImGui::Text("ChangeScene");
 
@@ -71,6 +74,8 @@ void EndScene::Draw(){
 		ImGui::TreePop();
 	}
 	ImGui::End();
+#endif // RELEASE
+
 }
 
 void EndScene::CheckAllCollisions(){

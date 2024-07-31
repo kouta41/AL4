@@ -31,6 +31,8 @@ void PlayerCore::Update(Vector3 velocity){
 void PlayerCore::Draw(CameraRole viewProjection_){
 	model_->Draw(worldTransform_, viewProjection_);
 
+#ifdef RELEASE
+
 	ImGui::Begin("PlayerCore");
 	if (ImGui::TreeNode("worldTransform")) {
 		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, 100, 100);
@@ -39,6 +41,8 @@ void PlayerCore::Draw(CameraRole viewProjection_){
 		ImGui::TreePop();
 	}
 	ImGui::End();
+#endif // RELEASE
+
 
 }
 

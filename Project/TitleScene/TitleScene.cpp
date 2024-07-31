@@ -56,6 +56,8 @@ void TitleScene::Draw(){
 	sprite_->Draw();
 	sprite_1->Draw();
 	///デバック場面
+#ifdef RELEASE
+
 	ImGui::Begin("SPACE");
 	ImGui::Text("ChangeScene");
 
@@ -71,6 +73,9 @@ void TitleScene::Draw(){
 		ImGui::TreePop();
 	}
 	ImGui::End();
+
+#endif // RELEASE
+
 }
 
 void TitleScene::CheckAllCollisions(){

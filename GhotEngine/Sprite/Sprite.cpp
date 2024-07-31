@@ -187,6 +187,8 @@ void Sprite::Draw()
 	// 描画。(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
 	DirectXCommon::GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
 
+#ifdef RELEASE
+
 	ImGui::Begin("worldTransform");
 	if (ImGui::TreeNode("worldTransform")) {
 		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, 100, 100);
@@ -197,5 +199,7 @@ void Sprite::Draw()
 		ImGui::TreePop();
 	}
 	ImGui::End();
+#endif // RELEASE
+
 
 }
