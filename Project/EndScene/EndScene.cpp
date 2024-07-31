@@ -1,19 +1,19 @@
-#include "TitleScene.h"
+#include "EndScene.h"
 #include <Xinput.h>
 
 
 
-TitleScene::TitleScene() {
+EndScene::EndScene() {
 }
 
-TitleScene::~TitleScene() {
+EndScene::~EndScene() {
 }
 
-void TitleScene::Initialize(){
+void EndScene::Initialize(){
 	worldTransform.Initialize();
 	camera.Initialize();
 
-	texHandle_ = TextureManager::Load("resources/TitleDemo.png");
+	texHandle_ = TextureManager::Load("resources/clear.png");
 	texHandle_1 = TextureManager::Load("resources/TitleDemoStart.png");
 
 	Sprite::StaticInitialize();
@@ -27,7 +27,7 @@ void TitleScene::Initialize(){
 	flag = true;
 }
 
-void TitleScene::Update() {	
+void EndScene::Update() {
 	worldTransform.UpdateMatrix();
 	camera.UpdateMatrix();
 	Sprite::StaticUpdate();
@@ -36,6 +36,7 @@ void TitleScene::Update() {
 
 	if (input_->PressedKey(DIK_SPACE)) {
 		flag = false;
+		sceneNo_ = TITLE;
 	}
 
 	if (flag == false) {
@@ -44,7 +45,6 @@ void TitleScene::Update() {
 	}
 
 	if (spriteWorldTransform.rotate.x >= 1.65f) {
-		sceneNo_ = GAME;
 
 	}
 	sprite_->SetWorldTransform(spriteWorldTransform);
@@ -52,9 +52,9 @@ void TitleScene::Update() {
 
 }
 
-void TitleScene::Draw(){
+void EndScene::Draw(){
 	sprite_->Draw();
-	sprite_1->Draw();
+	//sprite_1->Draw();
 	///デバック場面
 	ImGui::Begin("SPACE");
 	ImGui::Text("ChangeScene");
@@ -73,7 +73,7 @@ void TitleScene::Draw(){
 	ImGui::End();
 }
 
-void TitleScene::CheckAllCollisions(){
+void EndScene::CheckAllCollisions(){
 	
 
 }

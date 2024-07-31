@@ -61,6 +61,8 @@ void GameScene::Update(){
 
 	//当たり判定
 	CheckAllCollisions();
+
+
 	XINPUT_STATE joyState{};
 	if (Input::GetInstance()->GetJoystickState(joyState)) {
 		if ((joyState.Gamepad.sThumbLX < CUSTOM_DEADZONE && joyState.Gamepad.sThumbLX > -CUSTOM_DEADZONE) && (joyState.Gamepad.sThumbLY < CUSTOM_DEADZONE && joyState.Gamepad.sThumbLY > -CUSTOM_DEADZONE)) {
@@ -74,6 +76,11 @@ void GameScene::Update(){
 			worldTransform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.1f;
 		}
 
+	}
+
+
+	if (input_->PushKey(DIK_C)) {
+		sceneNo_ = END;
 	}
 }
 

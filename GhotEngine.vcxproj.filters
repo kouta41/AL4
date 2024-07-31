@@ -114,6 +114,7 @@
     <ClCompile Include="GhotEngine\Animation\Animation.cpp" />
     <ClCompile Include="Project\Player\PlayerCore\PlayerCore.cpp" />
     <ClCompile Include="Project\Player\PlayerCrust\PlayerCrust.cpp" />
+    <ClCompile Include="Project\EndScene\EndScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GhotEngine\CameraRole\CameraRole.h">
@@ -320,6 +321,7 @@
     <ClInclude Include="GhotEngine\Animation\Animation.h" />
     <ClInclude Include="Project\Player\PlayerCore\PlayerCore.h" />
     <ClInclude Include="Project\Player\PlayerCrust\PlayerCrust.h" />
+    <ClInclude Include="Project\EndScene\EndScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GhotEngine">
