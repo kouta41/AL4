@@ -28,7 +28,9 @@ void TitleScene::Initialize(){
 
 
 	motion_ = std::make_unique<Motion>();
-	motion_->Initialize("sneakWalk.gltf");
+	motion_->Initialize("simpleSkin.gltf");
+//	motion_->Initialize("sneakWalk.gltf");
+
 	motion_->SetTexHandle(texHandle_);
 	worldTransform.translate = { 0,-0.7f,6.0f };
 
@@ -86,7 +88,7 @@ void TitleScene::Draw(){
 		ImGui::TreePop();
 	}
 	
-	ImGui::DragFloat("animationTime", &animationTime);
+	ImGui::DragFloat("animationTime", &animationTime,0.01f);
 
 	ImGui::End();
 
@@ -94,21 +96,10 @@ void TitleScene::Draw(){
 	if (ImGui::TreeNode("worldTransform")) {
 		ImGui::DragFloat3("translate", &camera.translate.x, 0.1f, 100, 100);
 		ImGui::DragFloat3("rotate", &camera.rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &camera.scale.x, 0.01f, 0, 10);
 		ImGui::TreePop();
 	}
 	ImGui::End();
 	
-	
-	directionalLightData_ = motion_->GetdirectionalLightData();
-	ImGui::Begin("Settings");
-		ImGui::DragFloat4("color", &directionalLightData_->color.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("direction", &directionalLightData_->direction.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat("intensity", &directionalLightData_->intensity, 0.01f, -6.28f, 6.28f);
-
-	ImGui::End();
-
-	motion_->SetdirectionalLightData(directionalLightData_);
 
 
 //	matio_1->Draw(worldTransform1, camera);

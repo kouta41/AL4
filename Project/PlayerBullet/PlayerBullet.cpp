@@ -50,9 +50,9 @@ Vector3 PlayerBullet::GetWorldPosition()
 {
 	Vector3 worldPos;
 
-	worldPos.x = worldTransform_.matWorld.m[3][0];
-	worldPos.y = worldTransform_.matWorld.m[3][1];
-	worldPos.z = worldTransform_.matWorld.m[3][2];
+	worldPos.x = worldTransform_.world.m[3][0];
+	worldPos.y = worldTransform_.world.m[3][1];
+	worldPos.z = worldTransform_.world.m[3][2];
 
 	return worldPos;
 }

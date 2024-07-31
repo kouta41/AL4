@@ -566,6 +566,12 @@ Property GraphicsPipeline::CreateSkinng(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
 	descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
+	// DescriptorRange
+	D3D12_DESCRIPTOR_RANGE descriptorRangeTextureCube[1] = {};
+	descriptorRangeTextureCube[0].BaseShaderRegister = 0; // 0から始まる
+	descriptorRangeTextureCube[0].NumDescriptors = 2; // 数は1つ
+	descriptorRangeTextureCube[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
+	descriptorRangeTextureCube[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
 	D3D12_DESCRIPTOR_RANGE descriptorRangeForSkininng[1] = {};
 	descriptorRangeForSkininng[0].BaseShaderRegister = 0; // 0から始まる
@@ -577,7 +583,7 @@ Property GraphicsPipeline::CreateSkinng(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	// RootParameter作成
 	D3D12_ROOT_PARAMETER rootParameters[8] = {};
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // pixelshaderを使う
 	rootParameters[0].Descriptor.ShaderRegister = 0;
 
 	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
@@ -594,7 +600,7 @@ Property GraphicsPipeline::CreateSkinng(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	rootParameters[3].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange); // Tableで利用する数
 
 	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptortableを使う
-	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX; // PixelShaderで使う
+	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX; 
 	rootParameters[4].DescriptorTable.pDescriptorRanges = descriptorRangeForSkininng; // Tableの中身の配列を指定
 	rootParameters[4].DescriptorTable.NumDescriptorRanges = _countof(descriptorRangeForSkininng); // Tableで利用する数
 
@@ -611,6 +617,9 @@ Property GraphicsPipeline::CreateSkinng(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	rootParameters[7].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV; // CBVを使う
 	rootParameters[7].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // pixelshaderを使う
 	rootParameters[7].Descriptor.ShaderRegister = 3; // レジスタ番号2を使う
+
+
+	
 
 	descriptionRootSignature.pParameters = rootParameters;
 	descriptionRootSignature.NumParameters = _countof(rootParameters);

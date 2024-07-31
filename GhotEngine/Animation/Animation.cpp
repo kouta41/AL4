@@ -354,16 +354,24 @@ void Motion::CreateResource(){
     resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
     materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
     materialData_->enableLighting = true;
-    materialData_->shininess = 70.0f;
+    materialData_->shininess = 10.0f;
+    materialData_->environmentCoefficient = 1.0f;
+
+
+    //カメラリソース
+    resource_.cameraResource = CreateResource::CreateBufferResource(sizeof(CameraRole));
+    resource_.cameraResource->Map(0, nullptr, reinterpret_cast<void**>(&cameraData_));
+
 
     // 平行光源用のリソース
     resource_.directionalLightResource = CreateResource::CreateBufferResource(sizeof(DirectionalLight));
     // 書き込むためのアドレスを取得
     resource_.directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
-    directionalLightData_->color = { color_ };
-    directionalLightData_->direction = Normalize({ 0.0f, -1.0f, 0.0f });
+    directionalLightData_->color = { 1.0f, 1.0f, 1.0f, 1.0f };
+    directionalLightData_->direction = { 0.0f, -1.0f, 0.0f };
     directionalLightData_->intensity = 1.0f;
-  //  resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
+    
+
 
 
      // 点光源用のリソース
@@ -459,16 +467,20 @@ void Motion::Draw(WorldTransform& worldTransform, CameraRole& camera) {
 
     DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+   worldTransform.sTransferMatrix(camera);
+   cameraData_->worldPosition = camera.worldPos_;
 
-   // worldTransform.TransferMatrix(resource_.wvpResource, camera);
+ //  cameraData_->worldPosition = worldTransform.translate;
    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
-   DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.constBuff->GetGPUVirtualAddress());
+   DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.wvpResource->GetGPUVirtualAddress());
    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, camera.constBuff_->GetGPUVirtualAddress());
    auto test = SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle_);
    DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle_));
-
    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.directionalLightResource->GetGPUVirtualAddress());
+   
    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(6, camera.constBuff_->GetGPUVirtualAddress());
+  // DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(6, resource_.cameraResource->GetGPUVirtualAddress());
+   
    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(7, resource_.pointLightResource->GetGPUVirtualAddress());
 
 
@@ -487,4 +499,37 @@ void Motion::Draw(WorldTransform& worldTransform, CameraRole& camera) {
     // 描画。(DrawCall/ドローコール)。
     DirectXCommon::GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1, 0, 0, 0);
 
+
+#ifdef _DEBUG
+    if (ImGui::TreeNode("Model")) {
+        // マテリアル;
+        if (ImGui::TreeNode("materialData")) {
+            ImGui::DragFloat4("Color", &materialData_->color.x, 0.01f, 0.0f, 1.0f);
+            ImGui::TreePop();// ノードを閉じる(この場合は "マテリアル" を閉じる)
+        }
+        if (ImGui::TreeNode("directionalLightData")) {
+            ImGui::Checkbox("Lighting Flag", &isLighting_);
+            // Lightingの設定を変更できるように
+            materialData_->enableLighting = isLighting_;
+            ImGui::DragFloat("Shininess", &materialData_->shininess, 0.05f, 0.0f, 1.0f);
+            ImGui::DragFloat4("Color", &directionalLightData_->color.x);
+            ImGui::DragFloat3("Directon", &directionalLightData_->direction.x, 0.1f, 0.0f, 1.0f);
+            ImGui::DragFloat("Intensity", &directionalLightData_->intensity, 0.1f, 0.0f, 1.0f);
+            ImGui::TreePop();
+        }
+        if (ImGui::TreeNode("EnvironmentCoefficient")) {
+            ImGui::DragFloat("EnvironmentCoefficient", &materialData_->environmentCoefficient, 0.01f, 0.0f, 1.0f);
+            ImGui::TreePop();// ノードを閉じる(この場合は "マテリアル" を閉じる)
+        }
+
+        if (ImGui::TreeNode("cameraData")) {
+            ImGui::DragFloat3("cameraData", &cameraData_->worldPosition.x, 0.1f, -100.0f, 100.0f);
+            ImGui::TreePop();// ノードを閉じる(この場合は "マテリアル" を閉じる)
+        }
+
+       
+        ImGui::TreePop();
+    }
+
+#endif // _DEBUG
 }

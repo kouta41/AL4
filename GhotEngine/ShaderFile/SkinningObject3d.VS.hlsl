@@ -2,7 +2,7 @@
 
 struct TransformationMatrix
 {
-    float32_t4x4 matWorld;
+    float32_t4x4 WVP;
     float32_t4x4 world;
     float32_t4x4 WorldInverseTranspose;
 };
@@ -66,12 +66,12 @@ Skinned Skinning(VertexShaderInput input)
 VertexShaderOutput main(VertexShaderInput input)
 {
     VertexShaderOutput output;
-    float32_t4x4 wvp = mul(gTransformationMatrix.matWorld, mul(gCameraMatrix.view, gCameraMatrix.projection));
+    //float32_t4x4 wvp = mul(gTransformationMatrix.matWorld, mul(gCameraMatrix.view, gCameraMatrix.projection));
     Skinned skinned = Skinning(input);
     // Skinning結果を使って変換
-    output.position = mul(skinned.position, wvp);
+    output.position = mul(skinned.position, gTransformationMatrix.WVP);
+    output.worldPosition = mul(skinned.position, gTransformationMatrix.world).xyz;
     output.texcoord = input.texcoord;
     output.normal = normalize(mul(skinned.normal, (float32_t3x3) gTransformationMatrix.WorldInverseTranspose));
-    output.worldPosition = mul(skinned.position, gTransformationMatrix.world).xyz;
     return output;
 }

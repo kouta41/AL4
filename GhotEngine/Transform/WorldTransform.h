@@ -7,13 +7,15 @@
 #include "CameraRole.h"
 
 
+//struct TransformationMatrix {
+//	Matrix4x4 WVP;
+//	Matrix4x4 World;
+//	Matrix4x4 WorldInverseTranspose;
+//};
+
+
 struct TransformationMatrix {
-	Matrix4x4 WVP;
-	Matrix4x4 World;
-	Matrix4x4 WorldInverseTranspose;
-};
-struct ConstBufferDataWorldTransform {
-	Matrix4x4 matWorld; // ローカル → ワールド変換行列
+	Matrix4x4 WVP; // ローカル → ワールド変換行列
 	Matrix4x4 world; // world
 	Matrix4x4 WorldInverseTranspose;//worldの逆行列
 };
@@ -21,9 +23,9 @@ struct ConstBufferDataWorldTransform {
 
 struct WorldTransform {
 	// 定数バッファ
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuff;
+	Microsoft::WRL::ComPtr<ID3D12Resource> wvpResource;
 	// マッピング済みアドレス
-	ConstBufferDataWorldTransform* constMap = nullptr;
+	TransformationMatrix* wvpData = nullptr;
 	// ローカルスケール
 	Vector3 scale = { 1.0f, 1.0f, 1.0f };
 	// X,Y,Z軸回りのローカル回転角
@@ -35,7 +37,9 @@ struct WorldTransform {
 	// world
 	Matrix4x4 world;
 	// ローカル → ワールド変換行列
-	Matrix4x4 matWorld;
+	Matrix4x4 WVP;
+
+	Matrix4x4 WorldInverseTranspose;
 	// 親となるワールド変換へのポインタ
 	const WorldTransform* parent = nullptr;
 
@@ -58,6 +62,20 @@ struct WorldTransform {
 	/// 行列を転送する
 	/// </summary>
 	void TransferMatrix();
+
+
+	/// <summary>
+	/// 行列を転送する
+	/// </summary>
+	void sTransferMatrix(CameraRole camera);
+
+
+	/// <summary>
+	/// ワールド行列を返す
+	/// </summary>
+	/// <returns></returns>
+	Matrix4x4 GetWorldMatrix() const;
+
 
 	/// <summary>
 	/// 行列の更新

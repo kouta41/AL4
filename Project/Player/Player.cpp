@@ -116,7 +116,7 @@ void Player::Attack(){
 		velocity = Normalize(velocity);
 		velocity = Multiply(kBulletSpeed, velocity);
 		// プレイヤーの向きに速度を合わせる
-		velocity = TransformNormal(velocity, worldTransform_.matWorld);
+		velocity = TransformNormal(velocity, worldTransform_.world);
 		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(texHandleBullet_, worldTransform_.translate, velocity);
@@ -149,9 +149,9 @@ void Player::OnCollision(){
 Vector3 Player::GetWorldPosition(){
 	Vector3 worldPos;
 
-	worldPos.x = worldTransform_.matWorld.m[3][0];
-	worldPos.y = worldTransform_.matWorld.m[3][1];
-	worldPos.z = worldTransform_.matWorld.m[3][2];
+	worldPos.x = worldTransform_.world.m[3][0];
+	worldPos.y = worldTransform_.world.m[3][1];
+	worldPos.z = worldTransform_.world.m[3][2];
 
 	return worldPos;
 }
@@ -161,9 +161,9 @@ Vector3 Player::GetWorldPosition3DReticle()
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
 	// ワールド行列の平行移動成分を取得（ワールド座標）
-	worldPos.x = worldTransform3DReticle_.matWorld.m[3][0];
-	worldPos.y = worldTransform3DReticle_.matWorld.m[3][1];
-	worldPos.z = worldTransform3DReticle_.matWorld.m[3][2];
+	worldPos.x = worldTransform3DReticle_.world.m[3][0];
+	worldPos.y = worldTransform3DReticle_.world.m[3][1];
+	worldPos.z = worldTransform3DReticle_.world.m[3][2];
 
 	return worldPos;
 }

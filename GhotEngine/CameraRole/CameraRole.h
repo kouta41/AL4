@@ -22,40 +22,37 @@ struct CameraRole {
 
 	// 定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuff_;
-	Microsoft::WRL::ComPtr<ID3D12Resource> sConstBuff;
 	// マッピング済みアドレス
 	ConstBufferDataViewProjection* constMap = nullptr;
-	ConstBufferDataViewProjectionSprite* sConstMap = nullptr;
 
-
-
-#pragma region	ビュー行列の設定
-
-	Vector3 scale = { 1.0f,1.0f,1.0f };
-	Vector3 rotate = { 0,0,0 };
-	Vector3 translate = { 0,0,-60.0f };
-
+#pragma region ビュー行列の設定
+	// X,Y,Z軸回りのローカル回転角
+	Vector3 rotate = { 0, 0, 0 };
+	// ローカル座標
+	Vector3 translate = { 0, 0, -50 };
+	//ワールド座標
+	Vector3 worldPos_ = {};
 #pragma endregion
 
 #pragma region 射影行列の設定
-
-	float fov = 0.45f;
+	// 垂直方向視野角
+	float fovAngleY = 45.0f * 3.141592654f / 180.0f;
 	// ビューポートのアスペクト比
 	float aspectRatio = (float)16 / 9;
 	// 深度限界（手前側）
 	float nearZ = 0.1f;
 	// 深度限界（奥側）
 	float farZ = 1000.0f;
-
 #pragma endregion
 
 	// ビュー行列
-	Matrix4x4 matView = {};
-	Matrix4x4 sMatView = {};
+	Matrix4x4 matView;
 	// 射影行列
-	Matrix4x4 matProjection = {};
-	Matrix4x4 sMatProjection = {};
+	Matrix4x4 matProjection;
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Initialize();
 	/// <summary>
 	/// 定数バッファ生成
@@ -73,4 +70,12 @@ struct CameraRole {
 	/// 行列を転送する
 	/// </summary>
 	void TransferMatrix();
+	/// <summary>
+	/// ビュー行列を更新する
+	/// </summary>
+	void UpdateViewMatrix();
+	/// <summary>
+	/// 射影行列を更新する
+	/// </summary>
+	void UpdateProjectionMatrix();
 };

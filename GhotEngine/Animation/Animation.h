@@ -134,6 +134,7 @@ public:
 
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 
+
 	void SetanimationTime(float animationTime) { animationTime_ = animationTime; }
 
 
@@ -170,6 +171,13 @@ private:
 	Vector4 color_ = {1.0f,1.0f,1.0f,1.0f};
 	DirectionalLight* directionalLightData_ = nullptr;
 	PointLight* PointLightData_ = nullptr;
+	CameraForGPU* cameraData_ = nullptr;
+
+	TransformationMatrix* TransformationMatrixData = nullptr;
+
+	CameraRole* camera;
+	// 平行光線の適用をImGuiで操作する用のフラグ
+	bool isLighting_ = true;
 };
 
 ///モデルの所と統合するかもしれ

@@ -32,7 +32,7 @@ VertexShaderOutput main(VertexShaderInput input)
     float32_t4x4 wvp = mul(gTransformationMatrix.matWorld, mul(gCameraMatrix.view, gCameraMatrix.projection));
     output.position = mul(input.position, wvp);
     output.texcoord = input.texcoord;
-    output.normal = normalize(mul(input.normal, (float32_t3x3) gTransformationMatrix.WorldInverseTranspose));
+    output.normal = normalize(mul(input.normal, (float32_t3x3) gTransformationMatrix.world));
     output.worldPosition = mul(input.position, gTransformationMatrix.world).xyz;
     return output;
 }

@@ -15,11 +15,11 @@ void RailCamera::Update(){
 	
 	//移動（ベクトルを加算）
 	worldTransform_.translate.z -= 0.05f; 
-	worldTransform_.matWorld = MakeAffineMatrix(worldTransform_.scale, worldTransform_.rotate, worldTransform_.translate);
+	worldTransform_.world = MakeAffineMatrix(worldTransform_.scale, worldTransform_.rotate, worldTransform_.translate);
 
 	//viewProjection_.translate.z += 1.0f;
 	//カメラオブジェクトのワールド行列からビュー行列を計算する
-	viewProjection_.matView = Inverse(worldTransform_.matWorld);
+	viewProjection_.matView = Inverse(worldTransform_.world);
 
 	ImGui::Begin("Camera");
 	if (ImGui::TreeNode("worldTransform")) {
