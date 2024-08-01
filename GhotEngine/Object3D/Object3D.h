@@ -28,6 +28,7 @@ private:
 	Resource resource_ = {};
 	Material* materialData_ = nullptr;
 	DirectionalLight* directionalLightData_ = nullptr;
+	CameraForGPU* cameraData_ = nullptr;
 	Property property_{};
 	uint32_t texHandle_ = 0;
 	Vector4 color_ = {};

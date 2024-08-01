@@ -354,13 +354,14 @@ void Motion::CreateResource(){
     resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
     materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
     materialData_->enableLighting = true;
-    materialData_->shininess = 10.0f;
+    materialData_->shininess = 1.0f;
     materialData_->environmentCoefficient = 1.0f;
 
 
     //カメラリソース
-    resource_.cameraResource = CreateResource::CreateBufferResource(sizeof(CameraRole));
+    resource_.cameraResource = CreateResource::CreateBufferResource(sizeof(CameraForGPU));
     resource_.cameraResource->Map(0, nullptr, reinterpret_cast<void**>(&cameraData_));
+    cameraData_->worldPosition = { 0,0,0 };
 
 
     // 平行光源用のリソース
@@ -474,17 +475,18 @@ void Motion::Draw(WorldTransform& worldTransform, CameraRole& camera) {
    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.wvpResource->GetGPUVirtualAddress());
    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, camera.constBuff_->GetGPUVirtualAddress());
-   auto test = SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle_);
+   SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle_);
    DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle_));
    DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.directionalLightResource->GetGPUVirtualAddress());
    
-   DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(6, camera.constBuff_->GetGPUVirtualAddress());
+
+   DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(6, resource_.cameraResource->GetGPUVirtualAddress());
   // DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(6, resource_.cameraResource->GetGPUVirtualAddress());
    
-   DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(7, resource_.pointLightResource->GetGPUVirtualAddress());
+   //DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(7, resource_.pointLightResource->GetGPUVirtualAddress());
 
 
-   ApplyAnimation(skeleton_, animation_,animationTime_);
+ // ApplyAnimation(skeleton_, animation_,animationTime_);
     SkeletonUpdate(skeleton_);
     SkinClusterUpdate(skinCluster_, skeleton_);
 

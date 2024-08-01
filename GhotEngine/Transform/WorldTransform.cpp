@@ -41,7 +41,7 @@ void WorldTransform::TransferMatrix()
 }
 
 void WorldTransform::sTransferMatrix(CameraRole camera){
-	wvpData->WVP = Multiply(GetWorldMatrix(), Multiply( camera.matProjection,camera.matView));
+	wvpData->WVP = Multiply(GetWorldMatrix(), Multiply( camera.matView,camera.matProjection));
 	wvpData->world = GetWorldMatrix();
 	wvpData->WorldInverseTranspose = Inverse(GetWorldMatrix());
 

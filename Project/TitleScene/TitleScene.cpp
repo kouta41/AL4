@@ -29,7 +29,7 @@ void TitleScene::Initialize(){
 
 	motion_ = std::make_unique<Motion>();
 	motion_->Initialize("simpleSkin.gltf");
-//	motion_->Initialize("sneakWalk.gltf");
+	//motion_->Initialize("walk.gltf");
 
 	motion_->SetTexHandle(texHandle_);
 	worldTransform.translate = { 0,-0.7f,6.0f };
@@ -39,7 +39,10 @@ void TitleScene::Initialize(){
 
 	camera.translate={ 0,0,0};
 
-
+	model_ = std::make_unique<Object3DPlacer>();
+	model_->Initialize();
+	model_->SetModel("cube.obj");
+	model_->SetTexHandle(texHandle_);
 	
 }
 
@@ -93,7 +96,7 @@ void TitleScene::Draw(){
 	ImGui::End();
 
 	ImGui::Begin("Camera");
-	if (ImGui::TreeNode("worldTransform")) {
+	if (ImGui::TreeNode("transform")) {
 		ImGui::DragFloat3("translate", &camera.translate.x, 0.1f, 100, 100);
 		ImGui::DragFloat3("rotate", &camera.rotate.x, 0.01f, -6.28f, 6.28f);
 		ImGui::TreePop();
@@ -104,7 +107,9 @@ void TitleScene::Draw(){
 
 //	matio_1->Draw(worldTransform1, camera);
 	motion_->Draw(worldTransform,camera);
-//	model_->Draw(worldTransform, camera);
 
 	Skybox_->Draw(worldTransform1, camera, SkyboxTex_);
+
+	model_->Draw(worldTransform, camera);
+
 }

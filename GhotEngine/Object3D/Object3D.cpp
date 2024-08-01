@@ -5,8 +5,9 @@ void Object3DPlacer::Initialize()
 	resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
 	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	materialData_->enableLighting = false;
-	materialData_->shininess = 70.0f;
+	materialData_->enableLighting = true;
+	materialData_->shininess = 1.0f;
+	materialData_->environmentCoefficient = 1.0f;
 
 	// 平行光源用のリソース
 	resource_.directionalLightResource = CreateResource::CreateBufferResource(sizeof(DirectionalLight));
@@ -17,6 +18,13 @@ void Object3DPlacer::Initialize()
 	directionalLightData_->intensity = 1.0f;
 
 	resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
+
+
+	//カメラリソース
+	resource_.cameraResource = CreateResource::CreateBufferResource(sizeof(CameraForGPU));
+	resource_.cameraResource->Map(0, nullptr, reinterpret_cast<void**>(&cameraData_));
+	cameraData_->worldPosition = { 0,0,0 };
+
 }
 
 void Object3DPlacer::Draw(WorldTransform worldTransform, CameraRole camera)
@@ -39,6 +47,8 @@ void Object3DPlacer::Draw(WorldTransform worldTransform, CameraRole camera)
 	//worldTransform.TransferMatrix();
 	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle_));
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(4, resource_.directionalLightResource->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.cameraResource->GetGPUVirtualAddress());
+
 
 
 	if (model_) {

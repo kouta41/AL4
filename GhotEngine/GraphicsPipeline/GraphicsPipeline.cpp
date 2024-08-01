@@ -146,9 +146,7 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 	rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // pixelshaderを使う
 	rootParameters[5].Descriptor.ShaderRegister = 2; // レジスタ番号2を使う
 
-	rootParameters[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV; // CBVを使う
-	rootParameters[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // pixelshaderを使う
-	rootParameters[6].Descriptor.ShaderRegister = 3; // レジスタ番号2を使う
+
 
 
 	descriptionRootSignature.pParameters = rootParameters;
@@ -581,7 +579,7 @@ Property GraphicsPipeline::CreateSkinng(Microsoft::WRL::ComPtr<ID3D12Device> dev
 
 
 	// RootParameter作成
-	D3D12_ROOT_PARAMETER rootParameters[8] = {};
+	D3D12_ROOT_PARAMETER rootParameters[7] = {};
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // pixelshaderを使う
 	rootParameters[0].Descriptor.ShaderRegister = 0;
@@ -614,9 +612,6 @@ Property GraphicsPipeline::CreateSkinng(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	rootParameters[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // pixelshaderを使う
 	rootParameters[6].Descriptor.ShaderRegister = 2; // レジスタ番号2を使う
 
-	rootParameters[7].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV; // CBVを使う
-	rootParameters[7].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // pixelshaderを使う
-	rootParameters[7].Descriptor.ShaderRegister = 3; // レジスタ番号2を使う
 
 
 	
