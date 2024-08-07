@@ -22,6 +22,12 @@ public:
 	// directionalLightの設定
 	DirectionalLight SetLightingProperty(DirectionalLight directionalLight) { return *directionalLightData_ = directionalLight; }
 
+	void SetPosition(Vector3 pos) { worldTransform_.translate = pos; }
+	void SetRotation(Vector3 rot) { worldTransform_.rotate = rot; }
+	void SetScale(Vector3 scale) { worldTransform_.scale = scale; }
+
+	void SetWorldTransform(WorldTransform worldTransform) { worldTransform_ = worldTransform; }
+
 
 private:
 	Model* model_ = nullptr;
@@ -32,5 +38,6 @@ private:
 	Property property_{};
 	uint32_t texHandle_ = 0;
 	Vector4 color_ = {};
+	WorldTransform worldTransform_;
 //	Lighting* lighting_{};
 };

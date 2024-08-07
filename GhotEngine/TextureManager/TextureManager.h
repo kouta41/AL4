@@ -25,7 +25,6 @@ public:
 	/// </summary>
 	static uint32_t Load(const std::string& fileName);
 
-
 	// get
 	const DirectX::TexMetadata& GetMetaData(uint32_t textureIndex);
 
@@ -36,6 +35,7 @@ private:
 	TextureManager& operator=(const TextureManager&) = delete;
 
 	static DirectX::ScratchImage LoadTexture(const std::string& filePath);
+
 
 	static void  LoadTexture(const std::string& filePath, uint32_t index);
 

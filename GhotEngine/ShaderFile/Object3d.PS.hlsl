@@ -100,7 +100,7 @@ PixelShaderOutput main(VertexShaderOutput input)
         float32_t3 refrectedVector = reflect(cameraToPosition, normalize(input.normal));
         float32_t4 enviromentColor = gEnvironmentTexture.Sample(gSampler, refrectedVector);
         // 計算結果を適用する
-        output.color.rgb = enviromentColor.rgb;
+      //  output.color.rgb = enviromentColor.rgb;
       //  output.color.rgb += enviromentColor.rgb * gMaterial.environmentCoefficient;
         
     }

@@ -13,6 +13,8 @@ TitleScene::~TitleScene() {
 void TitleScene::Initialize(){
 	worldTransform.Initialize();
 	worldTransform1.Initialize();
+	worldTransform2.Initialize();
+
 	camera.Initialize();
 
 	texHandle_ = TextureManager::Load("resources/white.png");
@@ -20,6 +22,7 @@ void TitleScene::Initialize(){
 
 	ModelManager::LoadObjModel("cube.obj");
 	ModelManager::LoadObjModel("skydome.obj");
+
 
 	//自キャラの生成
 	player_ = std::make_unique<Player>();
@@ -43,6 +46,16 @@ void TitleScene::Initialize(){
 	model_->Initialize();
 	model_->SetModel("cube.obj");
 	model_->SetTexHandle(texHandle_);
+
+	model_2 = std::make_unique<Object3DPlacer>();
+	model_2->Initialize();
+	model_2->SetModel("cube.obj");
+	model_2->SetTexHandle(texHandle_);
+	worldTransform2.translate = { 0,-0.7f,6.0f };
+
+	json_ = std::make_unique<Json>();
+	levelData_ = json_->LoadJson("level");
+	json_->Adoption(levelData_);
 	
 }
 
@@ -54,7 +67,11 @@ void TitleScene::Update() {
 
 	worldTransform.UpdateMatrix();
 	worldTransform1.UpdateMatrix();
+	worldTransform2.UpdateMatrix();
 	camera.UpdateMatrix();
+
+	json_->Update();
+	//camera.worldPos_ = json_->GetCamera().worldPos_;
 
 	//プレイヤーの更新
 	player_->Update();
@@ -78,6 +95,7 @@ void TitleScene::Update() {
 
 void TitleScene::Draw(){
 
+	
 	///デバック場面
 
 	//プレイヤーの描画
@@ -103,11 +121,19 @@ void TitleScene::Draw(){
 	ImGui::DragFloat("animationTime", &animationTime, 0.01f);
 	ImGui::End();
 
-//	matio_1->Draw(worldTransform1, camera);
-	motion_->Draw(worldTransform,camera);
 
-	Skybox_->Draw(worldTransform1, camera, SkyboxTex_);
+//	json_->Draw(camera);
+
+
+//	matio_1->Draw(worldTransform1, camera);
+
+	//motion_->Draw(worldTransform,camera);
+
+	//Skybox_->Draw(worldTransform1, camera, SkyboxTex_);
 
 	model_->Draw(worldTransform, camera);
+
+
+	model_2->Draw(worldTransform2, camera);
 
 }

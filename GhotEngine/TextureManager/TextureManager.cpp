@@ -23,6 +23,7 @@ uint32_t TextureManager::Load(const std::string& fileName) {
 }
 
 
+
 DirectX::ScratchImage TextureManager::LoadTexture(const std::string& filePath) {
 	// テクスチャファイルを読んでプログラムで扱えるようにする
 	DirectX::ScratchImage image{};
@@ -51,6 +52,8 @@ DirectX::ScratchImage TextureManager::LoadTexture(const std::string& filePath) {
 	// ミニマップ付きのデータを返す
 	return mipImages;
 }
+
+
 
 void TextureManager::LoadTexture(const std::string& filePath, uint32_t index)
 {
@@ -121,6 +124,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> TextureManager::UploadTextureData(Microso
 	return intermediateResource;
 
 }
+
 
 const DirectX::TexMetadata& TextureManager::GetMetaData(uint32_t textureIndex)
 {

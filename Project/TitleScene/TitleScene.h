@@ -9,6 +9,7 @@
 #include "Animation/Animation.h"
 #include "Skybox/Skybox.h"
 #include "Player.h"
+#include "Json.h"
 
 class TitleScene : public IScene
 {
@@ -26,6 +27,7 @@ public:
 private:
 	WorldTransform worldTransform;
 	WorldTransform worldTransform1;
+	WorldTransform worldTransform2;
 
 	CameraRole camera;
 
@@ -37,6 +39,12 @@ private:
 //	Skeleton skeleton{};
 	std::unique_ptr<Motion> motion_;
 	std::unique_ptr<Object3DPlacer> model_;
+
+	std::unique_ptr<Object3DPlacer> model_2;
+
+
+	std::unique_ptr<Json> json_;
+	LevelData* levelData_ = nullptr;
 	//	std::unique_ptr<Matio> matio_1;
 	//std::unique_ptr<Model> model_1;
 

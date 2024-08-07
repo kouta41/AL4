@@ -30,6 +30,8 @@ struct CameraRole {
 	Vector3 rotate = { 0, 0, 0 };
 	// ローカル座標
 	Vector3 translate = { 0, 0, -50 };
+	//スケール
+	Vector3 scale = { 0,0,0 };
 	//ワールド座標
 	Vector3 worldPos_ = {};
 #pragma endregion
