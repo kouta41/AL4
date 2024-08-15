@@ -167,7 +167,7 @@ Vector3 Player::GetWorldPosition(){
 
 Vector3 Player::GetPlayerCoreWorldPosition()
 {
-	Vector3 worldPos;
+	Vector3 worldPos{};
 
 	for (PlayerCore* core_ : cores_) {
 		worldPos = core_->GetWorldPosition();

@@ -61,7 +61,7 @@ void Enemy::Update(){
 		//LockonFire();
 	}
 
-	pop++;
+	//pop++;
 	if(pop >= 30) {
 		pop = 0;
 	poprand = rand() % 6 + 1;
