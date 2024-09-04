@@ -44,7 +44,7 @@ void TitleScene::Update() {
 	}
 
 	if (spriteWorldTransform.rotate.x >= 1.65f) {
-		sceneNo_ = GAME;
+		sceneNo_ = SELECT;
 
 	}
 	sprite_->SetWorldTransform(spriteWorldTransform);

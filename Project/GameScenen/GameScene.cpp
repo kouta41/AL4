@@ -48,10 +48,50 @@ void GameScene::Initialize(){
 
 	gameTime = 0;
 
+
+	worldTransform_1.Initialize();
+	worldTransform_2.Initialize();
+	worldTransform_3.Initialize();
+	worldTransform_4.Initialize();
+
+	model_1 = std::make_unique<Object3DPlacer>();
+	model_1->Initialize();
+	model_1->SetModel("cube.obj");
+	model_1->SetTexHandle(texHandle_);
+	worldTransform_1.translate = { 30,0,0 };
+	worldTransform_1.scale = { 1,15,1 };
+
+	model_2 = std::make_unique<Object3DPlacer>();
+	model_2->Initialize();
+	model_2->SetModel("cube.obj");
+	model_2->SetTexHandle(texHandle_);
+	worldTransform_2.translate = { -30,0,0 };
+	worldTransform_2 .scale = { 1,15,1 };
+
+
+	model_3 = std::make_unique<Object3DPlacer>();
+	model_3->Initialize();
+	model_3->SetModel("cube.obj");
+	model_3->SetTexHandle(texHandle_);
+	worldTransform_3.translate = { 0,-15,0 };
+	worldTransform_3.scale = { 30,1,1 };
+
+	model_4 = std::make_unique<Object3DPlacer>();
+	model_4->Initialize();
+	model_4->SetModel("cube.obj");
+	model_4->SetTexHandle(texHandle_);
+	worldTransform_4.translate = { 0,15,0 };
+	worldTransform_4.scale = { 30,1,1, };
+
 }
 
 void GameScene::Update(){
 	worldTransform.UpdateMatrix();
+	worldTransform_1.UpdateMatrix();
+	worldTransform_2.UpdateMatrix();
+	worldTransform_3.UpdateMatrix();
+	worldTransform_4.UpdateMatrix();
+
 	camera.UpdateMatrix();
 	//天球の更新
 	skydome_->Update();
@@ -112,6 +152,11 @@ void GameScene::Draw(){
 	//敵の描画
 	enemy_->Draw(camera);
 
+	model_1->Draw(worldTransform_1, camera);
+	model_2->Draw(worldTransform_2, camera);
+	model_3->Draw(worldTransform_3, camera);
+	model_4->Draw(worldTransform_4, camera);
+	
 	//天球の描画
 	skydome_->Draw(camera);
 }

@@ -20,17 +20,68 @@ void Player::Initialize() {
 	crustTexHandle_= TextureManager::Load("resources/uvChecker.png");
 
 
+	select_ = std::make_unique<SelectionScenen>();
+
 	// 7×7のプレイヤーのデータ
+	
+
+	/*ステージ１
+	{0,0,0,0,0,0,0},
+	{0,2,1,1,1,2,0},
+	{0,2,2,2,2,2,0},
+	{0,2,2,1,2,2,0},
+	{0,2,2,2,2,2,0},
+	{0,0,0,0,0,0,0},
+	{0,0,0,0,0,0,0},
+	*/
+
+	/*ステージ２
+	{0,0,0,0,0,0,0},
+	{0,2,2,2,2,2,0},
+	{0,2,1,2,1,2,0},
+	{0,2,2,1,2,2,0},
+	{0,2,1,2,1,2,0},
+	{0,2,2,2,2,2,0},
+	{0,0,0,0,0,0,0},	
+	*/
+
 	playerLocation_ =
 	{
 		{0,0,0,0,0,0,0},
-		{0,2,1,1,1,2,0},
-		{0,2,2,2,2,2,0},
-		{0,2,2,1,2,2,0},
-		{0,2,2,2,2,2,0},
-		{0,0,0,0,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,0,1,2,1,0,0},
+		{0,0,2,2,2,0,0},
+		{0,2,1,2,1,2,0},
+		{0,2,2,0,2,2,0},
 		{0,0,0,0,0,0,0},
 	};
+
+
+	if (select_->GetselectCount() == 1) {
+		playerLocation_ =
+		{
+			{0,0,0,0,0,0,0},
+			{0,2,1,0,0,0,0},
+			{0,2,2,0,0,0,0},
+			{0,2,2,0,0,0,0},
+			{0,2,2,0,0,0,0},
+			{0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0},
+		};
+	}
+
+	if (select_->GetselectCount() == 2) {
+		playerLocation_ =
+		{
+			{0,0,0,0,0,0,0},
+			{0,2,1,1,0,0,0},
+			{0,2,2,2,0,0,0},
+			{0,2,2,1,0,0,0},
+			{0,2,2,2,0,0,0},
+			{0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0},
+		};
+	}
 
 	for (int i = 0; i < MAX_PLAYER_CHIPS; ++i) {
 		for (int j = 0; j < MAX_PLAYER_CHIPS; ++j) {
@@ -68,6 +119,43 @@ void Player::Initialize() {
 
 
 	ModelManager::LoadObjModel("cube.obj");
+
+	texHandle_ = TextureManager::Load("resources/white.png");
+
+	worldTransform_1.Initialize();
+	worldTransform_2.Initialize();
+	worldTransform_3.Initialize();
+	worldTransform_4.Initialize();
+
+
+	model_1 = std::make_unique<Object3DPlacer>();
+	model_1->Initialize();
+	model_1->SetModel("cube.obj");
+	model_1->SetTexHandle(texHandle_);
+	worldTransform_1.translate = { 10,5,0 };
+	worldTransform_1.scale = { 1,1,1 };
+
+	model_2 = std::make_unique<Object3DPlacer>();
+	model_2->Initialize();
+	model_2->SetModel("cube.obj");
+	model_2->SetTexHandle(texHandle_);
+	worldTransform_2.translate = { -10,-5,0 };
+	worldTransform_2.scale = { 1,1,1 };
+
+
+	model_3 = std::make_unique<Object3DPlacer>();
+	model_3->Initialize();
+	model_3->SetModel("cube.obj");
+	model_3->SetTexHandle(texHandle_);
+	worldTransform_3.translate = { 4,-10,0 };
+	worldTransform_3.scale = { 1,1,1 };
+
+	model_4 = std::make_unique<Object3DPlacer>();
+	model_4->Initialize();
+	model_4->SetModel("cube.obj");
+	model_4->SetTexHandle(texHandle_);
+	worldTransform_4.translate = { -4,10,0 };
+	worldTransform_4.scale = { 1,1,1, };
 	
 }
 
@@ -79,12 +167,9 @@ void Player::Update(){
 	if (input_->PushKey(DIK_RIGHT)) {
 		velocity_.x += 0.3f;
 	}
-
-
 	if (isAstop_ == false && input_->PushKey(DIK_LEFT)) {
 		velocity_.x -= 0.3f;
 	}
-
 
 	if (input_->PushKey(DIK_UP)) {
 		velocity_.y += 0.3f;
@@ -135,12 +220,21 @@ void Player::Update(){
 		return false;
 		});
 
+	worldTransform_1.UpdateMatrix();
+	worldTransform_2.UpdateMatrix();
+	worldTransform_3.UpdateMatrix();
+	worldTransform_4.UpdateMatrix();
+
 }
 
 
 
 void Player::Draw(CameraRole viewProjection_){
 
+	model_1->Draw(worldTransform_1, viewProjection_);
+	model_2->Draw(worldTransform_2, viewProjection_);
+	model_3->Draw(worldTransform_3, viewProjection_);
+	model_4->Draw(worldTransform_4, viewProjection_);
 
 	for (PlayerCore* core_ : cores_) {
 		core_->Draw(viewProjection_);

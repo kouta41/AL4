@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 
-enum SCENE { TITLE, GAME,END};
+enum SCENE { TITLE, SELECT, GAME, END };
 
 class IScene
 {

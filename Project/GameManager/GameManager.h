@@ -6,7 +6,7 @@ class GameManager
 {
 private:
 
-	std::unique_ptr<IScene> sceneArr_[3];
+	std::unique_ptr<IScene> sceneArr_[4];
 
 	int currentSceneNo_; // 現在のシーン
 	int prevSceneNo_; // 前のシーン

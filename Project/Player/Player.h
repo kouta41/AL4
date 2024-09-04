@@ -13,6 +13,7 @@
 #include "Collider.h"
 #include "CollisionConfig.h"
 #include "ModelManager.h"
+#include "SelectionScenen.h"
 
 
 #define MAX_PLAYER_CHIPS 7
@@ -80,6 +81,20 @@ private: // メンバ変数
 	WorldTransform worldTransform_;
 	CameraRole viewProjection_;
 
+	WorldTransform worldTransform_1;
+	WorldTransform worldTransform_2;
+	WorldTransform worldTransform_3;
+	WorldTransform worldTransform_4;
+
+	//3Dモデル
+	std::unique_ptr<Object3DPlacer> model_1;
+	std::unique_ptr<Object3DPlacer> model_2;
+	std::unique_ptr<Object3DPlacer> model_3;
+	std::unique_ptr<Object3DPlacer> model_4;
+
+	//テクスチャハンドル
+	uint32_t texHandle_ = 0;
+
 	std::vector<std::vector<int32_t>> playerLocation_;
 	///核
 	std::list<PlayerCore*> cores_;
@@ -113,4 +128,7 @@ private: // メンバ変数
 	bool isAstop_ = false;
 	bool isSstop_ = false;
 	bool isDstop_ = false;
+
+	//ステージ選択
+	std::unique_ptr<SelectionScenen> select_;
 };

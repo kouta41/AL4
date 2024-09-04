@@ -46,6 +46,12 @@ public: // メンバ関数
 private: // メンバ変数
 	WorldTransform worldTransform;
 
+	WorldTransform worldTransform_1;
+	WorldTransform worldTransform_2;
+	WorldTransform worldTransform_3;
+	WorldTransform worldTransform_4;
+
+
 	CameraRole camera;
 
 	//プレイヤー
@@ -56,6 +62,12 @@ private: // メンバ変数
 	//天球
 	std::unique_ptr<Skydome> skydome_{};
 
+
+	//3Dモデル
+	std::unique_ptr<Object3DPlacer> model_1;
+	std::unique_ptr<Object3DPlacer> model_2;
+	std::unique_ptr<Object3DPlacer> model_3;
+	std::unique_ptr<Object3DPlacer> model_4;
 
 	//CorisionManager
 	CollisionManager* collisionManager_;
