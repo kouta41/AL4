@@ -12,51 +12,48 @@ TitleScene::~TitleScene() {
 void TitleScene::Initialize(){
 	worldTransform.Initialize();
 	camera.Initialize();
+	camera.translate = { -2,0,-110 };
 
-	texHandle_ = TextureManager::Load("resources/TitleDemo.png");
-	texHandle_1 = TextureManager::Load("resources/TitleDemoStart.png");
+	ModelManager::LoadObjModel("cube.obj");
 
-	Sprite::StaticInitialize();
-	sprite_.reset(Sprite::Create(texHandle_,{0,0}));
-	sprite_1.reset(Sprite::Create(texHandle_1, { 0,0 }));
+	texHandle_ = TextureManager::Load("resources/white.png");
+//	texHandle_1 = TextureManager::Load("resources/TitleDemoStart.png");
 
+
+	//敵キャラの生成
+	enemy_ = std::make_unique<Enemy>();
+	// 敵キャラの初期化
+	enemy_->Initialize();
 
 
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
-	flag = true;
 }
 
 void TitleScene::Update() {	
 	worldTransform.UpdateMatrix();
 	camera.UpdateMatrix();
-	Sprite::StaticUpdate();
+	
 
-	spriteWorldTransform = sprite_->GetWorldTransform();
+	//敵の更新
+	enemy_->Update();
+
 
 	if (input_->PressedKey(DIK_SPACE)) {
-		flag = false;
+		sceneNo_ = GAME;
 	}
 
-	if (flag == false) {
-		spriteWorldTransform.rotate.x += 0.02f;
-
-	}
-
-	if (spriteWorldTransform.rotate.x >= 1.65f) {
-		sceneNo_ = SELECT;
-
-	}
-	sprite_->SetWorldTransform(spriteWorldTransform);
-	sprite_1->SetWorldTransform(spriteWorldTransform);
 
 }
 
 void TitleScene::Draw(){
-	sprite_->Draw();
-	sprite_1->Draw();
+	
+	//敵の描画
+	enemy_->Draw(camera);
+
+
 	///デバック場面
-#ifdef RELEASE
+#ifdef _DEBUG
 
 	ImGui::Begin("SPACE");
 	ImGui::Text("ChangeScene");

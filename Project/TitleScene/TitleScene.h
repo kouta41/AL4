@@ -12,6 +12,7 @@
 #include "Enemy.h"
 #include "Skydome.h"
 #include "CollisionManager.h"
+#include "Enemy.h"
 
 
 class TitleScene : public IScene
@@ -33,16 +34,11 @@ public:
 	void CheckAllCollisions();
 private:
 	WorldTransform worldTransform;
-
-	WorldTransform spriteWorldTransform;
-
 	CameraRole camera;
 
-	bool flag = true;
-	std::unique_ptr<Sprite> sprite_;
-	std::unique_ptr<Sprite> sprite_1;
+	//敵
+	std::unique_ptr<Enemy> enemy_{};
 
-	Vector2 pos = { 0,0 };
 
 	//キーボード入力
 	Input* input_ = nullptr;

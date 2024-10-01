@@ -49,14 +49,14 @@ public: // メンバ関数
 	void Update();
 
 	/// <summary>
-	/// 弾の発射(プレイヤーの核に向かっていく＿追尾はしない)
+	///	真下に落ちるタイプ
 	/// </summary>
-	void LockonFire();
+	void UnderFall();
 
 	/// <summary>
-	/// 弾の発射(ステージの横から直線)
+	/// 地面に向かって落ちるタイプ
 	/// </summary>
-	void LineFire();
+	void TargetFall();
 
 	/// <summary>
 	/// 描画

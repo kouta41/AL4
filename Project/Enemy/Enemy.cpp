@@ -33,6 +33,7 @@ void Enemy::Initialize(){
 	popPosisin = { float(rand() % 10),float(rand() % 10 - 11),0 };
 	worldTransform_.translate = popPosisin;
 	srand(int(time(0)));
+
 	pop = 0;
 	isFire_ = false;
 	poprand = 0;
@@ -50,135 +51,30 @@ void Enemy::Update(){
 		}
 		return false;
 		});
+
 	srand((unsigned int)time(NULL)); 	
 
-
-	if (input_->PressedKey(DIK_SPACE)) {
-		//// 乱数生成器を初期化
-		//popPosisin = { float(rand() % 45 - 22),float(rand() % 10 - 14),0 };
-		//worldTransform_.translate = popPosisin;
-		//srand(int(time(0)));
-		//LockonFire();
-	}
-
-	//pop++;
-	if(pop >= 30) {
-		pop = 0;
-	poprand = rand() % 6 + 1;
-	isFire_ = true;
-	}
-
-
-
-	if (isFire_ == true) {
-		if (poprand == 1) {
-			// 乱数生成器を初期化
-			popPosisin = { float(rand() % 45 - 22),float((rand() % 11) + 15),0 };
-			worldTransform_.translate = popPosisin;
-			//(int(time(0)));
-			srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
-
-			LockonFire();
-		}
-		if (poprand == 2) {
-			// 乱数生成器を初期化
-			popPosisin = { float(rand() % 45 - 22),float(rand() % 10 - 14),0 };
-			worldTransform_.translate = popPosisin;
-			//srand(int(time(0)));
-			srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
-
-			LockonFire();
-		}
-		if (poprand == 3) {
-			// 乱数生成器を初期化
-			popPosisin = { float((rand() % 11) - 45),float((rand() % 51) - 25),0 };
-			worldTransform_.translate = popPosisin;
-			//srand(int(time(0)));
-			srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
-
-			LockonFire();
-		}
-		if (poprand == 4) {
-			// 乱数生成器を初期化
-			popPosisin = { float((rand() % 16) + 30),float((rand() % 51) - 25),0 };
-			worldTransform_.translate = popPosisin;
-			//srand(int(time(0)));
-			srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
-
-			LockonFire();
-		}
-		if (poprand == 5) {
-			popPosisin = { float((rand() % 11) - 45),float((rand() % 51) - 25),0 };
-			worldTransform_.translate = popPosisin;
-			TargetPos_ = popPosisin;
-			TargetPos_.x = TargetPos_.x * (-1);
-			srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
-			LineFire();
-		}
-		if (poprand == 6) {
-			popPosisin = { float((rand() % 16) + 30),float((rand() % 51) - 25),0 };
-			worldTransform_.translate = popPosisin;
-			TargetPos_ = popPosisin;
-			TargetPos_.x = TargetPos_.x * (-1);
-			srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
-
-			LineFire();
-		}
-		isFire_ = false;
-	}
-
-	if (input_->PressedKey(DIK_W)) {
-		// 乱数生成器を初期化
-		popPosisin = { float(rand() % 45 - 22),float((rand() % 11) + 15),0 };
-		worldTransform_.translate = popPosisin;
-		//(int(time(0)));
-		srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
-
-		LockonFire();
-	}
-	if (input_->PressedKey(DIK_S)) {
-		// 乱数生成器を初期化
-		popPosisin = { float(rand() % 45 - 22),float(rand() % 10 - 14),0 };
-		worldTransform_.translate = popPosisin;
-		//srand(int(time(0)));
-		srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
-
-		LockonFire();
-	}
+	///	真下に落ちるタイプ
 	if (input_->PressedKey(DIK_A)) {
 		// 乱数生成器を初期化
-		popPosisin = { float((rand() % 11) - 45),float((rand() % 51) - 25),0 };
+		popPosisin = { float(rand() % 86 - 45),float(rand() % 11 + 27),0 };
 		worldTransform_.translate = popPosisin;
-		//srand(int(time(0)));
-		srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
+		TargetPos_ = popPosisin;
+		TargetPos_.y = -24;
+		srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化		UnderFall();
+		UnderFall();
 
-		LockonFire();
 	}
+
+	/// 地面に向かって落ちるタイプ
 	if (input_->PressedKey(DIK_D)) {
 		// 乱数生成器を初期化
-		popPosisin = { float((rand() % 16) + 30),float((rand() % 51) - 25),0 };
+		popPosisin = { float(rand() % 86 - 45),float(rand() % 11 + 27),0 };
 		worldTransform_.translate = popPosisin;
-		//srand(int(time(0)));
-		srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
-
-		LockonFire();
-	}
-	if (input_->PressedKey(DIK_Q)) {
-		popPosisin = { float((rand() % 11) - 45),float((rand() % 51) - 25),0 };
-		worldTransform_.translate = popPosisin;
-		TargetPos_ = popPosisin;
-		TargetPos_.x = TargetPos_.x * (-1);
-		srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
-		LineFire();
-	}
-	if (input_->PressedKey(DIK_E)) {
-		popPosisin = { float((rand() % 16) + 30),float((rand() % 51) - 25),0 };
-		worldTransform_.translate = popPosisin;
-		TargetPos_ = popPosisin;
-		TargetPos_.x = TargetPos_.x * (-1);
-		srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化
-
-		LineFire();
+		srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化		UnderFall();d
+		TargetPos_ = { float(rand() % 86 - 45),-24,0 };
+		srand((unsigned)time(NULL) * 54321);  // 乱数系列を初期化		UnderFall();
+		TargetFall();
 	}
 
 
@@ -190,12 +86,10 @@ void Enemy::Update(){
 
 }
 
-/// <summary>
-/// 弾の発射(プレイヤーの核に向かっていく＿追尾はしない)
-/// </summary>
-void Enemy::LockonFire(){
-	const float kBulletSpeed = 1.0f;
-	Vector3 playerPosition = coresPos_;
+///	真下に落ちるタイプ
+void Enemy::UnderFall(){
+	const float kBulletSpeed = 3.0f;
+	Vector3 playerPosition = TargetPos_;
 	Vector3 enemyPosition = worldTransform_.translate;
 	Vector3 Bulletvelocity = Subtract(playerPosition, enemyPosition);
 	Bulletvelocity = Normalize(Bulletvelocity);
@@ -206,14 +100,14 @@ void Enemy::LockonFire(){
 	EnemyBullet* newBullet = new EnemyBullet();
 
 	newBullet->Initialize(texHandleBullet_, worldTransform_.translate, Bulletvelocity);
-	newBullet->SetTargetpos(coresPos_);
+	newBullet->SetTargetpos(TargetPos_);
 	bullets_.push_back(newBullet);
+	
+
 }
 
-/// <summary>
-/// 弾の発射(ステージの横から直線)
-/// </summary>
-void Enemy::LineFire(){
+/// 地面に向かって落ちるタイプ
+void Enemy::TargetFall(){
 	const float kBulletSpeed = 3.0f;
 	Vector3 playerPosition = TargetPos_;
 	Vector3 enemyPosition = worldTransform_.translate;
@@ -231,7 +125,6 @@ void Enemy::LineFire(){
 }
 
 
-
 void Enemy::Draw(CameraRole viewProjection_){
 	// 弾描画
 	for (EnemyBullet* bullet : bullets_) {
@@ -240,7 +133,7 @@ void Enemy::Draw(CameraRole viewProjection_){
 
 	model_->Draw(worldTransform_, viewProjection_);
 
-#ifdef RELEASE
+//#ifdef Debug
 
 	ImGui::Begin("Enemy");
 	if (ImGui::TreeNode("worldTransform")) {
@@ -255,7 +148,7 @@ void Enemy::Draw(CameraRole viewProjection_){
 		ImGui::TreePop();
 	}
 	ImGui::End();
-#endif // RELEASE
+//#endif // Debug
 
 }
 
