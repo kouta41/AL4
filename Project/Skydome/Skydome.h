@@ -21,6 +21,8 @@ public:
 	/// </summary>
 	void Draw(CameraRole);
 
+	WorldTransform& GetWorldTransform() { return worldTransform_; }
+
 
 private:
 	//ワールド変換データ

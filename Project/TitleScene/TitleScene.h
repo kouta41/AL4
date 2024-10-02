@@ -44,6 +44,13 @@ private:
 
 	Vector2 pos = { 0,0 };
 
+	//3Dモデル
+	std::unique_ptr<Object3DPlacer> model_;
+
+	//天球
+	std::unique_ptr<Skydome> skydome_{};
+
+
 	//キーボード入力
 	Input* input_ = nullptr;
 
