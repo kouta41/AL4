@@ -40,7 +40,7 @@ private:
 
 	bool flag = true;
 	std::unique_ptr<Sprite> sprite_;
-	std::unique_ptr<Sprite> sprite_1;
+	std::unique_ptr<Sprite> blackSprite_;
 
 	Vector2 pos = { 0,0 };
 
@@ -57,7 +57,9 @@ private:
 	//テクスチャハンドル
 	uint32_t texHandle_ = 0;
 	uint32_t texHandle_1 = 0;
-
 	uint32_t SkydometexHandle_ = 0;
+	uint32_t blacktexHandle_ = 0;
+	
+	float blackColor_ = 0.0f;
 
 };

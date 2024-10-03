@@ -40,15 +40,15 @@ public: // メンバ関数
 
 #pragma region Getter
 	// 座標の取得
-	const Vector2& GetPosition() const { return position_; }
+	Vector2& GetPosition() { return position_; }
 	// アンカーポイント取得
-	const Vector2& GetAnchorPoint() const { return anchorPoint_; }
+	Vector2& GetAnchorPoint() { return anchorPoint_; }
 	// テクスチャ座標取得
-	const Vector2& GetTextureLeftTop() const { return textureLeftTop_; }
+	Vector2& GetTextureLeftTop() { return textureLeftTop_; }
 	// テクスチャ切り出しサイズ取得
-	const Vector2& GetTextureSize() const { return textureSize_; }
+	Vector2& GetTextureSize() { return textureSize_; }
 	//
-	const WorldTransform& GetWorldTransform() const { return worldTransform_; }
+	WorldTransform& GetWorldTransform()  { return worldTransform_; }
 
 #pragma endregion 
 

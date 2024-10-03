@@ -58,7 +58,7 @@ void Sprite::Initialize(uint32_t texHandle) {
 	// アドレスを取得
 	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	// 赤
-	*materialData_ = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	*materialData_ = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 
 	resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
 
@@ -163,7 +163,6 @@ void Sprite::Draw()
 	//worldTransform_.translate.x = GetPosition().x;
 	//worldTransform_.translate.y = GetPosition().y;
 	worldTransform_.UpdateMatrix();
-	worldTransform_.TransferMatrix();
 
 	Property property = GraphicsPipeline::GetInstance()->GetPSO().Sprite2D;
 
