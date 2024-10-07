@@ -71,7 +71,7 @@ uint32_t Audio::SoundLoadWave(const char* filename)
 
 	return soundDataIndex_;
 
-}
+			}
 
 void Audio::SoundUnload()
 {

@@ -30,6 +30,6 @@ private:
 	DirectionalLight* directionalLightData_ = nullptr;
 	Property property_{};
 	uint32_t texHandle_ = 0;
-	Vector4 color_ = {};
+	Vector4 color_ = { 1.0f,1.0f,1.0f,1.0f };
 //	Lighting* lighting_{};
 };

@@ -12,6 +12,11 @@
 #include "Enemy.h"
 #include "Skydome.h"
 #include "CollisionManager.h"
+#include "Audio/Audio.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 
 class TitleScene : public IScene
@@ -41,6 +46,10 @@ private:
 	WorldTransform spriteWorldTransform;
 
 	CameraRole camera;
+
+
+	Audio* audio_ = Audio::GetInstance();
+
 
 	bool flag = true;
 	std::unique_ptr<Sprite> sprite_;
@@ -74,6 +83,10 @@ private:
 	uint32_t SkydometexHandle_ = 0;
 	uint32_t blacktexHandle_ = 0;
 	
+
+	uint32_t sceneBGM = 0;
+
 	float Color_R = 1.0f;
 	float Color_L = 1.0f;
+	float speed = 0.06f;
 };

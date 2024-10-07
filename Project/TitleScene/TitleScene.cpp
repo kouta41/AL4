@@ -13,6 +13,7 @@ void TitleScene::Initialize(){
 	//ワールド＆カメラの初期化
 	worldTransform.Initialize();
 	camera.Initialize();
+	audio_->Initialize();
 
 	//画像の読み込み
 	TitletexHandle_ = TextureManager::Load("resources/7g9a5.png");
@@ -20,7 +21,7 @@ void TitleScene::Initialize(){
 	objecttexHandle_L = TextureManager::Load("resources/w14s8.png");
 	StarttexHandle_ = TextureManager::Load("resources/7nu95.png");
 
-	SkydometexHandle_ = TextureManager::Load("resources/skydome.jpg");
+	SkydometexHandle_ = TextureManager::Load("resources/rainbow.jpg");
 	blacktexHandle_ = TextureManager::Load("resources/black.png");
 
 	//モデルデータの読み込み
@@ -44,7 +45,7 @@ void TitleScene::Initialize(){
 	Titlemodel_->SetModel("cube.obj");
 	Titlemodel_->SetTexHandle(TitletexHandle_);
 	TitleworldTransform_.Initialize();
-	TitleworldTransform_.translate = { 0.0f,0.63f,-50.75f };
+	TitleworldTransform_.translate = { 0.0f,0.6f,-50.75f };
 	TitleworldTransform_.scale = { 1.5f,1.0f,1.0f };
 	//モデルの初期化＆設定(オブジェクト右)
 	objectemodel_R = std::make_unique<Object3DPlacer>();
@@ -76,6 +77,11 @@ void TitleScene::Initialize(){
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 	flag = true;
+
+	//BGM
+	sceneBGM = audio_->SoundLoadWave("resources/dance.wav");
+	audio_->SoundPlayLoop(sceneBGM);
+
 }
 
 void TitleScene::Update() {
@@ -98,6 +104,7 @@ void TitleScene::Update() {
 
 	//演出開始
 	if (input_->PressedKey(DIK_SPACE)) {
+		audio_->SoundPlayStop(sceneBGM);
 		flag = false;
 	}
 
@@ -118,10 +125,17 @@ void TitleScene::Update() {
 	objectworldTransform_L.rotate.y += 0.08f;
 
 
-	//スプライトに情報を渡す
-	sprite_->SetWorldTransform(spriteWorldTransform);
-	blackSprite_->SetWorldTransform(spriteWorldTransform);
+	//
+	srand((unsigned int)time(NULL));
+	//TitleworldTransform_.translate = { float(rand()% 5 - 2)/100,float(rand() % 5 - 1)/10 ,-50.75f };
+	if (TitleworldTransform_.scale.y<=0) {
+		speed *= -1;
+	}
+	else if (TitleworldTransform_.scale.y >= 1.6) {
+		speed *= -1;
+	}
 
+	TitleworldTransform_.scale.y += speed;
 }
 
 void TitleScene::Draw(){
@@ -138,7 +152,7 @@ void TitleScene::Draw(){
 
 	//スプライトの描画
 	//sprite_->Draw();
-	blackSprite_->Draw();
+	//blackSprite_->Draw();
 
 	///デバック場面
 #ifdef _DEBUG
@@ -169,8 +183,14 @@ void TitleScene::Draw(){
 		ImGui::DragFloat3("scale", &StartworldTransform_.scale.x, 0.01f, 100, 100);
 		ImGui::TreePop();
 	}
-
-
+	if (ImGui::TreeNode("Color_R")) {
+		ImGui::DragFloat("Color_R", &Color_R, 0.01f, 100, 100);
+		ImGui::TreePop();
+	}
+	if (ImGui::TreeNode("Color_L")) {
+		ImGui::DragFloat("Color_L", &Color_L, 0.01f, 100, 100);
+		ImGui::TreePop();
+	}
 
 
 	ImGui::End();

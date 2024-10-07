@@ -4,7 +4,7 @@ void Object3DPlacer::Initialize()
 {
 	resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
 	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
-	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
+	materialData_->color = { color_ };
 	materialData_->enableLighting = false;
 	materialData_->shininess = 70.0f;
 
@@ -12,7 +12,7 @@ void Object3DPlacer::Initialize()
 	resource_.directionalLightResource = CreateResource::CreateBufferResource(sizeof(DirectionalLight));
 	// 書き込むためのアドレスを取得
 	resource_.directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
-	directionalLightData_->color = { color_ };
+	directionalLightData_->color = {  };
 	directionalLightData_->direction = Normalize({ 0.0f, -1.0f, 0.0f });
 	directionalLightData_->intensity = 1.0f;
 
