@@ -15,8 +15,11 @@ void TitleScene::Initialize(){
 	camera.Initialize();
 
 	//画像の読み込み
-	texHandle_ = TextureManager::Load("resources/gameMane.png");
-	texHandle_1 = TextureManager::Load("resources/TitleDemoStart.png");
+	TitletexHandle_ = TextureManager::Load("resources/7g9a5.png");
+	objecttexHandle_R = TextureManager::Load("resources/81c9l.png");
+	objecttexHandle_L = TextureManager::Load("resources/w14s8.png");
+	StarttexHandle_ = TextureManager::Load("resources/7nu95.png");
+
 	SkydometexHandle_ = TextureManager::Load("resources/skydome.jpg");
 	blacktexHandle_ = TextureManager::Load("resources/black.png");
 
@@ -32,15 +35,43 @@ void TitleScene::Initialize(){
 
 	//スプライトの初期化＆設定
 	Sprite::StaticInitialize();
-	sprite_.reset(Sprite::Create(texHandle_,{0,0}));
+	sprite_.reset(Sprite::Create(TitletexHandle_,{0,0}));
 	blackSprite_.reset(Sprite::Create(blacktexHandle_, { 0,0 }));
 
-	//モデルの初期化＆設定
-	model_ = std::make_unique<Object3DPlacer>();
-	model_->Initialize();
-	model_->SetModel("cube.obj");
-	model_->SetTexHandle(texHandle_);
+	//モデルの初期化＆設定(タイトル)
+	Titlemodel_ = std::make_unique<Object3DPlacer>();
+	Titlemodel_->Initialize();
+	Titlemodel_->SetModel("cube.obj");
+	Titlemodel_->SetTexHandle(TitletexHandle_);
+	TitleworldTransform_.Initialize();
+	TitleworldTransform_.translate = { 0.0f,0.63f,-50.75f };
+	TitleworldTransform_.scale = { 1.5f,1.0f,1.0f };
+	//モデルの初期化＆設定(オブジェクト右)
+	objectemodel_R = std::make_unique<Object3DPlacer>();
+	objectemodel_R->Initialize();
+	objectemodel_R->SetModel("cube.obj");
+	objectemodel_R->SetTexHandle(objecttexHandle_R);
+	objectworldTransform_R.Initialize();
+	objectworldTransform_R.translate = { 1.6f,-0.5f,-53.0f };
+	objectworldTransform_R.rotate = { 0.0f,0.06f,0.34f };
 
+	//モデルの初期化＆設定(オブジェクト左)
+	objectemodel_L = std::make_unique<Object3DPlacer>();
+	objectemodel_L->Initialize();
+	objectemodel_L->SetModel("cube.obj");
+	objectemodel_L->SetTexHandle(objecttexHandle_L);
+	objectworldTransform_L.Initialize();
+	objectworldTransform_L.translate = { -1.6f,-0.5f,-53.0f };
+	objectworldTransform_L.rotate = { 0.0f,-0.06f,-0.34f };
+
+	//モデルの初期化＆設定(オブジェクト左)
+	Startmodel_ = std::make_unique<Object3DPlacer>();
+	Startmodel_->Initialize();
+	Startmodel_->SetModel("cube.obj");
+	Startmodel_->SetTexHandle(StarttexHandle_);
+	StartworldTransform_.Initialize();
+	StartworldTransform_.translate = { 0.0f,-0.87f,-53.36f };
+	StartworldTransform_.scale = { 0.5f,0.5f,0.0f };
 
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
@@ -50,6 +81,10 @@ void TitleScene::Initialize(){
 void TitleScene::Update() {
 	//各種更新処理
 	worldTransform.UpdateMatrix();
+	TitleworldTransform_.UpdateMatrix();
+	objectworldTransform_R.UpdateMatrix();
+	objectworldTransform_L.UpdateMatrix();
+	StartworldTransform_.UpdateMatrix();
 	camera.UpdateMatrix();
 	Sprite::StaticUpdate();
 
@@ -78,11 +113,14 @@ void TitleScene::Update() {
 
 	}
 
+	//オブジェクト回転
+	objectworldTransform_R.rotate.y -= 0.08f;
+	objectworldTransform_L.rotate.y += 0.08f;
+
 
 	//スプライトに情報を渡す
 	sprite_->SetWorldTransform(spriteWorldTransform);
 	blackSprite_->SetWorldTransform(spriteWorldTransform);
-	blackSprite_->SetColor({1.0f, 1.0f, 1.0f, blackColor_});
 
 }
 
@@ -92,7 +130,11 @@ void TitleScene::Draw(){
 	skydome_->Draw(camera);
 
 	//モデルの描画
-	model_->Draw(worldTransform, camera);
+	Titlemodel_->Draw(TitleworldTransform_, camera);
+	objectemodel_R->Draw(objectworldTransform_R, camera);
+	objectemodel_L->Draw(objectworldTransform_L, camera);
+	Startmodel_->Draw(StartworldTransform_, camera);
+
 
 	//スプライトの描画
 	//sprite_->Draw();
@@ -102,35 +144,33 @@ void TitleScene::Draw(){
 #ifdef _DEBUG
 
 	ImGui::Begin("WorldTransform");
-	if (ImGui::TreeNode("SkydomeWorldTransform")) {
-		ImGui::DragFloat3("translate", &skydome_->GetWorldTransform().translate.x, 0.1f, 100, 100);
-		ImGui::DragFloat3("rotate", &skydome_->GetWorldTransform().rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &skydome_->GetWorldTransform().scale.x, 0.01f, 0, 10);
+	if (ImGui::TreeNode("TitleworldTransform_")) {
+		ImGui::DragFloat3("translate", &TitleworldTransform_.translate.x, 0.01f, 100, 100);
+		ImGui::DragFloat3("rotate", &TitleworldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat3("scale", &TitleworldTransform_.scale.x, 0.01f, 0, 10);
 		ImGui::TreePop();
 	}
-	if (ImGui::TreeNode("CameraWorldTransform")) {
-		ImGui::DragFloat3("translate", &camera.translate.x, 1.0f, 100, 100);
-		ImGui::DragFloat3("rotate", &camera.rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &camera.scale.x, 0.01f, 0, 10);
+	if (ImGui::TreeNode("objectworldTransform_R")) {
+		ImGui::DragFloat3("translate", &objectworldTransform_R.translate.x, 0.01f, 100, 100);
+		ImGui::DragFloat3("rotate", &objectworldTransform_R.rotate.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat3("scale", &objectworldTransform_R.scale.x, 0.01f, 0, 10);
 		ImGui::TreePop();
 	}
-	if (ImGui::TreeNode("spriteWorldTransform")) {
-		ImGui::DragFloat3("translate", &sprite_->GetWorldTransform().translate.x, 1.0f, 100, 100);
-		ImGui::DragFloat3("rotate", &sprite_->GetWorldTransform().rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &sprite_->GetWorldTransform().scale.x, 0.01f, 0, 10);
+	if (ImGui::TreeNode("objectworldTransform_L")) {
+		ImGui::DragFloat3("translate", &objectworldTransform_L.translate.x, 0.01f, 100, 100);
+		ImGui::DragFloat3("rotate", &objectworldTransform_L.rotate.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat3("scale", &objectworldTransform_L.scale.x, 0.01f, 0, 10);
 		ImGui::TreePop();
 	}
 
-	if (ImGui::TreeNode("modelWorldTransform")) {
-		ImGui::DragFloat3("translate", &worldTransform.translate.x, 0.1f, 100, 100);
-		ImGui::DragFloat3("rotate", &worldTransform.rotate.x, 0.01f, 100, 100);
-		ImGui::DragFloat3("scale", &worldTransform.scale.x, 0.01f, 100, 100);
+	if (ImGui::TreeNode("StartworldTransform_")) {
+		ImGui::DragFloat3("translate", &StartworldTransform_.translate.x, 0.01f, 100, 100);
+		ImGui::DragFloat3("rotate", &StartworldTransform_.rotate.x, 0.01f, 100, 100);
+		ImGui::DragFloat3("scale", &StartworldTransform_.scale.x, 0.01f, 100, 100);
 		ImGui::TreePop();
 	}
-	if (ImGui::TreeNode("blackColor")) {
-		ImGui::DragFloat("color", &blackColor_);
-		ImGui::TreePop();
-	}
+
+
 
 
 	ImGui::End();

@@ -33,6 +33,10 @@ public:
 	void CheckAllCollisions();
 private:
 	WorldTransform worldTransform;
+	WorldTransform TitleworldTransform_;
+	WorldTransform objectworldTransform_R; 
+	WorldTransform objectworldTransform_L;
+	WorldTransform StartworldTransform_;
 
 	WorldTransform spriteWorldTransform;
 
@@ -44,8 +48,15 @@ private:
 
 	Vector2 pos = { 0,0 };
 
-	//3Dモデル
-	std::unique_ptr<Object3DPlacer> model_;
+	///3Dモデル
+	//タイトル
+	std::unique_ptr<Object3DPlacer> Titlemodel_;
+	//オブジェクト_R
+	std::unique_ptr<Object3DPlacer> objectemodel_R;
+	//オブジェクト_L
+	std::unique_ptr<Object3DPlacer> objectemodel_L;
+	//スタート
+	std::unique_ptr<Object3DPlacer> Startmodel_;
 
 	//天球
 	std::unique_ptr<Skydome> skydome_{};
@@ -55,11 +66,14 @@ private:
 	Input* input_ = nullptr;
 
 	//テクスチャハンドル
-	uint32_t texHandle_ = 0;
-	uint32_t texHandle_1 = 0;
+	uint32_t TitletexHandle_ = 0;
+	uint32_t objecttexHandle_R = 0;
+	uint32_t objecttexHandle_L = 0;
+	uint32_t StarttexHandle_ = 0;
+
 	uint32_t SkydometexHandle_ = 0;
 	uint32_t blacktexHandle_ = 0;
 	
-	float blackColor_ = 0.0f;
-
+	float Color_R = 1.0f;
+	float Color_L = 1.0f;
 };

@@ -10,9 +10,15 @@
     <FxCompile Include="GhotEngine\ShaderFile\Sprite2D.PS.hlsl">
       <Filter>GhotEngine\ShaderFile</Filter>
     </FxCompile>
-    <FxCompile Include="GhotEngine\ShaderFile\Object3d.PS.hlsl" />
-    <FxCompile Include="GhotEngine\ShaderFile\Particle.PS.hlsl" />
-    <FxCompile Include="GhotEngine\ShaderFile\Particle.VS.hlsl" />
+    <FxCompile Include="GhotEngine\ShaderFile\Object3d.PS.hlsl">
+      <Filter>GhotEngine\ShaderFile</Filter>
+    </FxCompile>
+    <FxCompile Include="GhotEngine\ShaderFile\Particle.VS.hlsl">
+      <Filter>GhotEngine\ShaderFile</Filter>
+    </FxCompile>
+    <FxCompile Include="GhotEngine\ShaderFile\Particle.PS.hlsl">
+      <Filter>GhotEngine\ShaderFile</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -94,28 +100,73 @@
     <ClCompile Include="GhotEngine\Base\Window\Window.cpp">
       <Filter>GhotEngine\Base\Window</Filter>
     </ClCompile>
-    <ClCompile Include="Project\TimeCall\TimedCall.cpp" />
-    <ClCompile Include="Project\Collider\CollisionManager.cpp" />
-    <ClCompile Include="Project\GameManager\GameManager.cpp" />
-    <ClCompile Include="Project\IsScen\IsScen.cpp" />
-    <ClCompile Include="Project\TitleScene\TitleScene.cpp" />
-    <ClCompile Include="GhotEngine\Model\ModelManager.cpp" />
-    <ClCompile Include="GhotEngine\Base\DX12\DescriptorManager\SrvManager\SrvManager.cpp" />
-    <ClCompile Include="GhotEngine\Base\DX12\DescriptorManager\DescriptorManager.cpp" />
-    <ClCompile Include="Project\Skydome\Skydome.cpp" />
-    <ClCompile Include="Project\RailCamera\RailCamera.cpp" />
-    <ClCompile Include="Project\PlayerBullet\PlayerBullet.cpp" />
-    <ClCompile Include="Project\Player\Player.cpp" />
-    <ClCompile Include="Project\EnemyBullet\EnemyBullet.cpp" />
-    <ClCompile Include="Project\Enemy\Enemy.cpp" />
-    <ClCompile Include="GhotEngine\Object3D\Object3D.cpp" />
-    <ClCompile Include="GhotEngine\Skybox\Skybox.cpp" />
-    <ClCompile Include="GhotEngine\Particle\Particle.cpp" />
-    <ClCompile Include="GhotEngine\Animation\Animation.cpp" />
-    <ClCompile Include="Project\Player\PlayerCore\PlayerCore.cpp" />
-    <ClCompile Include="Project\Player\PlayerCrust\PlayerCrust.cpp" />
-    <ClCompile Include="Project\EndScene\EndScene.cpp" />
-    <ClCompile Include="Project\SelectionScenen\SelectionScenen.cpp" />
+    <ClCompile Include="GhotEngine\Animation\Animation.cpp">
+      <Filter>GhotEngine\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="GhotEngine\Model\ModelManager.cpp">
+      <Filter>GhotEngine\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="GhotEngine\Object3D\Object3D.cpp">
+      <Filter>GhotEngine\Object3D</Filter>
+    </ClCompile>
+    <ClCompile Include="GhotEngine\Base\DX12\DescriptorManager\DescriptorManager.cpp">
+      <Filter>GhotEngine\Base\DX12\DescriptorManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GhotEngine\Base\DX12\DescriptorManager\SrvManager\SrvManager.cpp">
+      <Filter>GhotEngine\Base\DX12\DescriptorManager\SrvManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\Collider\CollisionManager.cpp">
+      <Filter>Project\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\EndScene\EndScene.cpp">
+      <Filter>Project\EndScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\Enemy\Enemy.cpp">
+      <Filter>Project\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\EnemyBullet\EnemyBullet.cpp">
+      <Filter>Project\EnemyBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\GameManager\GameManager.cpp">
+      <Filter>Project\GamaManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\IsScen\IsScen.cpp">
+      <Filter>Project\IsScen</Filter>
+    </ClCompile>
+    <ClCompile Include="GhotEngine\Particle\Particle.cpp">
+      <Filter>GhotEngine\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\Player\Player.cpp">
+      <Filter>Project\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\Player\PlayerCore\PlayerCore.cpp">
+      <Filter>Project\Player\PlayrCore</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\Player\PlayerCrust\PlayerCrust.cpp">
+      <Filter>Project\Player\PlayerCrust</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\PlayerBullet\PlayerBullet.cpp">
+      <Filter>Project\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\RailCamera\RailCamera.cpp">
+      <Filter>Project\RailCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\SelectionScenen\SelectionScenen.cpp">
+      <Filter>Project\SelectionScenen</Filter>
+    </ClCompile>
+    <ClCompile Include="GhotEngine\Skybox\Skybox.cpp">
+      <Filter>GhotEngine\Skybox</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\Skydome\Skydome.cpp">
+      <Filter>Project\Skydome</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\TimeCall\TimedCall.cpp">
+      <Filter>Project\TimeCall</Filter>
+    </ClCompile>
+    <ClCompile Include="Project\TitleScene\TitleScene.cpp">
+      <Filter>Project\TitleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="GhotEngine\Audio\Audio.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GhotEngine\CameraRole\CameraRole.h">
@@ -217,113 +268,328 @@
     <ClInclude Include="GhotEngine\Base\Window\Window.h">
       <Filter>GhotEngine\Base\Window</Filter>
     </ClInclude>
-    <ClInclude Include="Project\TimeCall\TimedCall.h" />
-    <ClInclude Include="Project\Collider\Collider.h" />
-    <ClInclude Include="Project\Collider\CollisionConfig.h" />
-    <ClInclude Include="Project\Collider\CollisionManager.h" />
-    <ClInclude Include="Project\GameManager\GameManager.h" />
-    <ClInclude Include="Project\IsScen\IsScen.h" />
-    <ClInclude Include="Project\TitleScene\TitleScene.h" />
-    <ClInclude Include="externals\assimp\include\assimp\anim.h" />
-    <ClInclude Include="externals\assimp\include\assimp\ai_assert.h" />
-    <ClInclude Include="externals\assimp\include\assimp\AssertHandler.h" />
-    <ClInclude Include="externals\assimp\include\assimp\Base64.hpp" />
-    <ClInclude Include="externals\assimp\include\assimp\BaseImporter.h" />
-    <ClInclude Include="externals\assimp\include\assimp\Bitmap.h" />
-    <ClInclude Include="externals\assimp\include\assimp\BlobIOSystem.h" />
-    <ClInclude Include="externals\assimp\include\assimp\ByteSwapper.h" />
-    <ClInclude Include="externals\assimp\include\assimp\camera.h" />
-    <ClInclude Include="externals\assimp\include\assimp\cexport.h" />
-    <ClInclude Include="externals\assimp\include\assimp\cfileio.h" />
-    <ClInclude Include="externals\assimp\include\assimp\cimport.h" />
-    <ClInclude Include="externals\assimp\include\assimp\ColladaMetaData.h" />
-    <ClInclude Include="externals\assimp\include\assimp\color4.h" />
-    <ClInclude Include="externals\assimp\include\assimp\commonMetaData.h" />
-    <ClInclude Include="externals\assimp\include\assimp\config.h" />
-    <ClInclude Include="externals\assimp\include\assimp\CreateAnimMesh.h" />
-    <ClInclude Include="externals\assimp\include\assimp\ZipArchiveIOSystem.h" />
-    <ClInclude Include="externals\assimp\include\assimp\XMLTools.h" />
-    <ClInclude Include="externals\assimp\include\assimp\XmlParser.h" />
-    <ClInclude Include="externals\assimp\include\assimp\Vertex.h" />
-    <ClInclude Include="externals\assimp\include\assimp\version.h" />
-    <ClInclude Include="externals\assimp\include\assimp\vector3.h" />
-    <ClInclude Include="externals\assimp\include\assimp\vector2.h" />
-    <ClInclude Include="externals\assimp\include\assimp\types.h" />
-    <ClInclude Include="externals\assimp\include\assimp\TinyFormatter.h" />
-    <ClInclude Include="externals\assimp\include\assimp\texture.h" />
-    <ClInclude Include="externals\assimp\include\assimp\Subdivision.h" />
-    <ClInclude Include="externals\assimp\include\assimp\StringUtils.h" />
-    <ClInclude Include="externals\assimp\include\assimp\StringComparison.h" />
-    <ClInclude Include="externals\assimp\include\assimp\StreamWriter.h" />
-    <ClInclude Include="externals\assimp\include\assimp\StreamReader.h" />
-    <ClInclude Include="externals\assimp\include\assimp\StandardShapes.h" />
-    <ClInclude Include="externals\assimp\include\assimp\SpatialSort.h" />
-    <ClInclude Include="externals\assimp\include\assimp\SmoothingGroups.h" />
-    <ClInclude Include="externals\assimp\include\assimp\SmallVector.h" />
-    <ClInclude Include="externals\assimp\include\assimp\SkeletonMeshBuilder.h" />
-    <ClInclude Include="externals\assimp\include\assimp\SGSpatialSort.h" />
-    <ClInclude Include="externals\assimp\include\assimp\SceneCombiner.h" />
-    <ClInclude Include="externals\assimp\include\assimp\scene.h" />
-    <ClInclude Include="externals\assimp\include\assimp\RemoveComments.h" />
-    <ClInclude Include="externals\assimp\include\assimp\quaternion.h" />
-    <ClInclude Include="externals\assimp\include\assimp\qnan.h" />
-    <ClInclude Include="externals\assimp\include\assimp\ProgressHandler.hpp" />
-    <ClInclude Include="externals\assimp\include\assimp\Profiler.h" />
-    <ClInclude Include="externals\assimp\include\assimp\postprocess.h" />
-    <ClInclude Include="externals\assimp\include\assimp\pbrmaterial.h" />
-    <ClInclude Include="externals\assimp\include\assimp\ParsingUtils.h" />
-    <ClInclude Include="externals\assimp\include\assimp\ObjMaterial.h" />
-    <ClInclude Include="externals\assimp\include\assimp\NullLogger.hpp" />
-    <ClInclude Include="externals\assimp\include\assimp\metadata.h" />
-    <ClInclude Include="externals\assimp\include\assimp\mesh.h" />
-    <ClInclude Include="externals\assimp\include\assimp\MemoryIOWrapper.h" />
-    <ClInclude Include="externals\assimp\include\assimp\matrix4x4.h" />
-    <ClInclude Include="externals\assimp\include\assimp\matrix3x3.h" />
-    <ClInclude Include="externals\assimp\include\assimp\MathFunctions.h" />
-    <ClInclude Include="externals\assimp\include\assimp\material.h" />
-    <ClInclude Include="externals\assimp\include\assimp\LogStream.hpp" />
-    <ClInclude Include="externals\assimp\include\assimp\Logger.hpp" />
-    <ClInclude Include="externals\assimp\include\assimp\LogAux.h" />
-    <ClInclude Include="externals\assimp\include\assimp\LineSplitter.h" />
-    <ClInclude Include="externals\assimp\include\assimp\light.h" />
-    <ClInclude Include="externals\assimp\include\assimp\IOSystem.hpp" />
-    <ClInclude Include="externals\assimp\include\assimp\IOStreamBuffer.h" />
-    <ClInclude Include="externals\assimp\include\assimp\IOStream.hpp" />
-    <ClInclude Include="externals\assimp\include\assimp\importerdesc.h" />
-    <ClInclude Include="externals\assimp\include\assimp\Importer.hpp" />
-    <ClInclude Include="externals\assimp\include\assimp\Hash.h" />
-    <ClInclude Include="externals\assimp\include\assimp\GltfMaterial.h" />
-    <ClInclude Include="externals\assimp\include\assimp\GenericProperty.h" />
-    <ClInclude Include="externals\assimp\include\assimp\fast_atof.h" />
-    <ClInclude Include="externals\assimp\include\assimp\Exporter.hpp" />
-    <ClInclude Include="externals\assimp\include\assimp\Exceptional.h" />
-    <ClInclude Include="externals\assimp\include\assimp\defs.h" />
-    <ClInclude Include="externals\assimp\include\assimp\DefaultLogger.hpp" />
-    <ClInclude Include="externals\assimp\include\assimp\DefaultIOSystem.h" />
-    <ClInclude Include="externals\assimp\include\assimp\DefaultIOStream.h" />
-    <ClInclude Include="externals\assimp\include\assimp\port\AndroidJNI\AndroidJNIIOSystem.h" />
-    <ClInclude Include="externals\assimp\include\assimp\port\AndroidJNI\BundledAssetIOSystem.h" />
-    <ClInclude Include="externals\assimp\include\assimp\Compiler\poppack1.h" />
-    <ClInclude Include="externals\assimp\include\assimp\Compiler\pstdint.h" />
-    <ClInclude Include="externals\assimp\include\assimp\Compiler\pushpack1.h" />
-    <ClInclude Include="externals\assimp\include\assimp\aabb.h" />
-    <ClInclude Include="GhotEngine\Model\ModelManager.h" />
-    <ClInclude Include="GhotEngine\Base\DX12\DescriptorManager\DescriptorManager.h" />
-    <ClInclude Include="GhotEngine\Base\DX12\DescriptorManager\SRVManager\SrvManager.h" />
-    <ClInclude Include="Project\Skydome\Skydome.h" />
-    <ClInclude Include="Project\RailCamera\RailCamera.h" />
-    <ClInclude Include="Project\PlayerBullet\PlayerBullet.h" />
-    <ClInclude Include="Project\Player\Player.h" />
-    <ClInclude Include="Project\EnemyBullet\EnemyBullet.h" />
-    <ClInclude Include="Project\Enemy\Enemy.h" />
-    <ClInclude Include="GhotEngine\Object3D\Object3D.h" />
-    <ClInclude Include="GhotEngine\Skybox\Skybox.h" />
-    <ClInclude Include="GhotEngine\Particle\Particle.h" />
-    <ClInclude Include="GhotEngine\Animation\Animation.h" />
-    <ClInclude Include="Project\Player\PlayerCore\PlayerCore.h" />
-    <ClInclude Include="Project\Player\PlayerCrust\PlayerCrust.h" />
-    <ClInclude Include="Project\EndScene\EndScene.h" />
-    <ClInclude Include="Project\SelectionScenen\SelectionScenen.h" />
+    <ClInclude Include="externals\assimp\include\assimp\aabb.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\ai_assert.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\anim.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\Base64.hpp">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\BaseImporter.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\Bitmap.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\BlobIOSystem.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\ByteSwapper.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\camera.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\cexport.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\cfileio.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\cimport.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\ColladaMetaData.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\defs.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\DefaultLogger.hpp">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\DefaultIOSystem.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\DefaultIOStream.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\CreateAnimMesh.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\config.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\commonMetaData.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\color4.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\Exceptional.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\Exporter.hpp">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\fast_atof.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\GenericProperty.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\GltfMaterial.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\Hash.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\Importer.hpp">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\importerdesc.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\IOStream.hpp">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\IOStreamBuffer.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\IOSystem.hpp">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\light.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\LineSplitter.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\LogAux.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\Logger.hpp">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\LogStream.hpp">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\material.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\MathFunctions.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\matrix3x3.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\matrix4x4.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\MemoryIOWrapper.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\mesh.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\metadata.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\NullLogger.hpp">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\ObjMaterial.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\ParsingUtils.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\pbrmaterial.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\postprocess.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\Profiler.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\ProgressHandler.hpp">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\qnan.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\quaternion.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\RemoveComments.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\scene.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\SceneCombiner.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\SGSpatialSort.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\SkeletonMeshBuilder.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\SmallVector.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\SmoothingGroups.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\SpatialSort.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\StandardShapes.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\StreamReader.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\StreamWriter.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\StringComparison.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\StringUtils.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\Subdivision.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\texture.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\TinyFormatter.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\types.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\vector2.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\vector3.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\version.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\Vertex.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\XmlParser.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\XMLTools.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\ZipArchiveIOSystem.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\Compiler\poppack1.h">
+      <Filter>extemals\assimp\include\assimp\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\Compiler\pstdint.h">
+      <Filter>extemals\assimp\include\assimp\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\Compiler\pushpack1.h">
+      <Filter>extemals\assimp\include\assimp\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\port\AndroidJNI\AndroidJNIIOSystem.h">
+      <Filter>extemals\assimp\include\assimp\port\AndroidJNI</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\port\AndroidJNI\BundledAssetIOSystem.h">
+      <Filter>extemals\assimp\include\assimp\port\AndroidJNI</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\assimp\include\assimp\AssertHandler.h">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="GhotEngine\Animation\Animation.h">
+      <Filter>GhotEngine\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="GhotEngine\Model\ModelManager.h">
+      <Filter>GhotEngine\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="GhotEngine\Object3D\Object3D.h">
+      <Filter>GhotEngine\Object3D</Filter>
+    </ClInclude>
+    <ClInclude Include="GhotEngine\Base\DX12\DescriptorManager\DescriptorManager.h">
+      <Filter>GhotEngine\Base\DX12\DescriptorManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GhotEngine\Base\DX12\DescriptorManager\SRVManager\SrvManager.h">
+      <Filter>GhotEngine\Base\DX12\DescriptorManager\SrvManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Collider\Collider.h">
+      <Filter>Project\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Collider\CollisionConfig.h">
+      <Filter>Project\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Collider\CollisionManager.h">
+      <Filter>Project\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\EndScene\EndScene.h">
+      <Filter>Project\EndScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Enemy\Enemy.h">
+      <Filter>Project\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\EnemyBullet\EnemyBullet.h">
+      <Filter>Project\EnemyBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\GameManager\GameManager.h">
+      <Filter>Project\GamaManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\IsScen\IsScen.h">
+      <Filter>Project\IsScen</Filter>
+    </ClInclude>
+    <ClInclude Include="GhotEngine\Particle\Particle.h">
+      <Filter>GhotEngine\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Player\Player.h">
+      <Filter>Project\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Player\PlayerCore\PlayerCore.h">
+      <Filter>Project\Player\PlayrCore</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Player\PlayerCrust\PlayerCrust.h">
+      <Filter>Project\Player\PlayerCrust</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\PlayerBullet\PlayerBullet.h">
+      <Filter>Project\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\RailCamera\RailCamera.h">
+      <Filter>Project\RailCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\SelectionScenen\SelectionScenen.h">
+      <Filter>Project\SelectionScenen</Filter>
+    </ClInclude>
+    <ClInclude Include="GhotEngine\Skybox\Skybox.h">
+      <Filter>GhotEngine\Skybox</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\Skydome\Skydome.h">
+      <Filter>Project\Skydome</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\TimeCall\TimedCall.h">
+      <Filter>Project\TimeCall</Filter>
+    </ClInclude>
+    <ClInclude Include="Project\TitleScene\TitleScene.h">
+      <Filter>Project\TitleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="GhotEngine\Audio\Audio.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GhotEngine">
@@ -386,6 +652,96 @@
     <Filter Include="GhotEngine\Base\Window">
       <UniqueIdentifier>{10928d37-35af-445c-b882-52c5a010f173}</UniqueIdentifier>
     </Filter>
+    <Filter Include="extemals\assimp">
+      <UniqueIdentifier>{597bb596-34e6-4fa9-8c39-b148a3435f33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="extemals\assimp\include">
+      <UniqueIdentifier>{f5a1fa2b-6551-417c-94dd-46c31bf84669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="extemals\assimp\lib">
+      <UniqueIdentifier>{5aa6ef8a-0cd5-419b-85e9-a478b0c7715f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="extemals\assimp\include\assimp">
+      <UniqueIdentifier>{cf8cdfe0-b8b1-4909-b3bb-3be382517ebd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="extemals\assimp\include\assimp\Compiler">
+      <UniqueIdentifier>{4cbd6433-e3fd-446f-a17e-2db0cffc94a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="extemals\assimp\include\assimp\port">
+      <UniqueIdentifier>{0b37f38e-4ac3-4e8e-b470-0bacbea812a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="extemals\assimp\include\assimp\port\AndroidJNI">
+      <UniqueIdentifier>{6797ea4f-5c43-47a3-8658-7ffe6f0c3983}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="extemals\assimp\lib\Dedug">
+      <UniqueIdentifier>{3459ef59-0f5f-4301-a1af-fac3d6bc9741}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="extemals\assimp\lib\Release">
+      <UniqueIdentifier>{83308cc7-6879-4ce0-bca7-10bd3bed9033}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GhotEngine\Animation">
+      <UniqueIdentifier>{b10fc2c1-ebea-43ba-8306-3fa8710ccf7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GhotEngine\Object3D">
+      <UniqueIdentifier>{38f0b412-b439-46ef-b9ad-825679b305f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GhotEngine\Base\DX12\DescriptorManager">
+      <UniqueIdentifier>{f681371f-8b5a-4147-bde5-f8e5f20fa6bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GhotEngine\Base\DX12\DescriptorManager\SrvManager">
+      <UniqueIdentifier>{9319101e-cff9-45da-b61c-a900879527f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Collider">
+      <UniqueIdentifier>{745223fd-2712-44e5-be15-0a93dd4d5cad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\EndScene">
+      <UniqueIdentifier>{6ddff802-bd42-47a7-a5ca-772768fc56ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Enemy">
+      <UniqueIdentifier>{047c8e1e-619e-431f-abb9-4806773d7607}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\EnemyBullet">
+      <UniqueIdentifier>{4b5c2024-4d37-4526-a54d-fc9a14866531}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\GamaManager">
+      <UniqueIdentifier>{fa53f3ff-a0db-4b01-9159-718ab9b189b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\IsScen">
+      <UniqueIdentifier>{030c0dc9-e453-4125-b384-45ca31cdc4b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GhotEngine\Particle">
+      <UniqueIdentifier>{2a2f78dc-192a-4f62-8ae4-dab10e0a6fb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Player">
+      <UniqueIdentifier>{bd604d72-acf2-4660-b8f7-d503f82d2db2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Player\PlayrCore">
+      <UniqueIdentifier>{d5bb462a-4688-4eba-a50a-9009e56e9503}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Player\PlayerCrust">
+      <UniqueIdentifier>{c47d3b1c-b562-498a-9234-7df5c3c4bc98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\PlayerBullet">
+      <UniqueIdentifier>{9e8b9ca3-af38-48ee-9767-35f9420b0e97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\RailCamera">
+      <UniqueIdentifier>{dee45ec0-6e82-4939-a694-ac89a67d92eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\SelectionScenen">
+      <UniqueIdentifier>{e512c7f1-99c5-445c-b4f7-874d62ff5388}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GhotEngine\Skybox">
+      <UniqueIdentifier>{6591c18f-6451-4ec4-9476-5d3aaf634302}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\Skydome">
+      <UniqueIdentifier>{463d70ad-c9e0-4ff9-a69f-d6dfe2c132fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\TimeCall">
+      <UniqueIdentifier>{70981188-e428-4350-91d4-6822f8216f83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project\TitleScene">
+      <UniqueIdentifier>{f5e82f24-e8e0-407c-88f6-843bbbd2bb86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt">
@@ -393,23 +749,55 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="externals\assimp\include\assimp\color4.inl" />
-    <None Include="externals\assimp\include\assimp\config.h.in" />
-    <None Include="externals\assimp\include\assimp\vector3.inl" />
-    <None Include="externals\assimp\include\assimp\vector2.inl" />
-    <None Include="externals\assimp\include\assimp\SmoothingGroups.inl" />
-    <None Include="externals\assimp\include\assimp\quaternion.inl" />
-    <None Include="externals\assimp\include\assimp\matrix4x4.inl" />
-    <None Include="externals\assimp\include\assimp\matrix3x3.inl" />
-    <None Include="externals\assimp\include\assimp\material.inl" />
-    <None Include="externals\assimp\include\assimp\.editorconfig" />
-    <None Include="GhotEngine\ShaderFile\Particle.hlsli" />
-    <None Include="externals\assimp\lib\Debug\assimp-vc143-mtd.pdb" />
+    <None Include="externals\assimp\include\assimp\.editorconfig">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </None>
+    <None Include="externals\assimp\include\assimp\config.h.in">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </None>
+    <None Include="externals\assimp\include\assimp\color4.inl">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </None>
+    <None Include="externals\assimp\include\assimp\material.inl">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </None>
+    <None Include="externals\assimp\include\assimp\matrix3x3.inl">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </None>
+    <None Include="externals\assimp\include\assimp\matrix4x4.inl">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </None>
+    <None Include="externals\assimp\include\assimp\quaternion.inl">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </None>
+    <None Include="externals\assimp\include\assimp\SmoothingGroups.inl">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </None>
+    <None Include="externals\assimp\include\assimp\vector2.inl">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </None>
+    <None Include="externals\assimp\include\assimp\vector3.inl">
+      <Filter>extemals\assimp\include\assimp</Filter>
+    </None>
+    <None Include="externals\assimp\lib\Debug\assimp-vc143-mtd.pdb">
+      <Filter>extemals\assimp\lib\Dedug</Filter>
+    </None>
+    <None Include="GhotEngine\ShaderFile\Particle.hlsli">
+      <Filter>GhotEngine\ShaderFile</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="externals\assimp\lib\Debug\assimp-vc143-mdd.lib" />
-    <Library Include="externals\assimp\lib\Debug\assimp-vc143-mtd.lib" />
-    <Library Include="externals\assimp\lib\Release\assimp-vc143-md.lib" />
-    <Library Include="externals\assimp\lib\Release\assimp-vc143-mt.lib" />
+    <Library Include="externals\assimp\lib\Debug\assimp-vc143-mdd.lib">
+      <Filter>extemals\assimp\lib\Dedug</Filter>
+    </Library>
+    <Library Include="externals\assimp\lib\Debug\assimp-vc143-mtd.lib">
+      <Filter>extemals\assimp\lib\Dedug</Filter>
+    </Library>
+    <Library Include="externals\assimp\lib\Release\assimp-vc143-md.lib">
+      <Filter>extemals\assimp\lib\Release</Filter>
+    </Library>
+    <Library Include="externals\assimp\lib\Release\assimp-vc143-mt.lib">
+      <Filter>extemals\assimp\lib\Release</Filter>
+    </Library>
   </ItemGroup>
 </Project>

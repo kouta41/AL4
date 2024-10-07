@@ -107,6 +107,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GhotEngine\Audio\Audio.cpp" />
     <ClCompile Include="GhotEngine\Animation\Animation.cpp" />
     <ClCompile Include="GhotEngine\Base\DX12\DescriptorManager\DescriptorManager.cpp" />
     <ClCompile Include="GhotEngine\Base\DX12\DescriptorManager\SrvManager\SrvManager.cpp" />
@@ -158,6 +159,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Project\SelectionScenen\SelectionScenen.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GhotEngine\Audio\Audio.h" />
     <ClInclude Include="externals\assimp\include\assimp\aabb.h" />
     <ClInclude Include="externals\assimp\include\assimp\ai_assert.h" />
     <ClInclude Include="externals\assimp\include\assimp\anim.h" />
