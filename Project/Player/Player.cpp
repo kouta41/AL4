@@ -14,7 +14,6 @@ Player::~Player(){
 
 void Player::Initialize() {
 	worldTransform_.Initialize();
-	viewProjection_.Initialize();
 
 	coreTexHandle_ = TextureManager::Load("resources/cube.jpg");
 	crustTexHandle_= TextureManager::Load("resources/uvChecker.png");
@@ -161,7 +160,6 @@ void Player::Initialize() {
 
 void Player::Update(){
 	worldTransform_.UpdateMatrix();
-	viewProjection_.UpdateMatrix();
 
 	velocity_ = { 0,0,0 };
 	if (input_->PushKey(DIK_RIGHT)) {

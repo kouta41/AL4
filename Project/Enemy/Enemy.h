@@ -89,7 +89,6 @@ public: // メンバ関数
 private: // メンバ変数
 
 	WorldTransform worldTransform_;
-	CameraRole viewProjection_;
 
 	//3Dモデル
 	std::unique_ptr<Object3DPlacer> model_;

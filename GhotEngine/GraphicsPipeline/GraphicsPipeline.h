@@ -94,6 +94,5 @@ private:
 
 
 	PipelineState pso = {};
-
 };
 

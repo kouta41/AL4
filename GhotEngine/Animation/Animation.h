@@ -128,9 +128,9 @@ public:
 
 	void SetModel(const std::string& directoryPath, const std::string& filename) { animation_= LoadAnimationFile(directoryPath, filename); }
 
-	void SetAnimation(const Animation& animation) { animation_= animation_; }
+	void SetAnimation(const Animation& animation) { animation_= animation; }
 
-	void SetModelData(const ModelData& modelData) { modelData_ = modelData_; }
+	void SetModelData(const ModelData& modelData) { modelData_ = modelData; }
 
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 

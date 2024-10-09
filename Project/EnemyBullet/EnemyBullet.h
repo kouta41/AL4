@@ -48,9 +48,7 @@ private:
 	//モデル
 	std::unique_ptr<Object3DPlacer> model_;
 
-	//テクスチャハンドル
-	uint32_t texHandle_ = 0u;
-
+	
 	//速度
 	Vector3 velocity_;
 	Vector3 toPlayer;

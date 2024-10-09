@@ -49,15 +49,13 @@ public: // メンバ関数
 private: // メンバ変数
 
 	WorldTransform worldTransform_;
-	CameraRole viewProjection_;
 	//3Dモデル
 	std::unique_ptr<Object3DPlacer> model_;
 
 	//速度
 	Vector3 velocity_;
 
-	//テクスチャハンドル
-	uint32_t texHandle_ = 0;
+	
 
 	//寿命
 	static const int32_t kLifeTime = 60 * 3;

@@ -85,7 +85,8 @@ ID3D12Resource* TextureManager::CreateTextureResource(const DirectX::TexMetadata
 	heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
 	// Resourceの作成
 	ID3D12Resource* resource = nullptr;
-	HRESULT hr = device->CreateCommittedResource(
+	HRESULT hr_ = 0;
+	hr_ = device->CreateCommittedResource(
 		&heapProperties, // Heapの設定
 		D3D12_HEAP_FLAG_NONE, // Heapの特殊な設定。特になし。
 		&resourceDesc, // Resourceの設定
@@ -107,7 +108,8 @@ void TextureManager::UploadTextureData(Microsoft::WRL::ComPtr<ID3D12Resource> te
 		const DirectX::Image* img = mipImages.GetImage(mipLevel, 0, 0);
 
 		// Textureに転送
-		HRESULT hr = texture->WriteToSubresource(
+		HRESULT hr_ = 0;
+		hr_ = texture->WriteToSubresource(
 			UINT(mipLevel),
 			nullptr, // 全領域へコピー
 			img->pixels, // 元データアドレス

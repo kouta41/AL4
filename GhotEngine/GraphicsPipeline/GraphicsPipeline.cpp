@@ -26,7 +26,8 @@ void GraphicsPipeline::Initialize() {
 void GraphicsPipeline::CreateRootSignature(Microsoft::WRL::ComPtr <ID3D12Device> device, D3D12_ROOT_SIGNATURE_DESC& descriptionRootSignature, Property& property) {
 
 	// シリアライズしてバイナリにする
-	HRESULT hr_ = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &property.signatureBlob_, &property.errorBlob_);
+	HRESULT hr_;
+	hr_ = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &property.signatureBlob_, &property.errorBlob_);
 	if (FAILED(hr_)) {
 		Log(reinterpret_cast<char*>(property.errorBlob_->GetBufferPointer()));
 		assert(false);
@@ -98,7 +99,8 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
 	IDxcCompiler3* dxcCompiler = nullptr;
-	HRESULT hr_ = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxcUtils));
+	HRESULT hr_;
+	hr_= DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxcUtils));
 	assert(SUCCEEDED(hr_));
 	hr_ = DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(&dxcCompiler));
 	assert(SUCCEEDED(hr_));
@@ -230,8 +232,8 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
-	assert(SUCCEEDED(hr));
+	hr_ = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	assert(SUCCEEDED(hr_));
 
 	return property;
 }
@@ -249,7 +251,8 @@ Property GraphicsPipeline::CreateSprite2D(Microsoft::WRL::ComPtr<ID3D12Device> d
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
 	IDxcCompiler3* dxcCompiler = nullptr;
-	HRESULT hr_ = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxcUtils));
+	HRESULT hr_;
+	hr_= DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxcUtils));
 	assert(SUCCEEDED(hr_));
 	hr_ = DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(&dxcCompiler));
 	assert(SUCCEEDED(hr_));
@@ -381,8 +384,8 @@ Property GraphicsPipeline::CreateSprite2D(Microsoft::WRL::ComPtr<ID3D12Device> d
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
-	assert(SUCCEEDED(hr));
+	 hr_ = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	assert(SUCCEEDED(hr_));
 
 	return property;
 }
@@ -399,7 +402,8 @@ Property GraphicsPipeline::CreateParticle(Microsoft::WRL::ComPtr<ID3D12Device> d
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
 	IDxcCompiler3* dxcCompiler = nullptr;
-	HRESULT hr_ = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxcUtils));
+	HRESULT hr_;
+	hr_= DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxcUtils));
 	assert(SUCCEEDED(hr_));
 	hr_ = DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(&dxcCompiler));
 	assert(SUCCEEDED(hr_));
@@ -532,8 +536,8 @@ Property GraphicsPipeline::CreateParticle(Microsoft::WRL::ComPtr<ID3D12Device> d
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
-	assert(SUCCEEDED(hr));
+	hr_ = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	assert(SUCCEEDED(hr_));
 
 	return property;
 }
@@ -544,7 +548,8 @@ Property GraphicsPipeline::CreateSkinng(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
 	IDxcCompiler3* dxcCompiler = nullptr;
-	HRESULT hr_ = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxcUtils));
+	HRESULT hr_;
+	hr_= DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxcUtils));
 	assert(SUCCEEDED(hr_));
 	hr_ = DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(&dxcCompiler));
 	assert(SUCCEEDED(hr_));
@@ -702,8 +707,8 @@ Property GraphicsPipeline::CreateSkinng(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
-	assert(SUCCEEDED(hr));
+	hr_ = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	assert(SUCCEEDED(hr_));
 
 	return property;
 }
@@ -715,7 +720,8 @@ Property GraphicsPipeline::CreateCopyImage(Microsoft::WRL::ComPtr<ID3D12Device> 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
 	IDxcCompiler3* dxcCompiler = nullptr;
-	HRESULT hr_ = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxcUtils));
+	HRESULT hr_;
+	hr_= DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxcUtils));
 	assert(SUCCEEDED(hr_));
 	hr_ = DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(&dxcCompiler));
 	assert(SUCCEEDED(hr_));
@@ -832,8 +838,8 @@ Property GraphicsPipeline::CreateCopyImage(Microsoft::WRL::ComPtr<ID3D12Device> 
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
-	assert(SUCCEEDED(hr));
+	hr_ = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	assert(SUCCEEDED(hr_));
 
 	return property;
 }
@@ -845,7 +851,8 @@ Property GraphicsPipeline::CreateSkybox(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
 	IDxcCompiler3* dxcCompiler = nullptr;
-	HRESULT hr_ = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxcUtils));
+	HRESULT hr_;
+	hr_= DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxcUtils));
 	assert(SUCCEEDED(hr_));
 	hr_ = DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(&dxcCompiler));
 	assert(SUCCEEDED(hr_));
@@ -975,8 +982,8 @@ Property GraphicsPipeline::CreateSkybox(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
-	assert(SUCCEEDED(hr));
+	 hr_ = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	assert(SUCCEEDED(hr_));
 
 	return property;
 }

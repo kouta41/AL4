@@ -13,7 +13,6 @@ Enemy::~Enemy(){
 
 void Enemy::Initialize(){
 	worldTransform_.Initialize();
-	viewProjection_.Initialize();
 
 	texHandle_ = TextureManager::Load("resources/enemy.png");
 	texHandleBullet_ = TextureManager::Load("resources/black.png");
@@ -40,7 +39,6 @@ void Enemy::Initialize(){
 
 void Enemy::Update(){
 	worldTransform_.UpdateMatrix();
-	viewProjection_.UpdateMatrix();
 
 	//デスフラグの立った弾を削除
 	bullets_.remove_if([](EnemyBullet* bullet) {

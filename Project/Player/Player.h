@@ -79,7 +79,6 @@ public: // メンバ関数
 private: // メンバ変数
 
 	WorldTransform worldTransform_;
-	CameraRole viewProjection_;
 
 	WorldTransform worldTransform_1;
 	WorldTransform worldTransform_2;
