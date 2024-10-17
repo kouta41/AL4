@@ -1,3 +1,6 @@
+/// <summary>
+/// スプライト
+/// </summary>
 #pragma once
 #include "DirectX12.h"
 #include "StringUtility.h"
@@ -17,8 +20,13 @@ public: // メンバ関数
 	Sprite() = default;
 	~Sprite();
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	static void StaticInitialize();
-
+	/// <summary>
+	/// 更新
+	/// </summary>
 	static void StaticUpdate();
 
 	/// <summary>

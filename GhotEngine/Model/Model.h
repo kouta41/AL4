@@ -1,5 +1,7 @@
 #pragma once
-
+/// <summary>
+/// モデル制作
+/// </summary>
 #include "IModelState.h"
 #include "ModelSphere.h"
 #include "Vector2.h"

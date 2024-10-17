@@ -1,4 +1,7 @@
 #pragma once
+/// <summary>
+/// DirectX12の管理
+/// </summary>
 
 #include <Windows.h>
 #include <cstdint>

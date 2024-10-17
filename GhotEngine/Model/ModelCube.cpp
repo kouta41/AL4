@@ -1,3 +1,6 @@
+/// <summary>
+/// モデルキューブ
+/// </summary>
 #include "ModelCube.h"
 
 void ModelCube::Initialize(Model* state) {

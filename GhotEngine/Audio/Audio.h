@@ -1,3 +1,6 @@
+/// <summary>
+/// オーディオ
+/// </summary>
 #pragma once
 #include <string>
 #include <cstdint>

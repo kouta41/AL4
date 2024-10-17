@@ -1,4 +1,6 @@
-
+/// <summary>
+/// モデルの管理
+/// </summary>
 #include "ModelManager.h"
 
 ModelManager* ModelManager::GetInstance()

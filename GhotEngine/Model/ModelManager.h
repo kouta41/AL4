@@ -1,3 +1,6 @@
+/// <summary>
+/// モデル管理
+/// </summary>
 #pragma once
 #include "Vector2.h"
 #include <fstream>

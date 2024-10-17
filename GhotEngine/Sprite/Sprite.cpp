@@ -1,3 +1,6 @@
+/// <summary>
+/// スプライト
+/// </summary>
 #include "Sprite.h"
 #include "Vector4.h"
 #include <Object3D.h>

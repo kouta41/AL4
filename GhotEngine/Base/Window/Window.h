@@ -1,3 +1,7 @@
+/// <summary>
+/// ウィンドウの管理
+/// </summary>
+
 #pragma once
 #include <Windows.h>
 #include <cstdint>

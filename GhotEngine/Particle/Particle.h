@@ -1,3 +1,6 @@
+/// <summary>
+/// パーティクル
+/// </summary>
 #pragma once
 #pragma once
 #include "GraphicsPipeline.h"

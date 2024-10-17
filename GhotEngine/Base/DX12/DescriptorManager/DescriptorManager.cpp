@@ -1,4 +1,10 @@
+/// <summary>
+/// 記述子の判別
+/// </summary>
+
 #include "DescriptorManager.h"
+
+
 
 DescriptorManager* DescriptorManager::GetInstance()
 {

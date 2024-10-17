@@ -1,3 +1,7 @@
+/// <summary>
+/// DirectX12の管理
+/// </summary>
+
 #include "DirectX12.h"
 #include "StringUtility.h"
 #include <thread>
@@ -357,7 +361,7 @@ void DirectXCommon::CreateDepthBuffer()
 		D3D12_RESOURCE_STATE_DEPTH_WRITE, // 深度値を書き込む状態にしておく
 		&depthClearValue, // Clear最適値
 		IID_PPV_ARGS(&depthBuffer_)); // 作成するResourceポインタへのポインタ
-	assert(SUCCEEDED(hr));
+	assert(SUCCEEDED(hr_));
 
 	// DSVの設定
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};

@@ -1,3 +1,6 @@
+/// <summary>
+/// グラフィックス パイプラインの設定
+/// </summary>
 #include "GraphicsPipeline.h"
 
 
@@ -239,7 +242,7 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 }
 
 /// <summary>
-/// 2Dスプライト用
+/// 2Dスプライト用 ,m.
 /// </summary>
 /// <param name="device"></param>
 /// <param name="shaderName"></param>

@@ -1,4 +1,9 @@
+/// <summary>
+///	サーバ管理
+/// </summary>
+
 #include "SrvManager.h"
+
 
 SrvManager* SrvManager::GetInstance()
 {

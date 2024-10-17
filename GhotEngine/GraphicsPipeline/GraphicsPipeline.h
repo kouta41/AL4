@@ -1,3 +1,6 @@
+/// <summary>
+/// グラフィックス パイプラインの設定
+/// </summary>
 #pragma once
 
 #include "DirectX12.h"

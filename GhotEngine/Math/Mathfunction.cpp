@@ -1,3 +1,6 @@
+/// <summary>
+/// 計算関数
+/// </summary>
 #include "Mathfunction.h"
 #include <cmath>
 

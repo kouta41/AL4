@@ -1,4 +1,10 @@
+/// <summary>
+/// オーディオ
+/// </summary>
+
+
 #include "Audio.h"
+
 
 Audio* Audio::GetInstance()
 {

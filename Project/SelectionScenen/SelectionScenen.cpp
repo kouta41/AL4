@@ -18,6 +18,8 @@ void SelectionScenen::Initialize(){
 	camera.Initialize();
 
 	texHandle_ = TextureManager::Load("resources/uvChecker.png");
+	blacktexHandle_ = TextureManager::Load("resources/black.png");
+
 	ModelManager::LoadObjModel("cube.obj");
 
 
@@ -40,12 +42,29 @@ void SelectionScenen::Initialize(){
 	model_3->SetTexHandle(texHandle_);
 	worldTransform_3.translate = { 6,-2,-30 };
 
+	//モデルの初期化＆設定(エンドオブジェクト右)
+	Endrightmodel_ = std::make_unique<Object3DPlacer>();
+	Endrightmodel_->Initialize();
+	Endrightmodel_->SetModel("cube.obj");
+	Endrightmodel_->SetTexHandle(blacktexHandle_);
+	EndrightworldTransform_.Initialize();
+	EndrightworldTransform_.translate = { 1.0f,-0.0f,-56.0f };
+	EndrightworldTransform_.scale = { 1.0f,1.0f,0.0f };
+
+	//モデルの初期化＆設定(エンドオブジェクト左)
+	EndLeftmodel_ = std::make_unique<Object3DPlacer>();
+	EndLeftmodel_->Initialize();
+	EndLeftmodel_->SetModel("cube.obj");
+	EndLeftmodel_->SetTexHandle(blacktexHandle_);
+	EndLeftworldTransform_.Initialize();
+	EndLeftworldTransform_.translate = { -1.0f,-0.0f,-56.0f };
+	EndLeftworldTransform_.scale = { 1.0f,1.0f,0.0f };
 
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 
 	selectCount = 0;
-
+	flag = true;
 }
 
 void SelectionScenen::Update(){
@@ -53,6 +72,8 @@ void SelectionScenen::Update(){
 	worldTransform_1.UpdateMatrix();
 	worldTransform_2.UpdateMatrix();
 	worldTransform_3.UpdateMatrix();
+	EndrightworldTransform_.UpdateMatrix();
+	EndLeftworldTransform_.UpdateMatrix();
 
 	camera.UpdateMatrix();
 
@@ -89,12 +110,27 @@ void SelectionScenen::Update(){
 	}
 
 	if (input_->PressedKey(DIK_SPACE)) {
-		sceneNo_ = GAME;
+		sceneNo_ = TITLE;
+	}
+
+	//演出
+	if (flag == true) {
+		EndrightworldTransform_.translate.x += 0.04f;
+		EndLeftworldTransform_.translate.x -= 0.04f;
+	}
+
+	if (EndrightworldTransform_.translate.x >= 2.63f &&
+		EndLeftworldTransform_.translate.x <= -2.63f) {
+		flag = false;
+
 	}
 
 }
 
 void SelectionScenen::Draw(){
+	//画面遷移
+	Endrightmodel_->Draw(EndrightworldTransform_, camera);
+	EndLeftmodel_->Draw(EndLeftworldTransform_, camera);
 
 	model_1->Draw(worldTransform_1, camera);
 	model_2->Draw(worldTransform_2, camera);

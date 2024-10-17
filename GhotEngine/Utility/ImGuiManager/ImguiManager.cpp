@@ -1,3 +1,6 @@
+/// <summary>
+/// IMGUIの管理
+/// </summary>
 #include "ImGuiManager.h"
 #include <DescriptorManager/SrvManager/SrvManager.h>
 

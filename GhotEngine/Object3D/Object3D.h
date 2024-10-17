@@ -1,3 +1,6 @@
+/// <summary>
+/// モデル
+/// </summary>
 #pragma once
 #include "ModelManager.h"
 #include "WorldTransform.h"

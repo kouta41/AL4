@@ -1,7 +1,12 @@
+/// <summary>
+///	サーバ管理
+/// </summary>
+
 #pragma once
 #include "DescriptorManager/DescriptorManager.h"
 #include "CreateResource.h"
 #define MAX_SRV 128
+
 
 class SrvManager {
 public:

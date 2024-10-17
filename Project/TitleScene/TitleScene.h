@@ -18,7 +18,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-
+/// <summary>
+/// タイトルシーン
+/// </summary>
 class TitleScene : public IScene
 {
 public:
@@ -43,6 +45,9 @@ private:
 	WorldTransform objectworldTransform_L;
 	WorldTransform StartworldTransform_;
 
+	WorldTransform EndrightworldTransform_;
+	WorldTransform EndLeftworldTransform_;
+
 	WorldTransform spriteWorldTransform;
 
 	CameraRole camera;
@@ -66,7 +71,10 @@ private:
 	std::unique_ptr<Object3DPlacer> objectemodel_L;
 	//スタート
 	std::unique_ptr<Object3DPlacer> Startmodel_;
-
+	//画面遷移_右
+	std::unique_ptr<Object3DPlacer> Endrightmodel_;
+	//画面遷移_左
+	std::unique_ptr<Object3DPlacer> EndLeftmodel_;
 	//天球
 	std::unique_ptr<Skydome> skydome_{};
 
@@ -85,6 +93,7 @@ private:
 	
 
 	uint32_t sceneBGM = 0;
+	uint32_t sceneSE = 0;
 
 	float Color_R = 1.0f;
 	float Color_L = 1.0f;

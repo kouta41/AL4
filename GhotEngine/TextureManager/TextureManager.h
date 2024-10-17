@@ -1,3 +1,6 @@
+/// <summary>
+/// テクスチャの管理
+/// </summary>
 #pragma once
 #include <array>
 #include <d3dx12.h>

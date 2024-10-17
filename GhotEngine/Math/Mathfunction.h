@@ -1,3 +1,7 @@
+/// <summary>
+/// 計算関数
+/// </summary>
+
 #pragma once
 #include "Matrix4x4.h"
 #include "Vector3.h"
@@ -14,7 +18,6 @@ struct AABB {
 	Vector3 min; // 最小点
 	Vector3 max; // 最大点
 };
-
 struct Quaternion {
 	float x;
 	float y;
@@ -95,6 +98,7 @@ Vector3 Subtract(const Vector3& v1, const Vector3& v2);
 //線形補間
 Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
 
+//線形補間
 Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t);
 
 // 内積

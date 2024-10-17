@@ -1,3 +1,6 @@
+/// <summary>
+/// スカイボックス
+/// </summary>
 #pragma once
 #include "WorldTransform.h"
 #include "GraphicsPipeline.h"

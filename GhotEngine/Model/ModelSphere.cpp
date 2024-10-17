@@ -1,3 +1,6 @@
+/// <summary>
+/// モデル球体
+/// </summary>
 #include "ModelSphere.h"
 
 /// <summary>

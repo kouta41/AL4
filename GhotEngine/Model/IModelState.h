@@ -1,4 +1,7 @@
 #pragma once
+/// <summary>
+/// モデル制作
+/// </summary>
 #include "WorldTransform.h"
 #include "GraphicsPipeline.h"
 #include "TextureManager.h"

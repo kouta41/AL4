@@ -1,3 +1,7 @@
+/// <summary>
+/// ゲーム内のカメラの管理
+/// </summary>
+
 #pragma once
 #include "Mathfunction.h"
 #include "CreateResource.h"
@@ -54,6 +58,9 @@ struct CameraRole {
 	Matrix4x4 matProjection = {};
 	Matrix4x4 sMatProjection = {};
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Initialize();
 	/// <summary>
 	/// 定数バッファ生成

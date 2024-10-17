@@ -1,3 +1,7 @@
+/// <summary>
+/// 記述子の判別
+/// </summary>
+
 #pragma once
 #include "DirectX12.h"
 #include <DirectXTex.h>
@@ -8,7 +12,6 @@ struct descSize {
 	uint32_t RTV = 0;
 	uint32_t DSV = 0;
 };
-
 class DescriptorManager {
 public:
 
@@ -18,6 +21,9 @@ public:
 	/// <returns></returns>
 	static DescriptorManager* GetInstance();
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Initialize();
 
 	// descriptorheap生成

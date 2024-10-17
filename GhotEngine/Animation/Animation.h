@@ -1,3 +1,6 @@
+/// <summary>
+/// アニメーション
+/// </summary>
 #pragma once
 #include "Mathfunction.h"
 #include "WorldTransform.h"

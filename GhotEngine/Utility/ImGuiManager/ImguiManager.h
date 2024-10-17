@@ -1,3 +1,6 @@
+/// <summary>
+/// IMGUIの管理
+/// </summary>
 #pragma once
 
 #include <d3d12.h>

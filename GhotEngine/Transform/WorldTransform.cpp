@@ -1,3 +1,6 @@
+/// <summary>
+/// ワールド座標
+/// </summary>
 #include "WorldTransform.h"
 
 void WorldTransform::Initialize()

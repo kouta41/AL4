@@ -1,3 +1,7 @@
+/// <summary>
+/// ゲーム内のカメラの管理
+/// </summary>
+
 #include "CameraRole.h"
 
 void CameraRole::Initialize() {

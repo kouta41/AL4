@@ -1,3 +1,6 @@
+/// <summary>
+/// テクスチャの管理
+/// </summary>
 #include "TextureManager.h"
 
 TextureManager* TextureManager::GetInstance() {
@@ -93,7 +96,7 @@ ID3D12Resource* TextureManager::CreateTextureResource(const DirectX::TexMetadata
 		D3D12_RESOURCE_STATE_GENERIC_READ, // 初回のResourceState。Textureは基本読むだけ
 		nullptr, // Clear最適値。使わないのでnullptr
 		IID_PPV_ARGS(&resource)); // 作成するResourceポインタへのポインタ
-	assert(SUCCEEDED(hr));
+	assert(SUCCEEDED(hr_));
 
 	return resource;
 
@@ -117,7 +120,7 @@ void TextureManager::UploadTextureData(Microsoft::WRL::ComPtr<ID3D12Resource> te
 			UINT(img->slicePitch) // 1枚サイズ
 		);
 
-		assert(SUCCEEDED(hr));
+		assert(SUCCEEDED(hr_));
 	}
 
 }

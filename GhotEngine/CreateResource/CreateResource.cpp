@@ -1,3 +1,6 @@
+/// <summary>
+/// リソースの設定
+/// </summary>
 #include "CreateResource.h"
 
 // Resource作成
@@ -25,7 +28,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> CreateResource::CreateBufferResource(size
 	HRESULT hr_;
 	hr_ = device.Get()->CreateCommittedResource(&uploadHeapProperties, D3D12_HEAP_FLAG_NONE, &vertexResourceDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&Resource));
-	assert(SUCCEEDED(hr));
+	assert(SUCCEEDED(hr_));
 
 	return Resource;
 }

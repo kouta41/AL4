@@ -1,3 +1,6 @@
+/// <summary>
+/// メインファイル
+/// </summary>
 #include "GhotEngin.h"
 
 /// <summary>

@@ -1,3 +1,6 @@
+/// <summary>
+/// メインファイル
+/// </summary>
 #pragma once
 #include "Window.h"
 #include "DirectX12.h"

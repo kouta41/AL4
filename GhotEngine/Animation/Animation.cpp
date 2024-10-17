@@ -1,3 +1,7 @@
+/// <summary>
+/// アニメーション
+/// </summary>
+
 #include "Animation.h"
 
 

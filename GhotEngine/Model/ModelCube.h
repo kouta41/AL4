@@ -1,3 +1,6 @@
+/// <summary>
+/// モデルキューブ
+/// </summary>
 #pragma once
 #include "IModelState.h"
 

@@ -1,3 +1,6 @@
+/// <summary>
+/// スカイボックス
+/// </summary>
 #include "Skybox.h"
 
 void Skybox::Initialize(){

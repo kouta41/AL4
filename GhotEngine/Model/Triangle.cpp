@@ -1,3 +1,6 @@
+/// <summary>
+/// 三角形
+/// </summary>
 #include "Triangle.h"
 
 void Triangle::Initialize()

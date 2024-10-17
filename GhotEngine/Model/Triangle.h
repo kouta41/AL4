@@ -1,3 +1,6 @@
+/// <summary>
+/// 三角形
+/// </summary>
 #pragma once
 #include "DirectX12.h"
 #include "StringUtility.h"

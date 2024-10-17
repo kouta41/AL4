@@ -1,3 +1,6 @@
+/// <summary>
+/// モデル
+/// </summary>
 #include "Object3D.h"
 
 void Object3DPlacer::Initialize()

@@ -65,7 +65,7 @@ void TitleScene::Initialize(){
 	objectworldTransform_L.translate = { -1.6f,-0.5f,-53.0f };
 	objectworldTransform_L.rotate = { 0.0f,-0.06f,-0.34f };
 
-	//モデルの初期化＆設定(オブジェクト左)
+	//モデルの初期化＆設定(スタートオブジェクト)
 	Startmodel_ = std::make_unique<Object3DPlacer>();
 	Startmodel_->Initialize();
 	Startmodel_->SetModel("cube.obj");
@@ -74,12 +74,31 @@ void TitleScene::Initialize(){
 	StartworldTransform_.translate = { 0.0f,-0.87f,-53.36f };
 	StartworldTransform_.scale = { 0.5f,0.5f,0.0f };
 
+	//モデルの初期化＆設定(エンドオブジェクト右)
+	Endrightmodel_ = std::make_unique<Object3DPlacer>();
+	Endrightmodel_->Initialize();
+	Endrightmodel_->SetModel("cube.obj");
+	Endrightmodel_->SetTexHandle(blacktexHandle_);
+	EndrightworldTransform_.Initialize();
+	EndrightworldTransform_.translate = { 2.63f,-0.0f,-56.0f };
+	EndrightworldTransform_.scale = { 1.0f,1.0f,0.0f };
+
+	//モデルの初期化＆設定(エンドオブジェクト左)
+	EndLeftmodel_ = std::make_unique<Object3DPlacer>();
+	EndLeftmodel_->Initialize();
+	EndLeftmodel_->SetModel("cube.obj");
+	EndLeftmodel_->SetTexHandle(blacktexHandle_);
+	EndLeftworldTransform_.Initialize();
+	EndLeftworldTransform_.translate = { -2.63f,-0.0f,-56.0f };
+	EndLeftworldTransform_.scale = { 1.0f,1.0f,0.0f };
+
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 	flag = true;
 
 	//BGM
 	sceneBGM = audio_->SoundLoadWave("resources/dance.wav");
+	sceneSE = audio_->SoundLoadWave("resources/EndSE.wav");
 	audio_->SoundPlayLoop(sceneBGM);
 
 }
@@ -91,6 +110,8 @@ void TitleScene::Update() {
 	objectworldTransform_R.UpdateMatrix();
 	objectworldTransform_L.UpdateMatrix();
 	StartworldTransform_.UpdateMatrix();
+	EndrightworldTransform_.UpdateMatrix();
+	EndLeftworldTransform_.UpdateMatrix();
 	camera.UpdateMatrix();
 	Sprite::StaticUpdate();
 
@@ -105,18 +126,21 @@ void TitleScene::Update() {
 	//演出開始
 	if (input_->PressedKey(DIK_SPACE)) {
 		audio_->SoundPlayStop(sceneBGM);
+		audio_->SoundPlayWave(sceneSE);
 		flag = false;
 	}
 
 
 	//演出
 	if (flag == false) {
-		spriteWorldTransform.rotate.x += 0.02f;
+		EndrightworldTransform_.translate.x -= 0.04f;
+		EndLeftworldTransform_.translate.x += 0.04f;
 	}
 
-	if (spriteWorldTransform.rotate.x >= 1.65f) {
+	if (EndrightworldTransform_.translate.x<=0.9f&&
+		EndLeftworldTransform_.translate.x>=-0.9f) {
 		//次のシーンへ
-		//sceneNo_ = SELECT;
+		sceneNo_ = SELECT;
 
 	}
 
@@ -139,15 +163,18 @@ void TitleScene::Update() {
 }
 
 void TitleScene::Draw(){
+	//画面遷移
+	Endrightmodel_->Draw(EndrightworldTransform_, camera);
+	EndLeftmodel_->Draw(EndLeftworldTransform_, camera);
 
 	//天球の描画
 	skydome_->Draw(camera);
 
 	//モデルの描画
+	Startmodel_->Draw(StartworldTransform_, camera);
 	Titlemodel_->Draw(TitleworldTransform_, camera);
 	objectemodel_R->Draw(objectworldTransform_R, camera);
 	objectemodel_L->Draw(objectworldTransform_L, camera);
-	Startmodel_->Draw(StartworldTransform_, camera);
 
 
 	//スプライトの描画
@@ -158,16 +185,16 @@ void TitleScene::Draw(){
 #ifdef _DEBUG
 
 	ImGui::Begin("WorldTransform");
-	if (ImGui::TreeNode("TitleworldTransform_")) {
-		ImGui::DragFloat3("translate", &TitleworldTransform_.translate.x, 0.01f, 100, 100);
-		ImGui::DragFloat3("rotate", &TitleworldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &TitleworldTransform_.scale.x, 0.01f, 0, 10);
+	if (ImGui::TreeNode("EndrightworldTransform_")) {
+		ImGui::DragFloat3("translate", &EndrightworldTransform_.translate.x, 0.01f, 100, 100);
+		ImGui::DragFloat3("rotate", &EndrightworldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat3("scale", &EndrightworldTransform_.scale.x, 0.01f, 0, 10);
 		ImGui::TreePop();
 	}
-	if (ImGui::TreeNode("objectworldTransform_R")) {
-		ImGui::DragFloat3("translate", &objectworldTransform_R.translate.x, 0.01f, 100, 100);
-		ImGui::DragFloat3("rotate", &objectworldTransform_R.rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &objectworldTransform_R.scale.x, 0.01f, 0, 10);
+	if (ImGui::TreeNode("EndLeftworldTransform_")) {
+		ImGui::DragFloat3("translate", &EndLeftworldTransform_.translate.x, 0.01f, 100, 100);
+		ImGui::DragFloat3("rotate", &EndLeftworldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat3("scale", &EndLeftworldTransform_.scale.x, 0.01f, 0, 10);
 		ImGui::TreePop();
 	}
 	if (ImGui::TreeNode("objectworldTransform_L")) {

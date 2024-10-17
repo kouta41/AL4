@@ -1,4 +1,6 @@
-
+/// <summary>
+/// モデル制作
+/// </summary>
 #include "Model.h"
 
 Model::~Model()

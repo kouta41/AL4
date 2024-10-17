@@ -1,3 +1,6 @@
+/// <summary>
+/// パーティクル
+/// </summary>
 #include "Particle.h"
 
 /// <summary>

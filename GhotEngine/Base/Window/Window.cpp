@@ -1,3 +1,7 @@
+/// <summary>
+/// ウィンドウの管理
+/// </summary>
+
 #include "Window.h"
 #include <string>
 #pragma comment(lib,"winmm.lib")
