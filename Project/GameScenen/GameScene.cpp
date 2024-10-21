@@ -124,10 +124,10 @@ void GameScene::Update(){
 
 	gameTime++;
 	if (gameTime >= 60 * 20) {
-		sceneNo_ = END;
+		//sceneNo_ = END;
 	}
 	if (input_->PushKey(DIK_C)) {
-		sceneNo_ = END;
+		//sceneNo_ = END;
 	}
 }
 
@@ -159,6 +159,9 @@ void GameScene::Draw(){
 	
 	//天球の描画
 	skydome_->Draw(camera);
+
+
+
 }
 
 void GameScene::CheckAllCollisions(){

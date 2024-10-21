@@ -233,7 +233,40 @@ void Player::Draw(CameraRole viewProjection_){
 	model_2->Draw(worldTransform_2, viewProjection_);
 	model_3->Draw(worldTransform_3, viewProjection_);
 	model_4->Draw(worldTransform_4, viewProjection_);
+	///デバック場面
+#ifdef _DEBUG
 
+	ImGui::Begin("WorldTransform");
+	if (ImGui::TreeNode("worldTransform_1")) {
+		ImGui::DragFloat3("translate", &worldTransform_1.translate.x, 0.1f, 100, 100);
+		ImGui::DragFloat3("rotate", &worldTransform_1.rotate.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat3("scale", &worldTransform_1.scale.x, 0.01f, 0, 10);
+		ImGui::TreePop();
+	}
+	if (ImGui::TreeNode("worldTransform_2")) {
+		ImGui::DragFloat3("translate", &worldTransform_2.translate.x, 0.1f, 100, 100);
+		ImGui::DragFloat3("rotate", &worldTransform_2.rotate.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat3("scale", &worldTransform_2.scale.x, 0.01f, 0, 10);
+		ImGui::TreePop();
+	}
+	if (ImGui::TreeNode("worldTransform_3")) {
+		ImGui::DragFloat3("translate", &worldTransform_3.translate.x, 0.1f, 100, 100);
+		ImGui::DragFloat3("rotate", &worldTransform_3.rotate.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat3("scale", &worldTransform_3.scale.x, 0.01f, 0, 10);
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("worldTransform_4")) {
+		ImGui::DragFloat3("translate", &worldTransform_4.translate.x, 0.1f, 100, 100);
+		ImGui::DragFloat3("rotate", &worldTransform_4.rotate.x, 0.01f, 100, 100);
+		ImGui::DragFloat3("scale", &worldTransform_4.scale.x, 0.01f, 100, 100);
+		ImGui::TreePop();
+	}
+
+
+	ImGui::End();
+
+#endif // _DEBUG
 	for (PlayerCore* core_ : cores_) {
 		core_->Draw(viewProjection_);
 	}

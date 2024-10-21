@@ -153,13 +153,13 @@ void TitleScene::Update() {
 	srand((unsigned int)time(NULL));
 	//TitleworldTransform_.translate = { float(rand()% 5 - 2)/100,float(rand() % 5 - 1)/10 ,-50.75f };
 	if (TitleworldTransform_.scale.y<=0) {
-		speed *= -1;
+	//	speed *= -1;
 	}
 	else if (TitleworldTransform_.scale.y >= 1.6) {
-		speed *= -1;
+	//	speed *= -1;
 	}
 
-	TitleworldTransform_.scale.y += speed;
+	//TitleworldTransform_.scale.y += speed;
 }
 
 void TitleScene::Draw(){
