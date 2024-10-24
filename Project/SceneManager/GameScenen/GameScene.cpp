@@ -18,6 +18,9 @@ void GameScene::Initialize(){
 
 	texHandle_ = TextureManager::Load("resources/white.png");
 	SkydometexHandle_ = TextureManager::Load("resources/skydome.jpg");
+	blacktexHandle_ = TextureManager::Load("resources/black.png");
+	StarttexHandle_ = TextureManager::Load("resources/GO.png");
+
 
 	ModelManager::LoadObjModel("cube.obj");
 	ModelManager::LoadObjModel("skydome.obj");
@@ -83,6 +86,34 @@ void GameScene::Initialize(){
 	worldTransform_4.translate = { 0,15,0 };
 	worldTransform_4.scale = { 30,1,1, };
 
+	//モデルの初期化＆設定(エンドオブジェクト右)
+	Endrightmodel_ = std::make_unique<Object3DPlacer>();
+	Endrightmodel_->Initialize();
+	Endrightmodel_->SetModel("cube.obj");
+	Endrightmodel_->SetTexHandle(blacktexHandle_);
+	EndrightworldTransform_.Initialize();
+	EndrightworldTransform_.translate = { -1.0f,-0.0f,-105.7f };
+	EndrightworldTransform_.scale = { 1.0f,1.0f,0.0f };
+
+	//モデルの初期化＆設定(エンドオブジェクト左)
+	EndLeftmodel_ = std::make_unique<Object3DPlacer>();
+	EndLeftmodel_->Initialize();
+	EndLeftmodel_->SetModel("cube.obj");
+	EndLeftmodel_->SetTexHandle(blacktexHandle_);
+	EndLeftworldTransform_.Initialize();
+	EndLeftworldTransform_.translate = { -3.0f,-0.0f,-105.7f };
+	EndLeftworldTransform_.scale = { 1.0f,1.0f,0.0f };
+
+	//モデルの初期化＆設定(スタートオブジェクト)
+	Startmodel_ = std::make_unique<Object3DPlacer>();
+	Startmodel_->Initialize();
+	Startmodel_->SetModel("cube.obj");
+	Startmodel_->SetTexHandle(StarttexHandle_);
+	StartworldTransform_.Initialize();
+	StartworldTransform_.translate = { -2.0f,-0.87f,-240.0f };
+	StartworldTransform_.scale = { 1.0f,1.0f,0.0f };
+
+	flag = true;
 }
 
 void GameScene::Update(){
@@ -91,11 +122,18 @@ void GameScene::Update(){
 	worldTransform_2.UpdateMatrix();
 	worldTransform_3.UpdateMatrix();
 	worldTransform_4.UpdateMatrix();
+	EndrightworldTransform_.UpdateMatrix();
+	EndLeftworldTransform_.UpdateMatrix();
+	StartworldTransform_.UpdateMatrix();
 
 	camera.UpdateMatrix();
+
+
 	//天球の更新
 	skydome_->Update();
 
+
+	if (flag == false) {
 	//プレイヤーの更新
 	player_->Update();
 
@@ -122,17 +160,38 @@ void GameScene::Update(){
 
 	}
 
+		EndrightworldTransform_.translate.x += 0.04f;
+		EndLeftworldTransform_.translate.x -= 0.04f;
+	}
+
 	gameTime++;
 	if (gameTime >= 60 * 20) {
-		//sceneNo_ = END;
+		sceneNo_ = END;
 	}
-	if (input_->PushKey(DIK_C)) {
-		//sceneNo_ = END;
+	
+
+	//演出
+	if (flag == true) {
+		EndrightworldTransform_.translate.x += 0.04f;
+		EndLeftworldTransform_.translate.x -= 0.04f;
+	}
+
+	if (EndrightworldTransform_.translate.x >= 2.63f &&
+		EndLeftworldTransform_.translate.x <= -2.63f) {
+			flag = false;
+	}
+
+	StartworldTransform_.translate.z += 3;
+	if (flag == false) {
+		StartworldTransform_.translate.y++;
+		if (input_->PushKey(DIK_SPACE)) {
+			sceneNo_ = END;
+		}
 	}
 }
 
 void GameScene::Draw(){
-#ifdef RELEASE
+#ifdef _DEBUG
 	///デバック場面
 	ImGui::Begin("Camera");
 	if (ImGui::TreeNode("worldTransform")) {
@@ -145,7 +204,35 @@ void GameScene::Draw(){
 	}
 	ImGui::End();
 
+	ImGui::Begin("WorldTransform");
+	if (ImGui::TreeNode("EndrightworldTransform_")) {
+		ImGui::DragFloat3("translate", &EndrightworldTransform_.translate.x, 0.01f, 100, 100);
+		ImGui::DragFloat3("rotate", &EndrightworldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat3("scale", &EndrightworldTransform_.scale.x, 0.01f, 0, 10);
+		ImGui::TreePop();
+	}
+	if (ImGui::TreeNode("EndLeftworldTransform_")) {
+		ImGui::DragFloat3("translate", &EndLeftworldTransform_.translate.x, 0.01f, 100, 100);
+		ImGui::DragFloat3("rotate", &EndLeftworldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat3("scale", &EndLeftworldTransform_.scale.x, 0.01f, 0, 10);
+		ImGui::TreePop();
+	}
+	if (ImGui::TreeNode("StartworldTransform_")) {
+		ImGui::DragFloat3("translate", &StartworldTransform_.translate.x, 0.1f, 100, 100);
+		ImGui::DragFloat3("rotate", &StartworldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
+		ImGui::DragFloat3("scale", &StartworldTransform_.scale.x, 0.1f, 0, 10);
+		ImGui::TreePop();
+	}
+
+	ImGui::End();
 #endif // RELEASE
+
+
+	//モデルの描画
+	Startmodel_->Draw(StartworldTransform_, camera);
+	//画面遷移
+	Endrightmodel_->Draw(EndrightworldTransform_, camera);
+	EndLeftmodel_->Draw(EndLeftworldTransform_, camera);
 
 	//プレイヤーの描画
 	player_->Draw(camera);
@@ -158,7 +245,7 @@ void GameScene::Draw(){
 	model_4->Draw(worldTransform_4, camera);
 	
 	//天球の描画
-	skydome_->Draw(camera);
+	//skydome_->Draw(camera);
 
 
 

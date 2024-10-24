@@ -140,7 +140,7 @@ void TitleScene::Update() {
 	if (EndrightworldTransform_.translate.x<=0.9f&&
 		EndLeftworldTransform_.translate.x>=-0.9f) {
 		//次のシーンへ
-		sceneNo_ = SELECT;
+		sceneNo_ = GAME;
 
 	}
 
