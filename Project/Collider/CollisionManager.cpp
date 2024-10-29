@@ -17,7 +17,6 @@ void CollisionManager::CheckAllCollisions(){
 
 void CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* colliderB){
 	// 判定対象AとBの座標
-	Vector3 posA, posB;
 	posA = colliderA->GetWorldPosition();
 	posB = colliderB->GetWorldPosition();
 	float Length = (float)sqrt(
@@ -33,5 +32,9 @@ void CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 		colliderA->OnCollision();
 		// コライダーBの衝突時コールバック
 		colliderB->OnCollision();
+
+		hitCount_++;
 	}
+
+
 }

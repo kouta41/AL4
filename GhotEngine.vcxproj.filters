@@ -46,7 +46,7 @@
     <ClCompile Include="externals\imgui\imgui_impl_dx12.cpp">
       <Filter>extemals\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Project\SceneManager\GameScenen\GameScene.cpp">
+    <ClCompile Include="Project\SceneManager\GameScene\GameScene.cpp">
       <Filter>Project\GmaeScene</Filter>
     </ClCompile>
     <ClCompile Include="externals\imgui\imgui_impl_win32.cpp">
@@ -188,7 +188,7 @@
     <ClInclude Include="externals\imgui\imgui.h">
       <Filter>extemals\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Project\SceneManager\GameScenen\GameScene.h">
+    <ClInclude Include="Project\SceneManager\GameScene\GameScene.h">
       <Filter>Project\GmaeScene</Filter>
     </ClInclude>
     <ClInclude Include="externals\imgui\imgui_impl_dx12.h">

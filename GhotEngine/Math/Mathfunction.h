@@ -141,3 +141,9 @@ Vector3 operator-(const Vector3& a, const float& b);
 Vector3 operator*(const float& a, const Vector3& b);
 Vector3 operator/(const Vector3& a, const float& b);
 Vector3 operator*(const Vector3& vec, const Matrix4x4& mat);
+
+
+//イージング
+float easeoutCubic(float x);
+
+float easeInQuart(float x);

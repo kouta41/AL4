@@ -95,4 +95,18 @@ private: // メンバ変数
 
 	bool flag = true;
 
+	bool cameraflag1 = true;
+	bool cameraflag2 = true;
+
+	int count_=0;
+	Vector3 posA;
+
+	float frame1 = 0.0f;
+	float frame2 = 0.0f;
+
+	float endframe1 = 120.0f;
+	float endframe2 = 60.0f;
+
+	Vector3 cameraPosA;
+	Vector3 cameraRotate;
 };

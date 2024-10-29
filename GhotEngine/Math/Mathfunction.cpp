@@ -733,3 +733,11 @@ Vector3 operator*(const Vector3& vec, const Matrix4x4& mat) {
 
 	return { result.x / result.w, result.y / result.w, result.z / result.w };
 }
+
+float easeoutCubic(float x){
+	return 1.0f - pow(1.0f - x, 3.0f);
+}
+
+float easeInQuart(float x){
+	return x * x * x * x;
+}

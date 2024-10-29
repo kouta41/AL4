@@ -114,6 +114,15 @@ void GameScene::Initialize(){
 	StartworldTransform_.scale = { 1.0f,1.0f,0.0f };
 
 	flag = true;
+	count_ = 0;
+	cameraflag1 = true;
+	cameraflag2 = true;
+
+	frame1 = 0.0f;
+	frame2 = 0.0f;
+
+	endframe1 = 120.0f;
+	endframe2 = 60.0f;
 }
 
 void GameScene::Update(){
@@ -134,39 +143,42 @@ void GameScene::Update(){
 
 
 	if (flag == false) {
-	//プレイヤーの更新
-	player_->Update();
+		if (count_ < 16) {
 
-	//敵の更新
-	enemy_->Update();
-	enemy_->SetPlayerCorepos(player_->GetPlayerCoreWorldPosition());
+			//プレイヤーの更新
+			player_->Update();
 
-	//当たり判定
-	CheckAllCollisions();
+			//敵の更新
+			enemy_->Update();
+			enemy_->SetPlayerCorepos(player_->GetPlayerCoreWorldPosition());
+
+			//当たり判定
+			CheckAllCollisions();
 
 
-	XINPUT_STATE joyState{};
-	if (Input::GetInstance()->GetJoystickState(joyState)) {
-		if ((joyState.Gamepad.sThumbLX < CUSTOM_DEADZONE && joyState.Gamepad.sThumbLX > -CUSTOM_DEADZONE) && (joyState.Gamepad.sThumbLY < CUSTOM_DEADZONE && joyState.Gamepad.sThumbLY > -CUSTOM_DEADZONE)) {
-			joyState.Gamepad.sThumbLX = 0;
-			joyState.Gamepad.sThumbLY = 0;
-			worldTransform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.1f;
-			worldTransform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.1f;
+			XINPUT_STATE joyState{};
+			if (Input::GetInstance()->GetJoystickState(joyState)) {
+				if ((joyState.Gamepad.sThumbLX < CUSTOM_DEADZONE && joyState.Gamepad.sThumbLX > -CUSTOM_DEADZONE) && (joyState.Gamepad.sThumbLY < CUSTOM_DEADZONE && joyState.Gamepad.sThumbLY > -CUSTOM_DEADZONE)) {
+					joyState.Gamepad.sThumbLX = 0;
+					joyState.Gamepad.sThumbLY = 0;
+					worldTransform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.1f;
+					worldTransform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.1f;
+				}
+				else {
+					worldTransform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.1f;
+					worldTransform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.1f;
+				}
+
+			}
+
+			EndrightworldTransform_.translate.x += 0.04f;
+			EndLeftworldTransform_.translate.x -= 0.04f;
 		}
-		else {
-			worldTransform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.1f;
-			worldTransform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.1f;
-		}
-
-	}
-
-		EndrightworldTransform_.translate.x += 0.04f;
-		EndLeftworldTransform_.translate.x -= 0.04f;
 	}
 
 	gameTime++;
 	if (gameTime >= 60 * 20) {
-		sceneNo_ = END;
+		//sceneNo_ = END;
 	}
 	
 
@@ -188,6 +200,33 @@ void GameScene::Update(){
 			sceneNo_ = END;
 		}
 	}
+
+	if (count_ == 16) {
+		camera.translate = { posA.x,posA.y ,posA.z-20 };
+		cameraRotate = camera.rotate;
+		cameraPosA= { posA.x,posA.y ,posA.z - 20 };
+		cameraflag1 = false;
+		count_++;
+	}
+
+	if (cameraflag1 == false) {
+		frame1++;
+		camera.translate.z = cameraPosA.z + (cameraPosA.z - 60 - cameraPosA.z) * easeoutCubic(frame1/ endframe1);
+		if (frame1 == endframe1) {
+			cameraflag2 = false;
+			cameraflag1 = true;
+			cameraPosA = camera.translate;
+		}
+	}
+
+	if (cameraflag2 == false) {
+		frame2++;
+		camera.translate.z=cameraPosA.z+(-0.5f-cameraPosA.z)* easeInQuart(frame2 / endframe2);
+		if (frame2 == endframe2) {
+			cameraflag2 = true;
+			sceneNo_ = END;
+		}
+	}
 }
 
 void GameScene::Draw(){
@@ -200,31 +239,16 @@ void GameScene::Draw(){
 		ImGui::DragFloat("rotateY", &camera.rotate.y, 0.1f, 100, 100);
 		ImGui::DragFloat("rotateZ", &camera.rotate.z, 0.1f, 100, 100);
 
-		ImGui::TreePop();
-	}
-	ImGui::End();
 
-	ImGui::Begin("WorldTransform");
-	if (ImGui::TreeNode("EndrightworldTransform_")) {
-		ImGui::DragFloat3("translate", &EndrightworldTransform_.translate.x, 0.01f, 100, 100);
-		ImGui::DragFloat3("rotate", &EndrightworldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &EndrightworldTransform_.scale.x, 0.01f, 0, 10);
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("EndLeftworldTransform_")) {
-		ImGui::DragFloat3("translate", &EndLeftworldTransform_.translate.x, 0.01f, 100, 100);
-		ImGui::DragFloat3("rotate", &EndLeftworldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &EndLeftworldTransform_.scale.x, 0.01f, 0, 10);
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("StartworldTransform_")) {
-		ImGui::DragFloat3("translate", &StartworldTransform_.translate.x, 0.1f, 100, 100);
-		ImGui::DragFloat3("rotate", &StartworldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &StartworldTransform_.scale.x, 0.1f, 0, 10);
 		ImGui::TreePop();
 	}
 
+	ImGui::DragInt("Count", &count_, 0.01f, 0, 10);
+	ImGui::DragFloat3("pos", &posA.x, 0.1f, 100, 100);
+
 	ImGui::End();
+
+	
 #endif // RELEASE
 
 
@@ -271,4 +295,6 @@ void GameScene::CheckAllCollisions(){
 	collisionManager_->CheckAllCollisions();
 	collisionManager_->ClearCollider();
 
+	count_ = collisionManager_->GethitCount();
+	posA = collisionManager_->GetposA();
 }
