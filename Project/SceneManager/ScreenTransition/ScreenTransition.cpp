@@ -54,7 +54,8 @@ void ScreenTransition::Update(){
 }
 
 void ScreenTransition::StartMove(){
-
+	worldTransform_R.translate.x += 0.04f;
+	worldTransform_L.translate.x -= 0.04f;
 }
 
 void ScreenTransition::EndMove(){

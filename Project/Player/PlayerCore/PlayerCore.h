@@ -85,5 +85,6 @@ private: // メンバ変数
 	bool isSstop_ = false;
 	bool isDstop_ = false;
 
-
+	//速度
+	float foolSpeed_ = 0.4f;
 };

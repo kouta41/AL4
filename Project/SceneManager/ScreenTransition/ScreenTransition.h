@@ -24,6 +24,8 @@ public:
 
 	void SetEndWorld();
 
+	void SetGameWorld();
+
 	void Update();
 
 	void StartMove();
@@ -58,6 +60,6 @@ private:
 	//SEの保管
 	uint32_t sceneSE = 0;
 
-
+	bool shiftSceneFlag = true;
 };
 

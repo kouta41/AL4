@@ -24,6 +24,30 @@ enum Type {
 	CRUST,///外殻
 };
 
+enum class Shape {
+	shape_I,	//I字ブロック
+	shape_T,	//T字ブロック
+	shape_S,	//S字ブロック
+	shape_O,	//O字ブロック
+	shape_J,	//J字ブロック
+	shape_L,	//L字ブロック
+	shape_ten,	//一つのブロック
+	shape_side	//横に連なるブロック
+};
+
+struct typeShape final {
+	std::vector<std::vector<int32_t>> I;		//I字ブロック
+	std::vector<std::vector<int32_t>> T;		//T字ブロック
+	std::vector<std::vector<int32_t>> S;		//S字ブロック
+	std::vector<std::vector<int32_t>> O;		//O字ブロック
+	std::vector<std::vector<int32_t>> J;		//J字ブロック
+	std::vector<std::vector<int32_t>> L;		//L字ブロック
+	std::vector<std::vector<int32_t>> Ten;		//一つのブロック
+	std::vector<std::vector<int32_t>> Side;		//横に連なるブロック
+};
+
+
+
 
 /// <summary>
 /// プレイヤー
@@ -51,7 +75,15 @@ public: // メンバ関数
 	/// </summary>
 	void Update();
 
-	
+	/// <summary>
+	/// ブロックの射出
+	/// </summary>
+	void OutPutBlock();
+
+	/// <summary>
+	/// ブロックの形を作る
+	/// </summary>
+	void BlockShape();
 
 	/// <summary>
 	/// 描画
@@ -128,6 +160,10 @@ private: // メンバ変数
 	bool isSstop_ = false;
 	bool isDstop_ = false;
 
-	//ステージ選択
-	std::unique_ptr<SelectionScenen> select_;
+	//フェーズ
+	Shape shape_;
+
+	typeShape Block;
+
+	
 };

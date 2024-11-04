@@ -19,68 +19,101 @@ void Player::Initialize() {
 	crustTexHandle_= TextureManager::Load("resources/uvChecker.png");
 
 
-	select_ = std::make_unique<SelectionScenen>();
 
 	// 7×7のプレイヤーのデータ
 	
-
-	/*ステージ１
-	{0,0,0,0,0,0,0},
-	{0,2,1,1,1,2,0},
-	{0,2,2,2,2,2,0},
-	{0,2,2,1,2,2,0},
-	{0,2,2,2,2,2,0},
-	{0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0},
-	*/
-
-	/*ステージ２
-	{0,0,0,0,0,0,0},
-	{0,2,2,2,2,2,0},
-	{0,2,1,2,1,2,0},
-	{0,2,2,1,2,2,0},
-	{0,2,1,2,1,2,0},
-	{0,2,2,2,2,2,0},
-	{0,0,0,0,0,0,0},	
-	*/
-
 	playerLocation_ =
 	{
 		{0,0,0,0,0,0,0},
-		{0,0,0,1,0,0,0},
-		{0,0,1,2,1,0,0},
-		{0,0,2,2,2,0,0},
-		{0,2,1,2,1,2,0},
-		{0,2,2,0,2,2,0},
+		{0,0,0,2,0,0,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0},
 	};
 
 
-	if (select_->GetselectCount() == 1) {
-		playerLocation_ =
-		{
-			{0,0,0,0,0,0,0},
-			{0,2,1,0,0,0,0},
-			{0,2,2,0,0,0,0},
-			{0,2,2,0,0,0,0},
-			{0,2,2,0,0,0,0},
-			{0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0},
-		};
-	}
+	Block.I = {
+		{0,0,0,0,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,0,0,0,0},
+	};
 
-	if (select_->GetselectCount() == 2) {
-		playerLocation_ =
-		{
-			{0,0,0,0,0,0,0},
-			{0,2,1,1,0,0,0},
-			{0,2,2,2,0,0,0},
-			{0,2,2,1,0,0,0},
-			{0,2,2,2,0,0,0},
-			{0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0},
-		};
-	}
+	Block.T = {
+		{0,0,0,0,0,0,0},
+		{0,1,1,1,1,1,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,0,0,0,0},
+	};
+
+	Block.S = {
+		{0,0,0,0,0,0,0},
+		{0,0,0,1,1,1,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,1,1,1,0,0,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0},
+	};
+
+	Block.O = {
+		{0,0,0,0,0,0,0},
+		{0,1,1,1,1,1,0},
+		{0,1,0,0,0,1,0},
+		{0,1,0,0,0,1,0},
+		{0,1,0,0,0,1,0},
+		{0,1,1,1,1,1,0},
+		{0,0,0,0,0,0,0},
+	};
+
+	Block.J = {
+		{0,0,0,0,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,1,1,1,0,0,0},
+		{0,0,0,0,0,0,0},
+	};
+
+	Block.L = {
+		{0,0,0,0,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,1,0,0,0},
+		{0,0,0,1,1,1,0},
+		{0,0,0,0,0,0,0},
+	};
+
+	Block.Ten = {
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0},
+		{0,0,1,1,1,0,0},
+		{0,0,1,1,1,0,0},
+		{0,0,1,1,1,0,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0},
+	};
+
+
+	Block.Side = {
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0},
+		{0,1,1,1,1,1,0},
+		{0,1,1,1,1,1,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0},
+	};
 
 	for (int i = 0; i < MAX_PLAYER_CHIPS; ++i) {
 		for (int j = 0; j < MAX_PLAYER_CHIPS; ++j) {
@@ -162,18 +195,22 @@ void Player::Update(){
 	worldTransform_.UpdateMatrix();
 
 	velocity_ = { 0,0,0 };
-	if (input_->PushKey(DIK_RIGHT)) {
-		velocity_.x += 0.3f;
+	if (input_->PressedKey(DIK_RIGHT)) {
+		velocity_.x += 2.00f;
+		worldTransform_.translate.x += 2.00f;
 	}
-	if (isAstop_ == false && input_->PushKey(DIK_LEFT)) {
-		velocity_.x -= 0.3f;
-	}
+	else if (input_->PressedKey(DIK_LEFT)) {
+		velocity_.x -= 2.00f;
+		worldTransform_.translate.x -= 2.00f;
 
-	if (input_->PushKey(DIK_UP)) {
-		velocity_.y += 0.3f;
 	}
-	if (input_->PushKey(DIK_DOWN)) {
-		velocity_.y -= 0.3f;
+	else if (input_->PressedKey(DIK_UP)) {
+		velocity_.y += 2.00f;
+		worldTransform_.translate.y += 2.00f;
+	}
+	else if (input_->PressedKey(DIK_DOWN)) {
+		velocity_.y -= 2.00f;
+		worldTransform_.translate.y -= 2.00f;
 	}
 
 	for (PlayerCore* core_ : cores_) {
@@ -189,18 +226,6 @@ void Player::Update(){
 	プレイヤーの移動制限は{-30~30,-15~15,0}
 	
 	*/
-
-
-	//cores_.remove_if([](PlayerCore* core) {
-	//	if (core->isAstop()) {
-	//		this->isAstop_ = false;
-	//		return true;
-	//	}
-	//	return false;
-	//	});
-
-
-
 
 	//デスラグが立つと削除
 	cores_.remove_if([](PlayerCore* core) {
@@ -222,49 +247,84 @@ void Player::Update(){
 	worldTransform_2.UpdateMatrix();
 	worldTransform_3.UpdateMatrix();
 	worldTransform_4.UpdateMatrix();
+	OutPutBlock();
+}
 
+void Player::OutPutBlock(){
+	if (input_->PressedKey(DIK_SPACE)) {
+		shape_ = Shape(rand() % 10);
+		BlockShape();
+	}
+}
+
+void Player::BlockShape(){
+	switch (shape_)
+	{
+	case Shape::shape_I:
+		playerLocation_ = Block.I;
+		break;
+
+	case Shape::shape_T:
+		playerLocation_ = Block.T;
+		break;
+
+	case Shape::shape_S:
+		playerLocation_ = Block.S;
+		break;
+
+	case Shape::shape_O:
+		playerLocation_ = Block.O;
+		break;
+
+	case Shape::shape_J:
+		playerLocation_ = Block.J;
+		break;
+
+	case Shape::shape_L:
+		playerLocation_ = Block.L;
+		break;
+	case Shape::shape_ten:
+		playerLocation_ = Block.Ten;
+		break;
+	case Shape::shape_side:
+		playerLocation_ = Block.Side;
+		break;
+	}
+
+	for (int i = 0; i < MAX_PLAYER_CHIPS; ++i) {
+		for (int j = 0; j < MAX_PLAYER_CHIPS; ++j) {
+			if (playerLocation_[i][j] == CORE) {
+				PlayerCore* newCore = new PlayerCore();
+				// 初期化
+				newCore->Initialize(coreTexHandle_);
+				newCore->SetWorldPosition(
+					{ worldTransform_.translate.x + (float(j * 2.1 - MAX_PLAYER_CHIPS - 1)),
+					worldTransform_.translate.y - (float(i * 2.1 - MAX_PLAYER_CHIPS - 1)),
+					worldTransform_.translate.z });
+				cores_.push_back(newCore);
+			}
+			if (playerLocation_[i][j] == CRUST) {
+				PlayerCrust* newCrust = new PlayerCrust();
+				//初期化
+				newCrust->Initialize(crustTexHandle_);
+				newCrust->SetWorldPosition(
+					{ worldTransform_.translate.x + (float(j * 2.1 - MAX_PLAYER_CHIPS - 1)),
+					worldTransform_.translate.y - (float(i * 2.1 - MAX_PLAYER_CHIPS - 1)),
+					worldTransform_.translate.z });
+				crusts_.push_back(newCrust);
+			}
+		}
+	}
 }
 
 
 
 void Player::Draw(CameraRole viewProjection_){
 
-	model_1->Draw(worldTransform_1, viewProjection_);
-	model_2->Draw(worldTransform_2, viewProjection_);
-	model_3->Draw(worldTransform_3, viewProjection_);
-	model_4->Draw(worldTransform_4, viewProjection_);
+	
 	///デバック場面
 #ifdef _DEBUG
 
-	ImGui::Begin("WorldTransform");
-	if (ImGui::TreeNode("worldTransform_1")) {
-		ImGui::DragFloat3("translate", &worldTransform_1.translate.x, 0.1f, 100, 100);
-		ImGui::DragFloat3("rotate", &worldTransform_1.rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &worldTransform_1.scale.x, 0.01f, 0, 10);
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("worldTransform_2")) {
-		ImGui::DragFloat3("translate", &worldTransform_2.translate.x, 0.1f, 100, 100);
-		ImGui::DragFloat3("rotate", &worldTransform_2.rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &worldTransform_2.scale.x, 0.01f, 0, 10);
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("worldTransform_3")) {
-		ImGui::DragFloat3("translate", &worldTransform_3.translate.x, 0.1f, 100, 100);
-		ImGui::DragFloat3("rotate", &worldTransform_3.rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &worldTransform_3.scale.x, 0.01f, 0, 10);
-		ImGui::TreePop();
-	}
-
-	if (ImGui::TreeNode("worldTransform_4")) {
-		ImGui::DragFloat3("translate", &worldTransform_4.translate.x, 0.1f, 100, 100);
-		ImGui::DragFloat3("rotate", &worldTransform_4.rotate.x, 0.01f, 100, 100);
-		ImGui::DragFloat3("scale", &worldTransform_4.scale.x, 0.01f, 100, 100);
-		ImGui::TreePop();
-	}
-
-
-	ImGui::End();
 
 #endif // _DEBUG
 	for (PlayerCore* core_ : cores_) {

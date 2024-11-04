@@ -14,7 +14,7 @@ GameScene::~GameScene() {
 void GameScene::Initialize(){
 	worldTransform.Initialize();
 	camera.Initialize();
-	camera.translate = { -2,0,-110 };
+	camera.translate = { 0,0,-110 };
 
 	texHandle_ = TextureManager::Load("resources/white.png");
 	SkydometexHandle_ = TextureManager::Load("resources/skydome.jpg");
@@ -92,7 +92,7 @@ void GameScene::Initialize(){
 	Endrightmodel_->SetModel("cube.obj");
 	Endrightmodel_->SetTexHandle(blacktexHandle_);
 	EndrightworldTransform_.Initialize();
-	EndrightworldTransform_.translate = { -1.0f,-0.0f,-105.7f };
+	EndrightworldTransform_.translate = { 1.0f,-0.0f,-105.7f };
 	EndrightworldTransform_.scale = { 1.0f,1.0f,0.0f };
 
 	//モデルの初期化＆設定(エンドオブジェクト左)
@@ -101,7 +101,7 @@ void GameScene::Initialize(){
 	EndLeftmodel_->SetModel("cube.obj");
 	EndLeftmodel_->SetTexHandle(blacktexHandle_);
 	EndLeftworldTransform_.Initialize();
-	EndLeftworldTransform_.translate = { -3.0f,-0.0f,-105.7f };
+	EndLeftworldTransform_.translate = { -1.0f,-0.0f,-105.7f };
 	EndLeftworldTransform_.scale = { 1.0f,1.0f,0.0f };
 
 	//モデルの初期化＆設定(スタートオブジェクト)
@@ -196,7 +196,7 @@ void GameScene::Update(){
 	StartworldTransform_.translate.z += 3;
 	if (flag == false) {
 		StartworldTransform_.translate.y++;
-		if (input_->PushKey(DIK_SPACE)) {
+		if (input_->PushKey(DIK_B)) {
 			sceneNo_ = END;
 		}
 	}

@@ -23,8 +23,11 @@ void PlayerCore::Initialize(uint32_t texHandle_) {
 
 void PlayerCore::Update(Vector3 velocity){
 	worldTransform_.UpdateMatrix();
-	worldTransform_.translate.x += velocity.x;
-	worldTransform_.translate.y += velocity.y;
+	velocity.x;
+	velocity.y;
+
+	worldTransform_.translate.y -= foolSpeed_;
+
 
 }
 
