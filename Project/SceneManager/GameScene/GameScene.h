@@ -38,10 +38,7 @@ public: // メンバ関数
 
 	void Draw()override;
 
-	/// <summary>
-	///	当たり判定
-	/// </summary>
-	void CheckAllCollisions();
+	
 
 private: // メンバ変数
 	WorldTransform worldTransform;
@@ -63,6 +60,8 @@ private: // メンバ変数
 	//天球
 	std::unique_ptr<Skydome> skydome_{};
 
+	// 当たり判定
+	std::unique_ptr<CollisionManager> collisionManager_{};
 
 	//3Dモデル
 	std::unique_ptr<Object3DPlacer> model_1;
@@ -78,9 +77,6 @@ private: // メンバ変数
 
 	WorldTransform EndrightworldTransform_;
 	WorldTransform EndLeftworldTransform_;
-
-	//CorisionManager
-	CollisionManager* collisionManager_;
 
 	//キーボード入力
 	Input* input_ = nullptr;

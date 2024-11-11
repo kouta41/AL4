@@ -12,14 +12,19 @@ Player::~Player(){
 	}
 }
 
-void Player::Initialize() {
+void Player::Initialize(CollisionManager* collisionManager) {
+	collisionManager_ = collisionManager;
+
 	worldTransform_.Initialize();
+	ModelManager::LoadObjModel("cube.obj");
+
+
 
 	coreTexHandle_ = TextureManager::Load("resources/cube.jpg");
 	crustTexHandle_= TextureManager::Load("resources/uvChecker.png");
+	texHandle_ = TextureManager::Load("resources/white.png");
 
-
-
+	ClearCount_ = 0;
 	// 7×7のプレイヤーのデータ
 	
 	playerLocation_ =
@@ -36,70 +41,70 @@ void Player::Initialize() {
 
 	Block.I = {
 		{0,0,0,0,0,0,0},
-		{0,0,0,1,0,0,0},
-		{0,0,0,1,0,0,0},
-		{0,0,0,1,0,0,0},
-		{0,0,0,1,0,0,0},
-		{0,0,0,1,0,0,0},
+		{0,0,0,0,1,0,0},
+		{0,0,0,0,1,0,0},
+		{0,0,0,0,1,0,0},
+		{0,0,0,0,1,0,0},
+		{0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0},
 	};
 
 	Block.T = {
 		{0,0,0,0,0,0,0},
-		{0,1,1,1,1,1,0},
-		{0,0,0,1,0,0,0},
-		{0,0,0,1,0,0,0},
-		{0,0,0,1,0,0,0},
-		{0,0,0,1,0,0,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,1,1,1,0},
+		{0,0,0,0,1,0,0},
+		{0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0},
 	};
 
 	Block.S = {
 		{0,0,0,0,0,0,0},
-		{0,0,0,1,1,1,0},
-		{0,0,0,1,0,0,0},
-		{0,0,0,1,0,0,0},
-		{0,1,1,1,0,0,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,1,1,0},
+		{0,0,0,1,1,0,0},
 		{0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0},
 	};
 
 	Block.O = {
 		{0,0,0,0,0,0,0},
-		{0,1,1,1,1,1,0},
-		{0,1,0,0,0,1,0},
-		{0,1,0,0,0,1,0},
-		{0,1,0,0,0,1,0},
-		{0,1,1,1,1,1,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,1,1,1,0},
+		{0,0,0,1,1,1,0},
+		{0,0,0,1,1,1,0},
+		{0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0},
 	};
 
 	Block.J = {
 		{0,0,0,0,0,0,0},
-		{0,0,0,1,0,0,0},
-		{0,0,0,1,0,0,0},
-		{0,0,0,1,0,0,0},
-		{0,0,0,1,0,0,0},
-		{0,1,1,1,0,0,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,1,0,0},
+		{0,0,0,0,1,0,0},
+		{0,0,0,1,1,0,0},
+		{0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0},
 	};
 
 	Block.L = {
 		{0,0,0,0,0,0,0},
-		{0,0,0,1,0,0,0},
-		{0,0,0,1,0,0,0},
-		{0,0,0,1,0,0,0},
-		{0,0,0,1,0,0,0},
-		{0,0,0,1,1,1,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,1,0,0},
+		{0,0,0,0,1,0,0},
+		{0,0,0,0,1,1,0},
+		{0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0},
 	};
 
 	Block.Ten = {
 		{0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0},
-		{0,0,1,1,1,0,0},
-		{0,0,1,1,1,0,0},
-		{0,0,1,1,1,0,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,1,0,0},
 		{0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0},
 	};
@@ -109,50 +114,18 @@ void Player::Initialize() {
 		{0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0},
-		{0,1,1,1,1,1,0},
-		{0,1,1,1,1,1,0},
+		{0,0,0,0,0,0,0},
+		{0,0,0,0,1,1,0},
 		{0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0},
 	};
 
-	for (int i = 0; i < MAX_PLAYER_CHIPS; ++i) {
-		for (int j = 0; j < MAX_PLAYER_CHIPS; ++j) {
-			if (playerLocation_[i][j] == CORE) {
-				PlayerCore* newCore = new PlayerCore();
-				// 初期化
-				newCore->Initialize(coreTexHandle_);
-				newCore->SetWorldPosition(
-					{ worldTransform_.translate.x + (float(j * 2.1 - MAX_PLAYER_CHIPS - 1)),
-					worldTransform_.translate.y - (float(i * 2.1 - MAX_PLAYER_CHIPS - 1)),
-					worldTransform_.translate.z });
-				cores_.push_back(newCore);
-			}
-			if (playerLocation_[i][j] == CRUST) {
-				PlayerCrust* newCrust = new PlayerCrust();
-				//初期化
-				newCrust->Initialize(crustTexHandle_);
-				newCrust->SetWorldPosition(
-					{ worldTransform_.translate.x + (float(j * 2.1 - MAX_PLAYER_CHIPS - 1)),
-					worldTransform_.translate.y - (float(i * 2.1 - MAX_PLAYER_CHIPS - 1)),
-					worldTransform_.translate.z });
-				crusts_.push_back(newCrust);
-			}
-		}
-	}
 
-
-	//衝突属性を設定
-	SetcollisiionAttribute_(kCollitionAttributePlayer);
-	//衝突対象を自分以外の属性以外に設定
-	SetCollisionMask_(~kCollitionAttributePlayer);
 
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 
 
-	ModelManager::LoadObjModel("cube.obj");
-
-	texHandle_ = TextureManager::Load("resources/white.png");
 
 	worldTransform_1.Initialize();
 	worldTransform_2.Initialize();
@@ -160,35 +133,45 @@ void Player::Initialize() {
 	worldTransform_4.Initialize();
 
 
+	Startmodel_ = std::make_unique<Object3DPlacer>();
+	Startmodel_->Initialize();
+	Startmodel_->SetModel("cube.obj");
+	Startmodel_->SetTexHandle(crustTexHandle_);
+	worldTransform_.translate = { 0.0f,18.0f,0.0f };
+
+
 	model_1 = std::make_unique<Object3DPlacer>();
 	model_1->Initialize();
 	model_1->SetModel("cube.obj");
 	model_1->SetTexHandle(texHandle_);
-	worldTransform_1.translate = { 10,5,0 };
-	worldTransform_1.scale = { 1,1,1 };
+	worldTransform_1.translate = { 10,0,0 };
+	worldTransform_1.scale = { 1,15,1 };
 
 	model_2 = std::make_unique<Object3DPlacer>();
 	model_2->Initialize();
 	model_2->SetModel("cube.obj");
 	model_2->SetTexHandle(texHandle_);
-	worldTransform_2.translate = { -10,-5,0 };
-	worldTransform_2.scale = { 1,1,1 };
+	worldTransform_2.translate = { -10,0,0 };
+	worldTransform_2.scale = { 1,15,1 };
 
 
 	model_3 = std::make_unique<Object3DPlacer>();
 	model_3->Initialize();
 	model_3->SetModel("cube.obj");
 	model_3->SetTexHandle(texHandle_);
-	worldTransform_3.translate = { 4,-10,0 };
-	worldTransform_3.scale = { 1,1,1 };
-
-	model_4 = std::make_unique<Object3DPlacer>();
-	model_4->Initialize();
-	model_4->SetModel("cube.obj");
-	model_4->SetTexHandle(texHandle_);
-	worldTransform_4.translate = { -4,10,0 };
-	worldTransform_4.scale = { 1,1,1, };
+	worldTransform_3.translate = { 0,-14,0 };
+	worldTransform_3.scale = { 15,1,1 };
 	
+
+	// 消える判定をとるブロックのx,y座標
+	for (int i = 0; i < 15; i++) {
+					
+		clearBlock_[i].x = (2 * i) - (float)(kBlockNumX);
+		clearBlock_[i].y = (2 * i) + kMapBottomPos;
+	}
+
+	// ブロックが消えるフラグ
+	isDelete_ = false;
 }
 
 void Player::Update(){
@@ -204,6 +187,8 @@ void Player::Update(){
 		worldTransform_.translate.x -= 2.00f;
 
 	}
+	
+	
 	else if (input_->PressedKey(DIK_UP)) {
 		velocity_.y += 2.00f;
 		worldTransform_.translate.y += 2.00f;
@@ -213,12 +198,24 @@ void Player::Update(){
 		worldTransform_.translate.y -= 2.00f;
 	}
 
+	if (worldTransform_.translate.x <= -8) {
+		//worldTransform_.translate.x = -8.f;
+	}
+	else if (worldTransform_.translate.x >= 8) {
+		//worldTransform_.translate.x = 8.f;
+	}
+
+
+	OutPutBlock();
+
 	for (PlayerCore* core_ : cores_) {
-		core_->Update(velocity_);
+		core_->Update();
 	}
 	for (PlayerCrust* crust_ : crusts_) {
 		crust_->Update(velocity_);
 	}
+
+	OnCollisionLine();
 
 
 	/*
@@ -247,12 +244,19 @@ void Player::Update(){
 	worldTransform_2.UpdateMatrix();
 	worldTransform_3.UpdateMatrix();
 	worldTransform_4.UpdateMatrix();
-	OutPutBlock();
+
+	shape_ = ChangeShape_[0];
+
 }
 
 void Player::OutPutBlock(){
 	if (input_->PressedKey(DIK_SPACE)) {
-		shape_ = Shape(rand() % 10);
+
+		ChangeShape_[0] = ChangeShape_[1];
+		ChangeShape_[1] = ChangeShape_[2];
+		ChangeShape_[2] = Shape(rand() % 7);
+
+		//shape_ = Shape::shape_I;
 		BlockShape();
 	}
 }
@@ -298,10 +302,13 @@ void Player::BlockShape(){
 				// 初期化
 				newCore->Initialize(coreTexHandle_);
 				newCore->SetWorldPosition(
-					{ worldTransform_.translate.x + (float(j * 2.1 - MAX_PLAYER_CHIPS - 1)),
-					worldTransform_.translate.y - (float(i * 2.1 - MAX_PLAYER_CHIPS - 1)),
+					{ worldTransform_.translate.x + (float(j * 2.01 - MAX_PLAYER_CHIPS - 1)),
+					worldTransform_.translate.y - (float(i * 2.01 - MAX_PLAYER_CHIPS - 1)),
 					worldTransform_.translate.z });
+				velocity_.x = worldTransform_.translate.x + (float(j * 2 - MAX_PLAYER_CHIPS - 1));
+				velocity_.y = worldTransform_.translate.y - (float(i * 2 - MAX_PLAYER_CHIPS - 1));
 				cores_.push_back(newCore);
+				collisionManager_->SetColliderList(newCore);
 			}
 			if (playerLocation_[i][j] == CRUST) {
 				PlayerCrust* newCrust = new PlayerCrust();
@@ -311,7 +318,8 @@ void Player::BlockShape(){
 					{ worldTransform_.translate.x + (float(j * 2.1 - MAX_PLAYER_CHIPS - 1)),
 					worldTransform_.translate.y - (float(i * 2.1 - MAX_PLAYER_CHIPS - 1)),
 					worldTransform_.translate.z });
-				crusts_.push_back(newCrust);
+				collisionManager_->SetColliderList(newCrust);
+				//crusts_.push_back(newCrust);
 			}
 		}
 	}
@@ -324,7 +332,17 @@ void Player::Draw(CameraRole viewProjection_){
 	
 	///デバック場面
 #ifdef _DEBUG
+	///デバック場面
+	ImGui::Begin("Camera");
+	if (ImGui::TreeNode("worldTransform")) {
+		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, 100, 100);
+		ImGui::DragFloat("ClearCount_", &ClearCount_, 0.1f, 100, 100);
+		
 
+		ImGui::TreePop();
+	}
+ 
+	ImGui::End();
 
 #endif // _DEBUG
 	for (PlayerCore* core_ : cores_) {
@@ -333,11 +351,76 @@ void Player::Draw(CameraRole viewProjection_){
 	for (PlayerCrust* crust_ : crusts_) {
 		crust_->Draw(viewProjection_);
 	}
+	Startmodel_->Draw(worldTransform_, viewProjection_);
+	model_1->Draw(worldTransform_1, viewProjection_);
+	model_2->Draw(worldTransform_2, viewProjection_);
+	model_3->Draw(worldTransform_3, viewProjection_);
 
 }
 
 
-void Player::OnCollision(){
+void Player::OnCollisionLine(){
+	for (int i = 0; i < kBlockNumY; i++) {
+		// その列にブロックがいくつあるかの確認
+		int count = 0;
+		int hardBlockCount = 0;
+		// 落下するブロック
+		for (PlayerCore* core_ : cores_) {
+			if (!core_->GetFoolFlag()) {
+				if ((int)clearBlock_[i].y == static_cast<int>(std::round(core_->GetWorldPosition().y))) {
+					for (int j = 0; j < kBlockNumX; j++) {
+						if ((int)clearBlock_[j].x == static_cast<int>(std::round(core_->GetWorldPosition().x))) {
+							count++;
+							if (!core_->GetIsHardBlock()) {
+								core_->SetIsAlive(false);
+							}
+							else if (core_->GetIsHardBlock()) {
+								hardBlockCount++;
+							}
+						}
+					}
+				}
+			}
+
+		}
+		
+
+		if (count >= kBlockNumX) {
+			ClearCount_++;
+ 				cores_.remove_if([](PlayerCore* block) {
+					if (!block->GetIsAlive()) {
+						delete block;
+						return true;
+					}
+					return false;
+					});
+				;
+
+				// コライダーをすべてクリア
+				collisionManager_->ClearColliderList();
+				AABB aabb = {
+					{-0.99999f,-1.0f,-0.99999f},
+					{0.99999f,1.0f,0.99999f}
+				};
+				// すでに生成されているブロックをコライダーに登録
+				// 落下するブロック
+				for (PlayerCore* core_ : cores_) {
+					// 当たり判定の形状を設定
+					core_->SetCollisionPrimitive_(kCollisionAABB);
+					core_->SetCollisionAttribute_(kAttributeBlock);
+					core_->SetAABB_(aabb);
+					collisionManager_->SetColliderList(core_);
+				}
+				// コライダーのすべてが初期化されてしまっているのでplayerを再pushする
+				isDelete_ = true;
+			}
+		
+		else {
+			for (PlayerCore* core_ : cores_) {
+				core_->SetIsAlive(true);
+			}
+		}
+	}
 }
 
 Vector3 Player::GetWorldPosition(){

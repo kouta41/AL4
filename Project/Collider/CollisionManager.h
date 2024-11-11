@@ -1,29 +1,41 @@
 #pragma once
 #include "Collider.h"
+#include <Mathfunction.h>
 
 #include <list>
 
-class CollisionManager{
-public: 
-	void AddCollider(Collider* collider) { colliders_.push_back(collider); }
-	void ClearCollider() { colliders_.clear(); }
+class CollisionManager {
+public:
+	/// <summary>
+	/// コライダーリストをクリアする
+	/// </summary>
+	void ClearColliderList();
+
+	/// <summary>
+	/// コライダーリストに登録
+	/// </summary>
+	/// <param name="collider"></param>
+	void SetColliderList(Collider* collider);
+
+	/// <summary>
+	/// 衝突判定と応答
+	/// </summary>
 	void CheckAllCollisions();
 
-	//geter
-	int GethitCount() { return hitCount_; }
-
-	Vector3 GetposA() { return posB; }
+	/// <summary>
+	/// isDeleteがtrueかを確認
+	/// </summary>
+	void CheckDeleteColliderList();
 
 private:
 	/// <summary>
-	/// コライダー
+	/// コライダー2つの衝突判定と応答
 	/// </summary>
-	std::list<Collider*> colliders_;
-
+	/// <param name="colliderA"></param>
+	/// <param name="colliderB"></param>
 	void CheckCollisionPair(Collider* colliderA, Collider* colliderB);
 
-	int hitCount_ = 0;
-
-	Vector3 posA, posB;
+private:
+	//コライダーリスト
+	std::list<Collider*> colliders_{};
 };
-

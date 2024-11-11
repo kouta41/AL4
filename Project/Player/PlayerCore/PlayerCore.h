@@ -31,7 +31,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update(Vector3 velocity);
+	void Update();
 
 	/// <summary>
 	/// 描画
@@ -40,24 +40,37 @@ public: // メンバ関数
 
 
 	//衝突判定
-	void OnCollision();
+	void OnCollision(Collider* collider)override;
 
-	//移動制限
-	void MovementRestrictions();
+	
 
 
 	//ワールド座標系を取得
-	Vector3 GetWorldPosition();
+	Vector3 GetWorldPosition()override;
+
+
+	/// Getter
+	// ワールド座標を取得
+	Vector3 GetworldTransform_() { return worldTransform_.translate; }
+	// 生存フラグを取得
+	bool GetIsAlive() { return isAlive_; }
+	// 落ちているかを取得
+	bool GetFoolFlag() { return foolflag_; }
+	// 消えないブロックを取得
+	inline bool GetIsHardBlock() { return isHardBlock_; }
+
+	/// Setter
+	// ワールド座標を設定
+	void SetworldTransform_(Vector3 worldTransform) { this->worldTransform_.translate = worldTransform; }
+	// 生存フラグを設定
+	void SetIsAlive(bool isAlive) { isAlive_ = isAlive; }
+	// 消えないブロックを設定
+	inline void SetIsHardBlock(bool isActive) { isHardBlock_ = isActive; }
 
 	//ワールド座標系を取得
 	void SetWorldPosition(Vector3 translate);
 
 	bool IsDead()const { return isDead_; }
-
-	bool isWstop()const { return isWstop_; }
-	bool isAstop()const { return isAstop_; }
-	bool isSstop()const { return isSstop_; }
-	bool isDstop()const { return isDstop_; }
 
 
 
@@ -79,12 +92,13 @@ private: // メンバ変数
 	//デスフラグ
 	bool isDead_ = false;
 
-	//移動制限フラグ
-	bool isWstop_ = false;
-	bool isAstop_ = false;
-	bool isSstop_ = false;
-	bool isDstop_ = false;
+	//落ちるフラグ
+	bool foolflag_ = false;
+	// 生存フラグ
+	bool isAlive_;
 
 	//速度
 	float foolSpeed_ = 0.4f;
+	// 消えないブロック
+	bool isHardBlock_;
 };

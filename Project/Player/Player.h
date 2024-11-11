@@ -14,7 +14,7 @@
 #include "CollisionConfig.h"
 #include "ModelManager.h"
 #include "SelectionScenen.h"
-
+#include "CollisionManager.h"
 
 #define MAX_PLAYER_CHIPS 7
 
@@ -68,7 +68,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize(CollisionManager* collisionManager_);
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -90,8 +90,8 @@ public: // メンバ関数
 	/// </summary>
 	void Draw(CameraRole viewProjection_);
 
-	//衝突判定
-	void OnCollision();
+	//
+	void OnCollisionLine();
 
 	
 	//ワールド座標系を取得
@@ -108,6 +108,19 @@ public: // メンバ関数
 	//外殻リストを取得
 	const std::list<PlayerCrust*>& GetPlayerCrusts()const { return crusts_; }
 
+	float GetClearCount_() { return ClearCount_; }
+
+
+	// マップの左端
+	const float kMapLeftPos = 0.0f;
+	// マップの最底辺
+	const float kMapBottomPos = -12.0f;
+	/// 判定をとるブロックの数
+	// 横(ブロックが消えるのに必要な数)
+	const int kBlockNumX = 8;
+	// 縦
+	const int kBlockNumY = 15;
+
 private: // メンバ変数
 
 	WorldTransform worldTransform_;
@@ -123,8 +136,13 @@ private: // メンバ変数
 	std::unique_ptr<Object3DPlacer> model_3;
 	std::unique_ptr<Object3DPlacer> model_4;
 
+	std::unique_ptr<Object3DPlacer> Startmodel_;
+
+
 	//テクスチャハンドル
 	uint32_t texHandle_ = 0;
+	uint32_t texHandle_UV = 0;
+
 
 	std::vector<std::vector<int32_t>> playerLocation_;
 	///核
@@ -133,11 +151,11 @@ private: // メンバ変数
 	std::list<PlayerCrust*> crusts_;
 	
 
+	Shape ChangeShape_[3];
+
+
 	Vector3 position_;
 	
-
-	WorldTransform worldTransform;
-
 	//速度
 	Vector3 velocity_;
 
@@ -154,16 +172,17 @@ private: // メンバ変数
 	uint32_t coreTexHandle_ = 0;
 	uint32_t crustTexHandle_ = 0;
 
-	//移動制限フラグ
-	bool isWstop_ = false;
-	bool isAstop_ = false;
-	bool isSstop_ = false;
-	bool isDstop_ = false;
+	
+	float ClearCount_ = 0;
+
+	Vector2 clearBlock_[15];
 
 	//フェーズ
 	Shape shape_;
 
 	typeShape Block;
-
-	
+	// ブロックが消えるフラグ
+	bool isDelete_;
+	// 当たり判定
+	CollisionManager* collisionManager_ = nullptr;
 };

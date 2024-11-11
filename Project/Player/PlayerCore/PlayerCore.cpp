@@ -1,4 +1,7 @@
 #include "PlayerCore.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
+#include <cassert>
 
 PlayerCore::PlayerCore(){
 }
@@ -14,20 +17,44 @@ void PlayerCore::Initialize(uint32_t texHandle_) {
 	model_->SetModel("cube.obj");
 	model_->SetTexHandle(texHandle_);
 
-	//衝突属性を設定
-	SetcollisiionAttribute_(kCollitionAttributePlayer);
-	//衝突対象を自分以外の属性以外に設定
-	SetCollisionMask_(~kCollitionAttributePlayer);
 
+
+	//落ちているか
+	foolflag_ = true;
+
+	// 生存フラグ
+	isAlive_ = true;
+
+	// 当たり判定の形状を設定
+	SetCollisionPrimitive_(kCollisionAABB);
+	//当たり判定の属性
+	SetCollisionAttribute_(kAttributeBlock);
+
+	AABB aabb = {
+		{-0.99999f,-1.0f,-0.99999f},
+		{0.99999f,1.0f,0.99999f}
+	};
+	//SetAABB(aabb);
 }
 
-void PlayerCore::Update(Vector3 velocity){
+void PlayerCore::Update(){
 	worldTransform_.UpdateMatrix();
-	velocity.x;
-	velocity.y;
+
 
 	worldTransform_.translate.y -= foolSpeed_;
+	if (worldTransform_.translate.y <= -12) {
+		float floor = worldTransform_.translate.y - (-12);
+		worldTransform_.translate.y -= floor;
+		foolflag_ = false;
+		SetIsBottomHitAABB_(true);
+	}
 
+	if (worldTransform_.translate.x <= -10 && worldTransform_.translate.y <= 14) {
+		isAlive_ = false;
+	}
+	else if (worldTransform_.translate.x >= 10 && worldTransform_.translate.y <= 14) {
+		isAlive_ = false;
+	}
 
 }
 
@@ -49,25 +76,58 @@ void PlayerCore::Draw(CameraRole viewProjection_){
 
 }
 
-void PlayerCore::OnCollision(){
-	isDead_ = true;
+void PlayerCore::OnCollision(Collider* collider){
+	float theta = atan2(worldTransform_.translate.y - collider->GetWorldPosition().y, worldTransform_.translate.x - collider->GetWorldPosition().x);
+
+	if (GetCollisionAttribute_() == collider->GetCollisionAttribute_()) {
+		// 下
+		if (theta >= (M_PI / 3.0f) && theta <= M_PI - (M_PI / 3.0f)) {
+			float extrusion = (-GetAABB_().min.y + collider->GetAABB_().max.y) - (worldTransform_.translate.y - collider->GetWorldPosition().y);
+			worldTransform_.translate.y += extrusion;
+			int y = static_cast<int>(std::round(worldTransform_.translate.y));
+			worldTransform_.translate.y = (float)y;
+			worldTransform_.UpdateMatrix();
+			foolflag_ = false;
+			SetIsBottomHitAABB_(true);
+		}
+		else {
+			SetIsBottomHitAABB_(false);
+			foolflag_ = true;
+		}
+
+		// 上
+		if (theta <= -(M_PI / 3) && theta >= -M_PI + (M_PI / 3)) {
+			worldTransform_.UpdateMatrix();
+			if (GetCollisionAttribute_() == collider->GetCollisionAttribute_()) {
+				SetIsTopHitAABB_(true);
+			}
+		}
+		else {
+			SetIsTopHitAABB_(false);
+		}
+
+		// 右
+		if (theta < M_PI / 5 && theta > -(M_PI / 5)) {
+			float extrusion = (-GetAABB_().min.x + collider->GetAABB_().max.x) - (worldTransform_.translate.x - collider->GetWorldPosition().x);
+			worldTransform_.translate.x += extrusion;
+			worldTransform_.UpdateMatrix();
+			if (GetCollisionAttribute_() == collider->GetCollisionAttribute_()) {
+				SetIsRightHitAABB_(true);
+			}
+		}
+		// 左
+		if (theta > M_PI - (M_PI / 5) || theta < -M_PI + (M_PI / 5)) {
+			float extrusion = (GetAABB_().max.x + (-collider->GetAABB_().min.x)) - (collider->GetWorldPosition().x - worldTransform_.translate.x);
+			worldTransform_.translate.x -= extrusion;
+			worldTransform_.UpdateMatrix();
+			if (GetCollisionAttribute_() == collider->GetCollisionAttribute_()) {
+				SetIsLeftHitAABB_(true);
+			}
+		}
+	}
 }
 
-void PlayerCore::MovementRestrictions(){
-	if (worldTransform_.translate.x < -30 ) {
-		isAstop_ = true;
-	}
-	if (worldTransform_.translate.x < 30) {
-		isDstop_ = true;
-	}
 
-	if (worldTransform_.translate.y < 15) {
-		isWstop_ = true;
-	}
-	if (worldTransform_.translate.y < -15) {
-		isSstop_ = true;
-	}
-}
 
 Vector3 PlayerCore::GetWorldPosition()
 {

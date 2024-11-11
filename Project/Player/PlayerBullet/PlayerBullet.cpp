@@ -14,10 +14,7 @@ void PlayerBullet::Initialize(uint32_t texHandle_, const Vector3& position, cons
 	model_->SetModel("cube.obj");
 	model_->SetTexHandle(texHandle_);
 
-	//衝突属性を設定
-	SetcollisiionAttribute_(kCollitionAttributePlayer);
-	//衝突対象を自分以外の属性以外に設定
-	SetCollisionMask_(~kCollitionAttributePlayer);
+
 
 	worldTransform_.translate = position;
 	velocity_ = velocity;

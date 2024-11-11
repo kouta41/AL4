@@ -22,10 +22,10 @@ void Enemy::Initialize(){
 	model_->SetModel("cube.obj");
 	model_->SetTexHandle(texHandle_);
  
-	//衝突属性を設定
-	SetcollisiionAttribute_(kCollitionAttributeEnemy);
-	//衝突対象を自分以外の属性以外に設定
-	SetCollisionMask_(~kCollitionAttributeEnemy);
+	// 当たり判定の形状を設定
+	//SetCollisionPrimitive_(kCollisionSphere);
+	//当たり判定の属性
+	//SetCollisionAttribute_(kAttributeEnemy);
 
 	worldTransform_.translate = { 0,0,0 };
 	// 乱数生成器を初期化

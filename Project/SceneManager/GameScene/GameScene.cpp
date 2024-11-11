@@ -25,16 +25,19 @@ void GameScene::Initialize(){
 	ModelManager::LoadObjModel("cube.obj");
 	ModelManager::LoadObjModel("skydome.obj");
 
+	// 当たり判定のインスタンスを生成
+	collisionManager_ = std::make_unique<CollisionManager>();
+
 	//自キャラの生成
 	player_ = std::make_unique<Player>();
 	// 自キャラの初期化
-	player_->Initialize();
+	player_->Initialize(collisionManager_.get());
 
 
 	//敵キャラの生成
-	enemy_ = std::make_unique<Enemy>();
+	//enemy_ = std::make_unique<Enemy>();
 	// 敵キャラの初期化
-	enemy_->Initialize();
+	//enemy_->Initialize();
 
 
 	//天球の生成
@@ -42,8 +45,6 @@ void GameScene::Initialize(){
 	//天球の初期化
 	skydome_->Initialize(SkydometexHandle_);
 
-	//当たり判定の初期化
-	collisionManager_ = new CollisionManager();
 
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
@@ -57,35 +58,7 @@ void GameScene::Initialize(){
 	worldTransform_3.Initialize();
 	worldTransform_4.Initialize();
 
-	model_1 = std::make_unique<Object3DPlacer>();
-	model_1->Initialize();
-	model_1->SetModel("cube.obj");
-	model_1->SetTexHandle(texHandle_);
-	worldTransform_1.translate = { 30,0,0 };
-	worldTransform_1.scale = { 1,15,1 };
-
-	model_2 = std::make_unique<Object3DPlacer>();
-	model_2->Initialize();
-	model_2->SetModel("cube.obj");
-	model_2->SetTexHandle(texHandle_);
-	worldTransform_2.translate = { -30,0,0 };
-	worldTransform_2 .scale = { 1,15,1 };
-
-
-	model_3 = std::make_unique<Object3DPlacer>();
-	model_3->Initialize();
-	model_3->SetModel("cube.obj");
-	model_3->SetTexHandle(texHandle_);
-	worldTransform_3.translate = { 0,-15,0 };
-	worldTransform_3.scale = { 30,1,1 };
-
-	model_4 = std::make_unique<Object3DPlacer>();
-	model_4->Initialize();
-	model_4->SetModel("cube.obj");
-	model_4->SetTexHandle(texHandle_);
-	worldTransform_4.translate = { 0,15,0 };
-	worldTransform_4.scale = { 30,1,1, };
-
+	
 	//モデルの初期化＆設定(エンドオブジェクト右)
 	Endrightmodel_ = std::make_unique<Object3DPlacer>();
 	Endrightmodel_->Initialize();
@@ -137,6 +110,8 @@ void GameScene::Update(){
 
 	camera.UpdateMatrix();
 
+	// 当たり判定
+	collisionManager_->CheckAllCollisions();
 
 	//天球の更新
 	skydome_->Update();
@@ -149,11 +124,11 @@ void GameScene::Update(){
 			player_->Update();
 
 			//敵の更新
-			enemy_->Update();
-			enemy_->SetPlayerCorepos(player_->GetPlayerCoreWorldPosition());
+			//enemy_->Update();
+			//enemy_->SetPlayerCorepos(player_->GetPlayerCoreWorldPosition());
 
 			//当たり判定
-			CheckAllCollisions();
+			//CheckAllCollisions();
 
 
 			XINPUT_STATE joyState{};
@@ -181,6 +156,10 @@ void GameScene::Update(){
 		//sceneNo_ = END;
 	}
 	
+	if (player_->GetClearCount_() == 4.0f) {
+		sceneNo_ = END;
+	}
+
 
 	//演出
 	if (flag == true) {
@@ -231,29 +210,12 @@ void GameScene::Update(){
 
 void GameScene::Draw(){
 #ifdef _DEBUG
-	///デバック場面
-	ImGui::Begin("Camera");
-	if (ImGui::TreeNode("worldTransform")) {
-		ImGui::DragFloat3("translate", &camera.translate.x, 0.1f, 100, 100);
-		ImGui::DragFloat("rotateX", &camera.rotate.x, 0.1f, 100, 100);
-		ImGui::DragFloat("rotateY", &camera.rotate.y, 0.1f, 100, 100);
-		ImGui::DragFloat("rotateZ", &camera.rotate.z, 0.1f, 100, 100);
-
-
-		ImGui::TreePop();
-	}
-
-	ImGui::DragInt("Count", &count_, 0.01f, 0, 10);
-	ImGui::DragFloat3("pos", &posA.x, 0.1f, 100, 100);
-
-	ImGui::End();
-
 	
 #endif // RELEASE
 
 
 	//モデルの描画
-	Startmodel_->Draw(StartworldTransform_, camera);
+	//Startmodel_->Draw(StartworldTransform_, camera);
 	//画面遷移
 	Endrightmodel_->Draw(EndrightworldTransform_, camera);
 	EndLeftmodel_->Draw(EndLeftworldTransform_, camera);
@@ -261,12 +223,9 @@ void GameScene::Draw(){
 	//プレイヤーの描画
 	player_->Draw(camera);
 	//敵の描画
-	enemy_->Draw(camera);
+	//enemy_->Draw(camera);
 
-	model_1->Draw(worldTransform_1, camera);
-	model_2->Draw(worldTransform_2, camera);
-	model_3->Draw(worldTransform_3, camera);
-	model_4->Draw(worldTransform_4, camera);
+	
 	
 	//天球の描画
 	//skydome_->Draw(camera);
@@ -275,26 +234,4 @@ void GameScene::Draw(){
 
 }
 
-void GameScene::CheckAllCollisions(){
-	// 敵弾リストの取得
-	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetEnemyBullsts();
-	for (EnemyBullet* bullet : enemyBullets) {
-		collisionManager_->AddCollider(bullet);
-	}
-	// プレイヤーの外殻リストの取得
-	const std::list<PlayerCore*>& playerCores = player_->GetPlayerCores();
-	for (PlayerCore* cores : playerCores) {
-		collisionManager_->AddCollider(cores);
-	}
-	// 敵弾リストの取得
-	const std::list<PlayerCrust*>& playerCrusts = player_->GetPlayerCrusts();
-	for (PlayerCrust* crusts : playerCrusts) {
-		collisionManager_->AddCollider(crusts);
-	}
 
-	collisionManager_->CheckAllCollisions();
-	collisionManager_->ClearCollider();
-
-	count_ = collisionManager_->GethitCount();
-	posA = collisionManager_->GetposA();
-}
