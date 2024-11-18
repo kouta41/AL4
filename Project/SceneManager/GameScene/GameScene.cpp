@@ -110,8 +110,7 @@ void GameScene::Update(){
 
 	camera.UpdateMatrix();
 
-	// 当たり判定
-	collisionManager_->CheckAllCollisions();
+	
 
 	//天球の更新
 	skydome_->Update();
@@ -127,9 +126,8 @@ void GameScene::Update(){
 			//enemy_->Update();
 			//enemy_->SetPlayerCorepos(player_->GetPlayerCoreWorldPosition());
 
-			//当たり判定
-			//CheckAllCollisions();
-
+			// 当たり判定
+			collisionManager_->CheckAllCollisions();
 
 			XINPUT_STATE joyState{};
 			if (Input::GetInstance()->GetJoystickState(joyState)) {
@@ -151,10 +149,6 @@ void GameScene::Update(){
 		}
 	}
 
-	gameTime++;
-	if (gameTime >= 60 * 20) {
-		//sceneNo_ = END;
-	}
 	
 	if (player_->GetClearCount_() == 4.0f) {
 		sceneNo_ = END;
@@ -210,7 +204,16 @@ void GameScene::Update(){
 
 void GameScene::Draw(){
 #ifdef _DEBUG
+	ImGui::Begin("Camera");
+	if (ImGui::TreeNode("camera")) {
+		ImGui::DragFloat3("translate", &camera.translate.x, 0.1f, 100, 100);
+		ImGui::DragFloat3("rotate", &camera.rotate.x, 0.1f, 100, 100);
+
+
+		ImGui::TreePop();
+	}
 	
+	ImGui::End();
 #endif // RELEASE
 
 

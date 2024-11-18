@@ -121,10 +121,10 @@
     <ClCompile Include="Project\SceneManager\EndScene\EndScene.cpp">
       <Filter>Project\EndScene</Filter>
     </ClCompile>
-    <ClCompile Include="Project\Enemy\Enemy.cpp">
+    <ClCompile Include="Project\EnemyManager\Enemy.cpp">
       <Filter>Project\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Project\Enemy\EnemyBullet\EnemyBullet.cpp">
+    <ClCompile Include="Project\EnemyManager\EnemyBullet\EnemyBullet.cpp">
       <Filter>Project\EnemyBullet</Filter>
     </ClCompile>
     <ClCompile Include="Project\SceneManager\GameManager\GameManager.cpp">
@@ -136,23 +136,14 @@
     <ClCompile Include="GhotEngine\Particle\Particle.cpp">
       <Filter>GhotEngine\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="Project\Player\Player.cpp">
+    <ClCompile Include="Project\PlayerManager\Player.cpp">
       <Filter>Project\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Project\Player\PlayerCore\PlayerCore.cpp">
+    <ClCompile Include="Project\PlayerManager\PlayerCore\PlayerCore.cpp">
       <Filter>Project\Player\PlayrCore</Filter>
     </ClCompile>
-    <ClCompile Include="Project\Player\PlayerCrust\PlayerCrust.cpp">
+    <ClCompile Include="Project\PlayerManager\PlayerCrust\PlayerCrust.cpp">
       <Filter>Project\Player\PlayerCrust</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\Player\PlayerBullet\PlayerBullet.cpp">
-      <Filter>Project\PlayerBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\RailCamera\RailCamera.cpp">
-      <Filter>Project\RailCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\SceneManager\SelectionScenen\SelectionScenen.cpp">
-      <Filter>Project\SelectionScenen</Filter>
     </ClCompile>
     <ClCompile Include="GhotEngine\Skybox\Skybox.cpp">
       <Filter>GhotEngine\Skybox</Filter>
@@ -545,10 +536,10 @@
     <ClInclude Include="Project\SceneManager\EndScene\EndScene.h">
       <Filter>Project\EndScene</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Enemy\Enemy.h">
+    <ClInclude Include="Project\EnemyManager\Enemy.h">
       <Filter>Project\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Enemy\EnemyBullet\EnemyBullet.h">
+    <ClInclude Include="Project\EnemyManager\EnemyBullet\EnemyBullet.h">
       <Filter>Project\EnemyBullet</Filter>
     </ClInclude>
     <ClInclude Include="Project\SceneManager\GameManager\GameManager.h">
@@ -560,23 +551,14 @@
     <ClInclude Include="GhotEngine\Particle\Particle.h">
       <Filter>GhotEngine\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Player\Player.h">
+    <ClInclude Include="Project\PlayerManager\Player.h">
       <Filter>Project\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Player\PlayerCore\PlayerCore.h">
+    <ClInclude Include="Project\PlayerManager\PlayerCore\PlayerCore.h">
       <Filter>Project\Player\PlayrCore</Filter>
     </ClInclude>
-    <ClInclude Include="Project\Player\PlayerCrust\PlayerCrust.h">
+    <ClInclude Include="Project\PlayerManager\PlayerCrust\PlayerCrust.h">
       <Filter>Project\Player\PlayerCrust</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\Player\PlayerBullet\PlayerBullet.h">
-      <Filter>Project\PlayerBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\RailCamera\RailCamera.h">
-      <Filter>Project\RailCamera</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\SceneManager\SelectionScenen\SelectionScenen.h">
-      <Filter>Project\SelectionScenen</Filter>
     </ClInclude>
     <ClInclude Include="GhotEngine\Skybox\Skybox.h">
       <Filter>GhotEngine\Skybox</Filter>
@@ -787,6 +769,11 @@
     <None Include="GhotEngine\ShaderFile\Particle.hlsli">
       <Filter>GhotEngine\ShaderFile</Filter>
     </None>
+    <None Include="x64\Release\dxcompiler.dll" />
+    <None Include="x64\Release\dxil.dll" />
+    <None Include="x64\Release\GhotEngine.exe" />
+    <None Include="x64\Release\GhotEngine.pdb" />
+    <None Include="x64\Release\imgui.ini" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="externals\assimp\lib\Debug\assimp-vc143-mdd.lib">

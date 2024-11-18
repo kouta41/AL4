@@ -23,101 +23,84 @@ void Player::Initialize(CollisionManager* collisionManager) {
 	coreTexHandle_ = TextureManager::Load("resources/cube.jpg");
 	crustTexHandle_= TextureManager::Load("resources/uvChecker.png");
 	texHandle_ = TextureManager::Load("resources/white.png");
+	texHandle_1= TextureManager::Load("resources/324nv.png");
 
 	ClearCount_ = 0;
 	// 7×7のプレイヤーのデータ
 	
 	playerLocation_ =
 	{
-		{0,0,0,0,0,0,0},
-		{0,0,0,2,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,0,0,0},
 	};
 
 
 	Block.I = {
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,1,0,0},
-		{0,0,0,0,1,0,0},
-		{0,0,0,0,1,0,0},
-		{0,0,0,0,1,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,1,0,0},
+		{0,0,1,0,0},
+		{0,0,1,0,0},
+		{0,0,1,0,0},		
 	};
 
 	Block.T = {
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,1,1,1,0},
-		{0,0,0,0,1,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
 	};
 
 	Block.S = {
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,1,1,0},
-		{0,0,0,1,1,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
 	};
 
 	Block.O = {
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,1,1,1,0},
-		{0,0,0,1,1,1,0},
-		{0,0,0,1,1,1,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
 	};
 
 	Block.J = {
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,1,0,0},
-		{0,0,0,0,1,0,0},
-		{0,0,0,1,1,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
 	};
 
 	Block.L = {
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,1,0,0},
-		{0,0,0,0,1,0,0},
-		{0,0,0,0,1,1,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
 	};
 
 	Block.Ten = {
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,1,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
 	};
 
 
 	Block.Side = {
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,1,1,0},
-		{0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
+		{0,0,0,0,1},
 	};
 
 
@@ -163,49 +146,50 @@ void Player::Initialize(CollisionManager* collisionManager) {
 	worldTransform_3.scale = { 15,1,1 };
 	
 
+	model_4 = std::make_unique<Object3DPlacer>();
+	model_4->Initialize();
+	model_4->SetModel("cube.obj");
+	model_4->SetTexHandle(texHandle_1);
+	worldTransform_4.translate = { 0,-14,0 };
+	worldTransform_4.scale = { 15,1,1 };
+
 	// 消える判定をとるブロックのx,y座標
 	for (int i = 0; i < 15; i++) {
 					
-		clearBlock_[i].x = (2 * i) - (float)(kBlockNumX);
+		clearBlock_[i].x = (2 * i) - (float)(kBlockNumX-1);
 		clearBlock_[i].y = (2 * i) + kMapBottomPos;
 	}
 
 	// ブロックが消えるフラグ
 	isDelete_ = false;
+
+	//ブロックの形状の設定
+	srand((unsigned int)time(nullptr));
+	for (int i = 0; i < 3; i++) {
+		ChangeShape_[i] = Shape(rand() % 7);
+	}
 }
 
 void Player::Update(){
 	worldTransform_.UpdateMatrix();
 
-	velocity_ = { 0,0,0 };
+	//移動
 	if (input_->PressedKey(DIK_RIGHT)) {
-		velocity_.x += 2.00f;
 		worldTransform_.translate.x += 2.00f;
 	}
 	else if (input_->PressedKey(DIK_LEFT)) {
-		velocity_.x -= 2.00f;
 		worldTransform_.translate.x -= 2.00f;
-
-	}
-	
-	
-	else if (input_->PressedKey(DIK_UP)) {
-		velocity_.y += 2.00f;
-		worldTransform_.translate.y += 2.00f;
-	}
-	else if (input_->PressedKey(DIK_DOWN)) {
-		velocity_.y -= 2.00f;
-		worldTransform_.translate.y -= 2.00f;
 	}
 
-	if (worldTransform_.translate.x <= -8) {
-		//worldTransform_.translate.x = -8.f;
+	//移動制限
+	if (worldTransform_.translate.x <= -LimitMove) {
+		worldTransform_.translate.x = -8.f;
 	}
-	else if (worldTransform_.translate.x >= 8) {
-		//worldTransform_.translate.x = 8.f;
+	else if (worldTransform_.translate.x >= LimitMove) {
+		worldTransform_.translate.x = 8.f;
 	}
 
-
+	//ブロックの生成
 	OutPutBlock();
 
 	for (PlayerCore* core_ : cores_) {
@@ -215,14 +199,6 @@ void Player::Update(){
 		crust_->Update(velocity_);
 	}
 
-	OnCollisionLine();
-
-
-	/*
-	
-	プレイヤーの移動制限は{-30~30,-15~15,0}
-	
-	*/
 
 	//デスラグが立つと削除
 	cores_.remove_if([](PlayerCore* core) {
@@ -240,17 +216,20 @@ void Player::Update(){
 		return false;
 		});
 
+	//横一列になったら消える処理
+	OnCollisionLine();
+
 	worldTransform_1.UpdateMatrix();
 	worldTransform_2.UpdateMatrix();
 	worldTransform_3.UpdateMatrix();
 	worldTransform_4.UpdateMatrix();
 
 	shape_ = ChangeShape_[0];
-
 }
 
 void Player::OutPutBlock(){
 	if (input_->PressedKey(DIK_SPACE)) {
+		shape_ = Shape::shape_I;
 
 		ChangeShape_[0] = ChangeShape_[1];
 		ChangeShape_[1] = ChangeShape_[2];
@@ -302,11 +281,9 @@ void Player::BlockShape(){
 				// 初期化
 				newCore->Initialize(coreTexHandle_);
 				newCore->SetWorldPosition(
-					{ worldTransform_.translate.x + (float(j * 2.01 - MAX_PLAYER_CHIPS - 1)),
-					worldTransform_.translate.y - (float(i * 2.01 - MAX_PLAYER_CHIPS - 1)),
+					{ worldTransform_.translate.x + (float(j * 2.01 - MAX_PLAYER_CHIPS +1.f)),
+					worldTransform_.translate.y - (float(i * 2.01 - MAX_PLAYER_CHIPS )),
 					worldTransform_.translate.z });
-				velocity_.x = worldTransform_.translate.x + (float(j * 2 - MAX_PLAYER_CHIPS - 1));
-				velocity_.y = worldTransform_.translate.y - (float(i * 2 - MAX_PLAYER_CHIPS - 1));
 				cores_.push_back(newCore);
 				collisionManager_->SetColliderList(newCore);
 			}
@@ -315,13 +292,48 @@ void Player::BlockShape(){
 				//初期化
 				newCrust->Initialize(crustTexHandle_);
 				newCrust->SetWorldPosition(
-					{ worldTransform_.translate.x + (float(j * 2.1 - MAX_PLAYER_CHIPS - 1)),
-					worldTransform_.translate.y - (float(i * 2.1 - MAX_PLAYER_CHIPS - 1)),
+					{ worldTransform_.translate.x + (float(j * 2.01 - MAX_PLAYER_CHIPS - 1)),
+					worldTransform_.translate.y - (float(i * 2.01 - MAX_PLAYER_CHIPS - 1)),
 					worldTransform_.translate.z });
-				collisionManager_->SetColliderList(newCrust);
 				//crusts_.push_back(newCrust);
+				collisionManager_->SetColliderList(newCrust);
 			}
 		}
+	}
+}
+
+void Player::nextBlockShape(){
+	switch (shape_)
+	{
+	case Shape::shape_I:
+		playerLocation_ = Block.I;
+		break;
+
+	case Shape::shape_T:
+		playerLocation_ = Block.T;
+		break;
+
+	case Shape::shape_S:
+		playerLocation_ = Block.S;
+		break;
+
+	case Shape::shape_O:
+		playerLocation_ = Block.O;
+		break;
+
+	case Shape::shape_J:
+		playerLocation_ = Block.J;
+		break;
+
+	case Shape::shape_L:
+		playerLocation_ = Block.L;
+		break;
+	case Shape::shape_ten:
+		playerLocation_ = Block.Ten;
+		break;
+	case Shape::shape_side:
+		playerLocation_ = Block.Side;
+		break;
 	}
 }
 
@@ -333,7 +345,7 @@ void Player::Draw(CameraRole viewProjection_){
 	///デバック場面
 #ifdef _DEBUG
 	///デバック場面
-	ImGui::Begin("Camera");
+	ImGui::Begin("worldTransform");
 	if (ImGui::TreeNode("worldTransform")) {
 		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, 100, 100);
 		ImGui::DragFloat("ClearCount_", &ClearCount_, 0.1f, 100, 100);
@@ -341,7 +353,13 @@ void Player::Draw(CameraRole viewProjection_){
 
 		ImGui::TreePop();
 	}
- 
+	if (ImGui::TreeNode("worldTransform_4")) {
+		ImGui::DragFloat3("translate", &worldTransform_4.translate.x, 0.1f, 100, 100);
+		ImGui::DragFloat3("scale", &worldTransform_4.scale.x, 0.1f, 100, 100);
+
+
+		ImGui::TreePop();
+	}
 	ImGui::End();
 
 #endif // _DEBUG
@@ -355,6 +373,7 @@ void Player::Draw(CameraRole viewProjection_){
 	model_1->Draw(worldTransform_1, viewProjection_);
 	model_2->Draw(worldTransform_2, viewProjection_);
 	model_3->Draw(worldTransform_3, viewProjection_);
+	model_4->Draw(worldTransform_4, viewProjection_);
 
 }
 
@@ -383,18 +402,19 @@ void Player::OnCollisionLine(){
 			}
 
 		}
-		
+
 
 		if (count >= kBlockNumX) {
-			ClearCount_++;
- 				cores_.remove_if([](PlayerCore* block) {
+			if (hardBlockCount <= kBlockNumX - 1) {
+
+				//ClearCount_++;
+				cores_.remove_if([](PlayerCore* block) {
 					if (!block->GetIsAlive()) {
 						delete block;
 						return true;
 					}
 					return false;
 					});
-				;
 
 				// コライダーをすべてクリア
 				collisionManager_->ClearColliderList();
@@ -414,13 +434,14 @@ void Player::OnCollisionLine(){
 				// コライダーのすべてが初期化されてしまっているのでplayerを再pushする
 				isDelete_ = true;
 			}
-		
-		else {
-			for (PlayerCore* core_ : cores_) {
-				core_->SetIsAlive(true);
+		}
+
+			else {
+				for (PlayerCore* core_ : cores_) {
+					core_->SetIsAlive(true);
+				}
 			}
 		}
-	}
 }
 
 Vector3 Player::GetWorldPosition(){

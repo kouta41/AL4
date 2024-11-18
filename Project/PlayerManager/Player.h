@@ -13,10 +13,9 @@
 #include "Collider.h"
 #include "CollisionConfig.h"
 #include "ModelManager.h"
-#include "SelectionScenen.h"
 #include "CollisionManager.h"
 
-#define MAX_PLAYER_CHIPS 7
+#define MAX_PLAYER_CHIPS 5
 
 enum Type {
 	EMPTY,///空
@@ -86,6 +85,11 @@ public: // メンバ関数
 	void BlockShape();
 
 	/// <summary>
+	/// 次のブロックの形状
+	/// </summary>
+	void nextBlockShape();
+
+	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw(CameraRole viewProjection_);
@@ -117,7 +121,7 @@ public: // メンバ関数
 	const float kMapBottomPos = -12.0f;
 	/// 判定をとるブロックの数
 	// 横(ブロックが消えるのに必要な数)
-	const int kBlockNumX = 8;
+	const int kBlockNumX = 9;
 	// 縦
 	const int kBlockNumY = 15;
 
@@ -141,7 +145,7 @@ private: // メンバ変数
 
 	//テクスチャハンドル
 	uint32_t texHandle_ = 0;
-	uint32_t texHandle_UV = 0;
+	uint32_t texHandle_1 = 0;
 
 
 	std::vector<std::vector<int32_t>> playerLocation_;
@@ -185,4 +189,7 @@ private: // メンバ変数
 	bool isDelete_;
 	// 当たり判定
 	CollisionManager* collisionManager_ = nullptr;
+
+	//移動制限
+	float LimitMove = 8.0f;
 };

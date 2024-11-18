@@ -49,13 +49,6 @@ void PlayerCore::Update(){
 		SetIsBottomHitAABB_(true);
 	}
 
-	if (worldTransform_.translate.x <= -10 && worldTransform_.translate.y <= 14) {
-		isAlive_ = false;
-	}
-	else if (worldTransform_.translate.x >= 10 && worldTransform_.translate.y <= 14) {
-		isAlive_ = false;
-	}
-
 }
 
 void PlayerCore::Draw(CameraRole viewProjection_){
