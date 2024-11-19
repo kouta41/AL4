@@ -12,6 +12,7 @@
 #include "Enemy.h"
 #include "Skydome.h"
 #include "CollisionManager.h"
+#include "GameObject.h"
 
 #include <list>
 
@@ -62,6 +63,9 @@ private: // メンバ変数
 
 	// 当たり判定
 	std::unique_ptr<CollisionManager> collisionManager_{};
+
+	//ゲームのオブジェクト
+	std::unique_ptr<GameObject> gameObject_{};
 
 	//3Dモデル
 	std::unique_ptr<Object3DPlacer> model_1;

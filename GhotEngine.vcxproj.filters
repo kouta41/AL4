@@ -159,6 +159,7 @@
     </ClCompile>
     <ClCompile Include="GhotEngine\Audio\Audio.cpp" />
     <ClCompile Include="Project\SceneManager\ScreenTransition\ScreenTransition.cpp" />
+    <ClCompile Include="Project\GameObject\GameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GhotEngine\CameraRole\CameraRole.h">
@@ -574,6 +575,7 @@
     </ClInclude>
     <ClInclude Include="GhotEngine\Audio\Audio.h" />
     <ClInclude Include="Project\SceneManager\ScreenTransition\ScreenTransition.h" />
+    <ClInclude Include="Project\GameObject\GameObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GhotEngine">

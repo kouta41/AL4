@@ -129,24 +129,18 @@ private: // メンバ変数
 
 	WorldTransform worldTransform_;
 
-	WorldTransform worldTransform_1;
-	WorldTransform worldTransform_2;
-	WorldTransform worldTransform_3;
-	WorldTransform worldTransform_4;
+	WorldTransform nextWorldTransform_[4];
 
 	//3Dモデル
-	std::unique_ptr<Object3DPlacer> model_1;
-	std::unique_ptr<Object3DPlacer> model_2;
-	std::unique_ptr<Object3DPlacer> model_3;
-	std::unique_ptr<Object3DPlacer> model_4;
+	std::unique_ptr<Object3DPlacer> nextmodel_[4];
 
-	std::unique_ptr<Object3DPlacer> Startmodel_;
 
 
 	//テクスチャハンドル
 	uint32_t texHandle_ = 0;
 	uint32_t texHandle_1 = 0;
-
+	uint32_t coreTexHandle_ = 0;
+	uint32_t crustTexHandle_ = 0;
 
 	std::vector<std::vector<int32_t>> playerLocation_;
 	///核
@@ -172,9 +166,7 @@ private: // メンバ変数
 	//キーボード入力
 	Input* input_ = nullptr;
 
-	//テクスチャハンドル
-	uint32_t coreTexHandle_ = 0;
-	uint32_t crustTexHandle_ = 0;
+	
 
 	
 	float ClearCount_ = 0;
@@ -183,6 +175,7 @@ private: // メンバ変数
 
 	//フェーズ
 	Shape shape_;
+	Shape nextShape_;
 
 	typeShape Block;
 	// ブロックが消えるフラグ

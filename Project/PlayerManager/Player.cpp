@@ -48,59 +48,59 @@ void Player::Initialize(CollisionManager* collisionManager) {
 
 	Block.T = {
 		{0,0,0,0,0},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
+		{0,0,0,0,0},
+		{0,1,1,1,0},
+		{0,0,1,0,0},
+		{0,0,0,0,0},
 	};
 
 	Block.S = {
 		{0,0,0,0,0},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
+		{0,0,0,0,0},
+		{0,0,1,1,0},
+		{0,1,1,0,0},
+		{0,0,0,0,0},
 	};
 
 	Block.O = {
 		{0,0,0,0,0},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
+		{0,0,0,0,0},
+		{0,0,1,1,0},
+		{0,0,1,1,0},
+		{0,0,0,0,0},
 	};
 
 	Block.J = {
 		{0,0,0,0,0},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
+		{0,0,1,0,0},
+		{0,0,1,0,0},
+		{0,1,1,0,0},
+		{0,0,0,0,0},
 	};
 
 	Block.L = {
 		{0,0,0,0,0},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
+		{0,0,1,0,0},
+		{0,0,1,0,0},
+		{0,0,1,1,0},
+		{0,0,0,0,0},
 	};
 
 	Block.Ten = {
 		{0,0,0,0,0},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
+		{0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,1,0,0},
+		{0,0,0,0,0},
 	};
 
 
 	Block.Side = {
 		{0,0,0,0,0},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
-		{0,0,0,0,1},
+		{0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,1,1,0},
+		{0,0,0,0,0},
 	};
 
 
@@ -110,48 +110,17 @@ void Player::Initialize(CollisionManager* collisionManager) {
 
 
 
-	worldTransform_1.Initialize();
-	worldTransform_2.Initialize();
-	worldTransform_3.Initialize();
-	worldTransform_4.Initialize();
 
+	for (int i = 0; i < 4; i++) {
+		nextWorldTransform_[i].Initialize();
+		nextmodel_[i] = std::make_unique<Object3DPlacer>();
+		nextmodel_[i]->Initialize();
+		nextmodel_[i]->SetModel("cube.obj");
+		nextmodel_[i]->SetTexHandle(texHandle_);
+		
+	}
 
-	Startmodel_ = std::make_unique<Object3DPlacer>();
-	Startmodel_->Initialize();
-	Startmodel_->SetModel("cube.obj");
-	Startmodel_->SetTexHandle(crustTexHandle_);
-	worldTransform_.translate = { 0.0f,18.0f,0.0f };
-
-
-	model_1 = std::make_unique<Object3DPlacer>();
-	model_1->Initialize();
-	model_1->SetModel("cube.obj");
-	model_1->SetTexHandle(texHandle_);
-	worldTransform_1.translate = { 10,0,0 };
-	worldTransform_1.scale = { 1,15,1 };
-
-	model_2 = std::make_unique<Object3DPlacer>();
-	model_2->Initialize();
-	model_2->SetModel("cube.obj");
-	model_2->SetTexHandle(texHandle_);
-	worldTransform_2.translate = { -10,0,0 };
-	worldTransform_2.scale = { 1,15,1 };
-
-
-	model_3 = std::make_unique<Object3DPlacer>();
-	model_3->Initialize();
-	model_3->SetModel("cube.obj");
-	model_3->SetTexHandle(texHandle_);
-	worldTransform_3.translate = { 0,-14,0 };
-	worldTransform_3.scale = { 15,1,1 };
 	
-
-	model_4 = std::make_unique<Object3DPlacer>();
-	model_4->Initialize();
-	model_4->SetModel("cube.obj");
-	model_4->SetTexHandle(texHandle_1);
-	worldTransform_4.translate = { 0,-14,0 };
-	worldTransform_4.scale = { 15,1,1 };
 
 	// 消える判定をとるブロックのx,y座標
 	for (int i = 0; i < 15; i++) {
@@ -219,23 +188,21 @@ void Player::Update(){
 	//横一列になったら消える処理
 	OnCollisionLine();
 
-	worldTransform_1.UpdateMatrix();
-	worldTransform_2.UpdateMatrix();
-	worldTransform_3.UpdateMatrix();
-	worldTransform_4.UpdateMatrix();
 
 	shape_ = ChangeShape_[0];
+	nextShape_ = ChangeShape_[1];
+
+	nextBlockShape();
 }
 
 void Player::OutPutBlock(){
 	if (input_->PressedKey(DIK_SPACE)) {
-		shape_ = Shape::shape_I;
+		//shape_ = Shape::shape_T;
 
 		ChangeShape_[0] = ChangeShape_[1];
 		ChangeShape_[1] = ChangeShape_[2];
 		ChangeShape_[2] = Shape(rand() % 7);
 
-		//shape_ = Shape::shape_I;
 		BlockShape();
 	}
 }
@@ -287,26 +254,14 @@ void Player::BlockShape(){
 				cores_.push_back(newCore);
 				collisionManager_->SetColliderList(newCore);
 			}
-			if (playerLocation_[i][j] == CRUST) {
-				PlayerCrust* newCrust = new PlayerCrust();
-				//初期化
-				newCrust->Initialize(crustTexHandle_);
-				newCrust->SetWorldPosition(
-					{ worldTransform_.translate.x + (float(j * 2.01 - MAX_PLAYER_CHIPS - 1)),
-					worldTransform_.translate.y - (float(i * 2.01 - MAX_PLAYER_CHIPS - 1)),
-					worldTransform_.translate.z });
-				//crusts_.push_back(newCrust);
-				collisionManager_->SetColliderList(newCrust);
-			}
 		}
 	}
 }
 
 void Player::nextBlockShape(){
-	switch (shape_)
+	switch (nextShape_)
 	{
 	case Shape::shape_I:
-		playerLocation_ = Block.I;
 		break;
 
 	case Shape::shape_T:
@@ -369,11 +324,7 @@ void Player::Draw(CameraRole viewProjection_){
 	for (PlayerCrust* crust_ : crusts_) {
 		crust_->Draw(viewProjection_);
 	}
-	Startmodel_->Draw(worldTransform_, viewProjection_);
-	model_1->Draw(worldTransform_1, viewProjection_);
-	model_2->Draw(worldTransform_2, viewProjection_);
-	model_3->Draw(worldTransform_3, viewProjection_);
-	model_4->Draw(worldTransform_4, viewProjection_);
+	
 
 }
 

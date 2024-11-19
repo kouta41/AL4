@@ -45,6 +45,10 @@ void GameScene::Initialize(){
 	//天球の初期化
 	skydome_->Initialize(SkydometexHandle_);
 
+	//ゲームオブジェクトの生成
+	gameObject_ = std::make_unique<GameObject>();
+	//ゲームオブジェクトの初期化
+	gameObject_->Initialize();
 
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
@@ -96,6 +100,8 @@ void GameScene::Initialize(){
 
 	endframe1 = 120.0f;
 	endframe2 = 60.0f;
+
+	posA = { 0.0f,0.0f,-5.0f };
 }
 
 void GameScene::Update(){
@@ -110,7 +116,8 @@ void GameScene::Update(){
 
 	camera.UpdateMatrix();
 
-	
+	//ゲームオブジェクトの更新
+	gameObject_->Update();
 
 	//天球の更新
 	skydome_->Update();
@@ -143,15 +150,12 @@ void GameScene::Update(){
 				}
 
 			}
-
-			EndrightworldTransform_.translate.x += 0.04f;
-			EndLeftworldTransform_.translate.x -= 0.04f;
 		}
 	}
 
 	
 	if (player_->GetClearCount_() == 4.0f) {
-		sceneNo_ = END;
+		//sceneNo_ = END;
 	}
 
 
@@ -161,8 +165,7 @@ void GameScene::Update(){
 		EndLeftworldTransform_.translate.x -= 0.04f;
 	}
 
-	if (EndrightworldTransform_.translate.x >= 2.63f &&
-		EndLeftworldTransform_.translate.x <= -2.63f) {
+	if (EndrightworldTransform_.translate.x >= 3.0f) {
 			flag = false;
 	}
 
@@ -174,12 +177,11 @@ void GameScene::Update(){
 		}
 	}
 
-	if (count_ == 16) {
+	if (player_->GetClearCount_() == 4.0f&& cameraflag1 == true&& cameraflag2 ==true) {
 		camera.translate = { posA.x,posA.y ,posA.z-20 };
 		cameraRotate = camera.rotate;
 		cameraPosA= { posA.x,posA.y ,posA.z - 20 };
 		cameraflag1 = false;
-		count_++;
 	}
 
 	if (cameraflag1 == false) {
@@ -193,6 +195,11 @@ void GameScene::Update(){
 	}
 
 	if (cameraflag2 == false) {
+		EndrightworldTransform_.translate.x -= 0.04f;
+		EndLeftworldTransform_.translate.x += 0.04f;
+
+		EndrightworldTransform_.translate.z = camera.translate.z+4;
+		EndLeftworldTransform_.translate.z = camera.translate.z+4;
 		frame2++;
 		camera.translate.z=cameraPosA.z+(-0.5f-cameraPosA.z)* easeInQuart(frame2 / endframe2);
 		if (frame2 == endframe2) {
@@ -212,13 +219,20 @@ void GameScene::Draw(){
 
 		ImGui::TreePop();
 	}
-	
+	if (ImGui::TreeNode("EndrightworldTransform_")) {
+		ImGui::DragFloat3("translate", &EndrightworldTransform_.translate.x, 0.1f, 100, 100);
+		ImGui::TreePop();
+	}
+	if (ImGui::TreeNode("EndLeftworldTransform_")) {
+		ImGui::DragFloat3("translate", &EndLeftworldTransform_.translate.x, 0.1f, 100, 100);
+		ImGui::TreePop();
+	}
 	ImGui::End();
 #endif // RELEASE
 
 
 	//モデルの描画
-	//Startmodel_->Draw(StartworldTransform_, camera);
+	Startmodel_->Draw(StartworldTransform_, camera);
 	//画面遷移
 	Endrightmodel_->Draw(EndrightworldTransform_, camera);
 	EndLeftmodel_->Draw(EndLeftworldTransform_, camera);
@@ -227,11 +241,13 @@ void GameScene::Draw(){
 	player_->Draw(camera);
 	//敵の描画
 	//enemy_->Draw(camera);
-
+	
+	//ゲームオブジェクトの描画
+	gameObject_->Draw(camera);
 	
 	
 	//天球の描画
-	//skydome_->Draw(camera);
+	skydome_->Draw(camera);
 
 
 
