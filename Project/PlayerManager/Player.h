@@ -75,6 +75,11 @@ public: // メンバ関数
 	void Update();
 
 	/// <summary>
+	/// 移動制限
+	/// </summary>
+	void LimitMove();
+
+	/// <summary>
 	/// ブロックの射出
 	/// </summary>
 	void OutPutBlock();
@@ -94,7 +99,7 @@ public: // メンバ関数
 	/// </summary>
 	void Draw(CameraRole viewProjection_);
 
-	//
+	//横一列に並んだらブロックが消える
 	void OnCollisionLine();
 
 	
@@ -184,5 +189,7 @@ private: // メンバ変数
 	CollisionManager* collisionManager_ = nullptr;
 
 	//移動制限
-	float LimitMove = 8.0f;
+	float LimitMove_R = 8.0f;
+	float LimitMove_L = 8.0f;
+
 };

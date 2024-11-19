@@ -39,11 +39,11 @@ void Player::Initialize(CollisionManager* collisionManager) {
 
 
 	Block.I = {
-		{0,0,0,0,0},
 		{0,0,1,0,0},
 		{0,0,1,0,0},
 		{0,0,1,0,0},
-		{0,0,1,0,0},		
+		{0,0,1,0,0},
+		{0,0,0,0,0},		
 	};
 
 	Block.T = {
@@ -116,10 +116,10 @@ void Player::Initialize(CollisionManager* collisionManager) {
 		nextmodel_[i] = std::make_unique<Object3DPlacer>();
 		nextmodel_[i]->Initialize();
 		nextmodel_[i]->SetModel("cube.obj");
-		nextmodel_[i]->SetTexHandle(texHandle_);
+		nextmodel_[i]->SetTexHandle(coreTexHandle_);
 		
 	}
-
+	worldTransform_.translate = { 0,14,0 };
 	
 
 	// 消える判定をとるブロックのx,y座標
@@ -137,11 +137,17 @@ void Player::Initialize(CollisionManager* collisionManager) {
 	for (int i = 0; i < 3; i++) {
 		ChangeShape_[i] = Shape(rand() % 7);
 	}
+
+	shape_ = ChangeShape_[0];
+	nextShape_ = ChangeShape_[0];
 }
 
 void Player::Update(){
 	worldTransform_.UpdateMatrix();
 
+	for (int i = 0; i < 4; i++) {
+		nextWorldTransform_[i].UpdateMatrix();
+	}
 	//移動
 	if (input_->PressedKey(DIK_RIGHT)) {
 		worldTransform_.translate.x += 2.00f;
@@ -151,15 +157,14 @@ void Player::Update(){
 	}
 
 	//移動制限
-	if (worldTransform_.translate.x <= -LimitMove) {
-		worldTransform_.translate.x = -8.f;
-	}
-	else if (worldTransform_.translate.x >= LimitMove) {
-		worldTransform_.translate.x = 8.f;
-	}
+	LimitMove();
 
 	//ブロックの生成
 	OutPutBlock();
+
+	//次のブロックの生成
+	nextBlockShape();
+
 
 	for (PlayerCore* core_ : cores_) {
 		core_->Update();
@@ -189,15 +194,24 @@ void Player::Update(){
 	OnCollisionLine();
 
 
-	shape_ = ChangeShape_[0];
-	nextShape_ = ChangeShape_[1];
+	
+}
 
-	nextBlockShape();
+void Player::LimitMove(){
+
+	//移動制限
+	if (worldTransform_.translate.x <= -LimitMove_L) {
+		worldTransform_.translate.x = -LimitMove_L;
+	}
+	else if (worldTransform_.translate.x >= LimitMove_R) {
+		worldTransform_.translate.x = LimitMove_R;
+	}
 }
 
 void Player::OutPutBlock(){
 	if (input_->PressedKey(DIK_SPACE)) {
-		//shape_ = Shape::shape_T;
+		shape_ = ChangeShape_[0];
+		nextShape_ = ChangeShape_[1];
 
 		ChangeShape_[0] = ChangeShape_[1];
 		ChangeShape_[1] = ChangeShape_[2];
@@ -259,35 +273,169 @@ void Player::BlockShape(){
 }
 
 void Player::nextBlockShape(){
+	
+	for (int i = 0; i < 4; i++) {
+	//	nextWorldTransform_[i] = worldTransform_;
+	}
+
 	switch (nextShape_)
 	{
 	case Shape::shape_I:
+		//ブロック1
+		nextWorldTransform_[0].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[0].translate.y = worldTransform_.translate.y - 1;
+		//ブロック2
+		nextWorldTransform_[1].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[1].translate.y = worldTransform_.translate.y + 1;
+		//ブロック3
+		nextWorldTransform_[2].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[2].translate.y = worldTransform_.translate.y + 3;
+		//ブロック4
+		nextWorldTransform_[3].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[3].translate.y = worldTransform_.translate.y + 5;
+
+		//移動制限
+		LimitMove_R = 8.0f;
+		LimitMove_L = 8.0f;
+
 		break;
 
 	case Shape::shape_T:
-		playerLocation_ = Block.T;
+		//ブロック1
+		nextWorldTransform_[0].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[0].translate.y = worldTransform_.translate.y - 1;
+		//ブロック2
+		nextWorldTransform_[1].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[1].translate.y = worldTransform_.translate.y + 1;
+		//ブロック3
+		nextWorldTransform_[2].translate.x = worldTransform_.translate.x + 2;
+		nextWorldTransform_[2].translate.y = worldTransform_.translate.y + 1;
+		//ブロック4
+		nextWorldTransform_[3].translate.x = worldTransform_.translate.x - 2;
+		nextWorldTransform_[3].translate.y = worldTransform_.translate.y + 1;
+
+		//移動制限
+		LimitMove_R = 6.0f;
+		LimitMove_L = 6.0f;
+
 		break;
 
 	case Shape::shape_S:
-		playerLocation_ = Block.S;
+		//ブロック1
+		nextWorldTransform_[0].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[0].translate.y = worldTransform_.translate.y - 1;
+		//ブロック2
+		nextWorldTransform_[1].translate.x = worldTransform_.translate.x - 2;
+		nextWorldTransform_[1].translate.y = worldTransform_.translate.y - 1;
+		//ブロック3
+		nextWorldTransform_[2].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[2].translate.y = worldTransform_.translate.y + 1;
+		//ブロック4
+		nextWorldTransform_[3].translate.x = worldTransform_.translate.x + 2;
+		nextWorldTransform_[3].translate.y = worldTransform_.translate.y + 1;
+
+		//移動制限
+		LimitMove_R = 6.0f;
+		LimitMove_L = 6.0f;
+
 		break;
 
 	case Shape::shape_O:
-		playerLocation_ = Block.O;
+		//ブロック1
+		nextWorldTransform_[0].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[0].translate.y = worldTransform_.translate.y - 1;
+		//ブロック2
+		nextWorldTransform_[1].translate.x = worldTransform_.translate.x + 2;
+		nextWorldTransform_[1].translate.y = worldTransform_.translate.y - 1;
+		//ブロック3
+		nextWorldTransform_[2].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[2].translate.y = worldTransform_.translate.y + 1;
+		//ブロック4
+		nextWorldTransform_[3].translate.x = worldTransform_.translate.x + 2;
+		nextWorldTransform_[3].translate.y = worldTransform_.translate.y + 1;
+
+		//移動制限
+		LimitMove_R = 6.0f;
+		LimitMove_L = 8.0f;
+
 		break;
 
 	case Shape::shape_J:
-		playerLocation_ = Block.J;
+		//ブロック1
+		nextWorldTransform_[0].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[0].translate.y = worldTransform_.translate.y - 1;
+		//ブロック2
+		nextWorldTransform_[1].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[1].translate.y = worldTransform_.translate.y + 1;
+		//ブロック3
+		nextWorldTransform_[2].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[2].translate.y = worldTransform_.translate.y +3;
+		//ブロック4
+		nextWorldTransform_[3].translate.x = worldTransform_.translate.x - 2;
+		nextWorldTransform_[3].translate.y = worldTransform_.translate.y - 1;
+
+		//移動制限
+		LimitMove_R = 8.0f;
+		LimitMove_L = 6.0f;
+
 		break;
 
 	case Shape::shape_L:
-		playerLocation_ = Block.L;
+		//ブロック1
+		nextWorldTransform_[0].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[0].translate.y = worldTransform_.translate.y - 1;
+		//ブロック2
+		nextWorldTransform_[1].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[1].translate.y = worldTransform_.translate.y + 1;
+		//ブロック3
+		nextWorldTransform_[2].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[2].translate.y = worldTransform_.translate.y + 3;
+		//ブロック4
+		nextWorldTransform_[3].translate.x = worldTransform_.translate.x + 2;
+		nextWorldTransform_[3].translate.y = worldTransform_.translate.y - 1;
+
+		//移動制限
+		LimitMove_R = 6.0f;
+		LimitMove_L = 8.0f;
+
 		break;
 	case Shape::shape_ten:
-		playerLocation_ = Block.Ten;
+		//ブロック1
+		nextWorldTransform_[0].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[0].translate.y = worldTransform_.translate.y - 1;
+		//ブロック2
+		nextWorldTransform_[1].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[1].translate.y = worldTransform_.translate.y - 1;
+		//ブロック3
+		nextWorldTransform_[2].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[2].translate.y = worldTransform_.translate.y - 1;
+		//ブロック4
+		nextWorldTransform_[3].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[3].translate.y = worldTransform_.translate.y - 1;
+
+		//移動制限
+		LimitMove_R = 8.0f;
+		LimitMove_L = 8.0f;
+
 		break;
 	case Shape::shape_side:
-		playerLocation_ = Block.Side;
+		//ブロック1
+		nextWorldTransform_[0].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[0].translate.y = worldTransform_.translate.y - 1;
+		//ブロック2
+		nextWorldTransform_[1].translate.x = worldTransform_.translate.x + 2;
+		nextWorldTransform_[1].translate.y = worldTransform_.translate.y - 1;
+		//ブロック3
+		nextWorldTransform_[2].translate.x = worldTransform_.translate.x + 2;
+		nextWorldTransform_[2].translate.y = worldTransform_.translate.y + 3;
+		//ブロック4
+		nextWorldTransform_[3].translate.x = worldTransform_.translate.x;
+		nextWorldTransform_[3].translate.y = worldTransform_.translate.y - 1;
+
+		//移動制限
+		LimitMove_R = 6.0f;
+		LimitMove_L = 8.0f;
+
 		break;
 	}
 }
@@ -323,6 +471,10 @@ void Player::Draw(CameraRole viewProjection_){
 	}
 	for (PlayerCrust* crust_ : crusts_) {
 		crust_->Draw(viewProjection_);
+	}
+
+	for (int i = 0; i < 4; i++) {
+		nextmodel_[i]->Draw(nextWorldTransform_[i], viewProjection_);
 	}
 	
 
