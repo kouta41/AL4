@@ -14,6 +14,7 @@
 #include "CollisionConfig.h"
 #include "ModelManager.h"
 #include "CollisionManager.h"
+#include "Particle.h"
 
 #define MAX_PLAYER_CHIPS 5
 
@@ -97,7 +98,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw(CameraRole viewProjection_);
+	void Draw(const CameraRole& viewProjection_);
 
 	//横一列に並んだらブロックが消える
 	void OnCollisionLine();
@@ -126,7 +127,7 @@ public: // メンバ関数
 	const float kMapBottomPos = -12.0f;
 	/// 判定をとるブロックの数
 	// 横(ブロックが消えるのに必要な数)
-	const int kBlockNumX = 9;
+	const int kBlockNumX = 13;
 	// 縦
 	const int kBlockNumY = 15;
 
@@ -135,6 +136,15 @@ private: // メンバ変数
 	WorldTransform worldTransform_;
 
 	WorldTransform nextWorldTransform_[4];
+
+	//パーティクル
+	std::unique_ptr<ParticleSystem> particleSystem;
+	Emitter emitter;
+	std::list<Particle> particles;
+	std::mt19937 randomEngine;
+	float kDeltaTime = 1.0f / 60.0f;
+	bool Particlflag = false;
+	float ParticlTime = 0.0f;
 
 	//3Dモデル
 	std::unique_ptr<Object3DPlacer> nextmodel_[4];
@@ -156,24 +166,9 @@ private: // メンバ変数
 
 	Shape ChangeShape_[3];
 
-
-	Vector3 position_;
-	
-	//速度
-	Vector3 velocity_;
-
-
-	int popplayerPosition_ = 0;
-
-	int popCountCore_ = 0;
-
-	int popCountcrust_ = 0;
 	//キーボード入力
 	Input* input_ = nullptr;
 
-	
-
-	
 	float ClearCount_ = 0;
 
 	Vector2 clearBlock_[15];
@@ -191,5 +186,8 @@ private: // メンバ変数
 	//移動制限
 	float LimitMove_R = 8.0f;
 	float LimitMove_L = 8.0f;
+
+	//アウトプットのクールタイム
+	float Pushcooltime = 120.f;
 
 };

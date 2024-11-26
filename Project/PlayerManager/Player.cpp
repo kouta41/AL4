@@ -19,11 +19,17 @@ void Player::Initialize(CollisionManager* collisionManager) {
 	ModelManager::LoadObjModel("cube.obj");
 
 
-
 	coreTexHandle_ = TextureManager::Load("resources/cube.jpg");
 	crustTexHandle_= TextureManager::Load("resources/uvChecker.png");
 	texHandle_ = TextureManager::Load("resources/white.png");
-	texHandle_1= TextureManager::Load("resources/324nv.png");
+	texHandle_1= TextureManager::Load("resources/circle.png");
+
+	//パーティクル初期化
+	particleSystem= std::make_unique<ParticleSystem>();
+	particleSystem->Initialize("plane.obj");
+	particleSystem->SetTexHandle(texHandle_1);
+	emitter.worldransform.Initialize();
+	
 
 	ClearCount_ = 0;
 	// 7×7のプレイヤーのデータ
@@ -140,6 +146,9 @@ void Player::Initialize(CollisionManager* collisionManager) {
 
 	shape_ = ChangeShape_[0];
 	nextShape_ = ChangeShape_[0];
+
+	//クールタイム
+	Pushcooltime = 20.f;
 }
 
 void Player::Update(){
@@ -170,7 +179,7 @@ void Player::Update(){
 		core_->Update();
 	}
 	for (PlayerCrust* crust_ : crusts_) {
-		crust_->Update(velocity_);
+		//crust_->Update(velocity_);
 	}
 
 
@@ -209,13 +218,18 @@ void Player::LimitMove(){
 }
 
 void Player::OutPutBlock(){
-	if (input_->PressedKey(DIK_SPACE)) {
+	Pushcooltime++;
+	if (input_->PressedKey(DIK_SPACE)&& Pushcooltime>=20.f) {
+		Pushcooltime = 0.0f;
 		shape_ = ChangeShape_[0];
 		nextShape_ = ChangeShape_[1];
 
+		//shape_ = Shape::shape_side;
+		//nextShape_ = Shape::shape_side;
+
 		ChangeShape_[0] = ChangeShape_[1];
 		ChangeShape_[1] = ChangeShape_[2];
-		ChangeShape_[2] = Shape(rand() % 7);
+		ChangeShape_[2] = Shape(rand() % 8);
 
 		BlockShape();
 	}
@@ -274,9 +288,7 @@ void Player::BlockShape(){
 
 void Player::nextBlockShape(){
 	
-	for (int i = 0; i < 4; i++) {
-	//	nextWorldTransform_[i] = worldTransform_;
-	}
+	
 
 	switch (nextShape_)
 	{
@@ -295,8 +307,8 @@ void Player::nextBlockShape(){
 		nextWorldTransform_[3].translate.y = worldTransform_.translate.y + 5;
 
 		//移動制限
-		LimitMove_R = 8.0f;
-		LimitMove_L = 8.0f;
+		LimitMove_R = 12.0f;
+		LimitMove_L = 12.0f;
 
 		break;
 
@@ -315,8 +327,8 @@ void Player::nextBlockShape(){
 		nextWorldTransform_[3].translate.y = worldTransform_.translate.y + 1;
 
 		//移動制限
-		LimitMove_R = 6.0f;
-		LimitMove_L = 6.0f;
+		LimitMove_R = 10.0f;
+		LimitMove_L = 10.0f;
 
 		break;
 
@@ -335,8 +347,8 @@ void Player::nextBlockShape(){
 		nextWorldTransform_[3].translate.y = worldTransform_.translate.y + 1;
 
 		//移動制限
-		LimitMove_R = 6.0f;
-		LimitMove_L = 6.0f;
+		LimitMove_R = 10.0f;
+		LimitMove_L = 10.0f;
 
 		break;
 
@@ -355,8 +367,8 @@ void Player::nextBlockShape(){
 		nextWorldTransform_[3].translate.y = worldTransform_.translate.y + 1;
 
 		//移動制限
-		LimitMove_R = 6.0f;
-		LimitMove_L = 8.0f;
+		LimitMove_R = 10.0f;
+		LimitMove_L = 12.0f;
 
 		break;
 
@@ -375,8 +387,8 @@ void Player::nextBlockShape(){
 		nextWorldTransform_[3].translate.y = worldTransform_.translate.y - 1;
 
 		//移動制限
-		LimitMove_R = 8.0f;
-		LimitMove_L = 6.0f;
+		LimitMove_R = 12.0f;
+		LimitMove_L = 10.0f;
 
 		break;
 
@@ -395,10 +407,10 @@ void Player::nextBlockShape(){
 		nextWorldTransform_[3].translate.y = worldTransform_.translate.y - 1;
 
 		//移動制限
-		LimitMove_R = 6.0f;
-		LimitMove_L = 8.0f;
+		LimitMove_R = 10.0f;
+		LimitMove_L = 12.0f;
 
-		break;
+		break; 
 	case Shape::shape_ten:
 		//ブロック1
 		nextWorldTransform_[0].translate.x = worldTransform_.translate.x;
@@ -414,8 +426,8 @@ void Player::nextBlockShape(){
 		nextWorldTransform_[3].translate.y = worldTransform_.translate.y - 1;
 
 		//移動制限
-		LimitMove_R = 8.0f;
-		LimitMove_L = 8.0f;
+		LimitMove_R = 12.0f;
+		LimitMove_L = 12.0f;
 
 		break;
 	case Shape::shape_side:
@@ -427,14 +439,14 @@ void Player::nextBlockShape(){
 		nextWorldTransform_[1].translate.y = worldTransform_.translate.y - 1;
 		//ブロック3
 		nextWorldTransform_[2].translate.x = worldTransform_.translate.x + 2;
-		nextWorldTransform_[2].translate.y = worldTransform_.translate.y + 3;
+		nextWorldTransform_[2].translate.y = worldTransform_.translate.y - 1;
 		//ブロック4
 		nextWorldTransform_[3].translate.x = worldTransform_.translate.x;
 		nextWorldTransform_[3].translate.y = worldTransform_.translate.y - 1;
 
 		//移動制限
-		LimitMove_R = 6.0f;
-		LimitMove_L = 8.0f;
+		LimitMove_R = 10.0f;
+		LimitMove_L = 12.0f;
 
 		break;
 	}
@@ -442,7 +454,7 @@ void Player::nextBlockShape(){
 
 
 
-void Player::Draw(CameraRole viewProjection_){
+void Player::Draw(const CameraRole& viewProjection_){
 
 	
 	///デバック場面
@@ -450,22 +462,44 @@ void Player::Draw(CameraRole viewProjection_){
 	///デバック場面
 	ImGui::Begin("worldTransform");
 	if (ImGui::TreeNode("worldTransform")) {
-		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, 100, 100);
-		ImGui::DragFloat("ClearCount_", &ClearCount_, 0.1f, 100, 100);
+		ImGui::DragFloat3("translate", &emitter.worldransform.translate.x, 0.1f, 100, 100);
+		ImGui::DragFloat("ParticlTime", &ParticlTime, 0.1f, 100, 100);
 		
 
 		ImGui::TreePop();
 	}
-	if (ImGui::TreeNode("worldTransform_4")) {
-		ImGui::DragFloat3("translate", &worldTransform_4.translate.x, 0.1f, 100, 100);
-		ImGui::DragFloat3("scale", &worldTransform_4.scale.x, 0.1f, 100, 100);
-
-
-		ImGui::TreePop();
-	}
+	
 	ImGui::End();
 
 #endif // _DEBUG
+
+	//パーティクル
+	if (Particlflag == true) {
+
+		randomEngine = particleSystem->random();
+		emitter.worldransform.UpdateMatrix();
+		emitter.count = 10; // 一度に生成するパーティクルの数
+		emitter.frequency = 1.0f; // 発生頻度
+		//emitter.frequencyTime = 0.0f;
+		particles = particleSystem->Emission(emitter, randomEngine);
+
+		emitter.frequencyTime += kDeltaTime;
+		if (emitter.frequency <= emitter.frequencyTime) {
+			particles.splice(particles.end(), particleSystem->Emission(emitter, randomEngine));
+			emitter.frequencyTime -= emitter.frequency;
+		}
+
+		//particleSystem->Draw(particles, viewProjection_);
+
+		//std::list<Particle> newParticles = particleSystem->Emission(emitter, randomEngine);
+		//particles.insert(particles.end(), newParticles.begin(), newParticles.end());
+
+		ParticlTime++;
+	}
+	if (ParticlTime > 60) {
+		Particlflag = false;
+	}
+
 	for (PlayerCore* core_ : cores_) {
 		core_->Draw(viewProjection_);
 	}
@@ -476,6 +510,7 @@ void Player::Draw(CameraRole viewProjection_){
 	for (int i = 0; i < 4; i++) {
 		nextmodel_[i]->Draw(nextWorldTransform_[i], viewProjection_);
 	}
+
 	
 
 }
@@ -507,9 +542,14 @@ void Player::OnCollisionLine(){
 		}
 
 
+
+
+
+
 		if (count >= kBlockNumX) {
 			if (hardBlockCount <= kBlockNumX - 1) {
-
+				Particlflag = true;
+				ParticlTime = 0;
 				//ClearCount_++;
 				cores_.remove_if([](PlayerCore* block) {
 					if (!block->GetIsAlive()) {
@@ -538,13 +578,13 @@ void Player::OnCollisionLine(){
 				isDelete_ = true;
 			}
 		}
-
-			else {
-				for (PlayerCore* core_ : cores_) {
-					core_->SetIsAlive(true);
-				}
+		else {
+			//Particlflag = false;
+			for (PlayerCore* core_ : cores_) {
+				core_->SetIsAlive(true);
 			}
 		}
+	}
 }
 
 Vector3 Player::GetWorldPosition(){

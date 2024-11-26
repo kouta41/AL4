@@ -14,7 +14,7 @@ GameScene::~GameScene() {
 void GameScene::Initialize(){
 	worldTransform.Initialize();
 	camera.Initialize();
-	camera.translate = { 0,0,-110 };
+	camera.translate = { 0,0,-85 };
 
 	texHandle_ = TextureManager::Load("resources/white.png");
 	SkydometexHandle_ = TextureManager::Load("resources/skydome.jpg");
@@ -69,7 +69,7 @@ void GameScene::Initialize(){
 	Endrightmodel_->SetModel("cube.obj");
 	Endrightmodel_->SetTexHandle(blacktexHandle_);
 	EndrightworldTransform_.Initialize();
-	EndrightworldTransform_.translate = { 1.0f,-0.0f,-105.7f };
+	EndrightworldTransform_.translate = { 1.0f,-0.0f,camera.translate.z + 4 };
 	EndrightworldTransform_.scale = { 1.0f,1.0f,0.0f };
 
 	//モデルの初期化＆設定(エンドオブジェクト左)
@@ -78,7 +78,7 @@ void GameScene::Initialize(){
 	EndLeftmodel_->SetModel("cube.obj");
 	EndLeftmodel_->SetTexHandle(blacktexHandle_);
 	EndLeftworldTransform_.Initialize();
-	EndLeftworldTransform_.translate = { -1.0f,-0.0f,-105.7f };
+	EndLeftworldTransform_.translate = { -1.0f,-0.0f,camera.translate.z + 4 };
 	EndLeftworldTransform_.scale = { 1.0f,1.0f,0.0f };
 
 	//モデルの初期化＆設定(スタートオブジェクト)
@@ -122,44 +122,37 @@ void GameScene::Update(){
 	//天球の更新
 	skydome_->Update();
 
+		//プレイヤーの更新
+		player_->Update();
 
 	if (flag == false) {
-		if (count_ < 16) {
 
-			//プレイヤーの更新
-			player_->Update();
+		//敵の更新
+		//enemy_->Update();
+		//enemy_->SetPlayerCorepos(player_->GetPlayerCoreWorldPosition());
 
-			//敵の更新
-			//enemy_->Update();
-			//enemy_->SetPlayerCorepos(player_->GetPlayerCoreWorldPosition());
+		// 当たり判定
+		collisionManager_->CheckAllCollisions();
 
-			// 当たり判定
-			collisionManager_->CheckAllCollisions();
-
-			XINPUT_STATE joyState{};
-			if (Input::GetInstance()->GetJoystickState(joyState)) {
-				if ((joyState.Gamepad.sThumbLX < CUSTOM_DEADZONE && joyState.Gamepad.sThumbLX > -CUSTOM_DEADZONE) && (joyState.Gamepad.sThumbLY < CUSTOM_DEADZONE && joyState.Gamepad.sThumbLY > -CUSTOM_DEADZONE)) {
-					joyState.Gamepad.sThumbLX = 0;
-					joyState.Gamepad.sThumbLY = 0;
-					worldTransform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.1f;
-					worldTransform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.1f;
-				}
-				else {
-					worldTransform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.1f;
-					worldTransform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.1f;
-				}
-
+		XINPUT_STATE joyState{};
+		if (Input::GetInstance()->GetJoystickState(joyState)) {
+			if ((joyState.Gamepad.sThumbLX < CUSTOM_DEADZONE && joyState.Gamepad.sThumbLX > -CUSTOM_DEADZONE) && (joyState.Gamepad.sThumbLY < CUSTOM_DEADZONE && joyState.Gamepad.sThumbLY > -CUSTOM_DEADZONE)) {
+				joyState.Gamepad.sThumbLX = 0;
+				joyState.Gamepad.sThumbLY = 0;
+				worldTransform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.1f;
+				worldTransform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.1f;
 			}
+			else {
+				worldTransform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.1f;
+				worldTransform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.1f;
+			}
+
 		}
 	}
 
 	
-	if (player_->GetClearCount_() == 4.0f) {
-		//sceneNo_ = END;
-	}
 
-
-	//演出
+	//スタート演出
 	if (flag == true) {
 		EndrightworldTransform_.translate.x += 0.04f;
 		EndLeftworldTransform_.translate.x -= 0.04f;
@@ -169,14 +162,7 @@ void GameScene::Update(){
 			flag = false;
 	}
 
-	StartworldTransform_.translate.z += 3;
-	if (flag == false) {
-		StartworldTransform_.translate.y++;
-		if (input_->PushKey(DIK_B)) {
-			sceneNo_ = END;
-		}
-	}
-
+	//クリア演出
 	if (player_->GetClearCount_() == 4.0f&& cameraflag1 == true&& cameraflag2 ==true) {
 		camera.translate = { posA.x,posA.y ,posA.z-20 };
 		cameraRotate = camera.rotate;
@@ -232,13 +218,12 @@ void GameScene::Draw(){
 
 
 	//モデルの描画
-	Startmodel_->Draw(StartworldTransform_, camera);
 	//画面遷移
 	Endrightmodel_->Draw(EndrightworldTransform_, camera);
 	EndLeftmodel_->Draw(EndLeftworldTransform_, camera);
 
-	//プレイヤーの描画
-	player_->Draw(camera);
+	//天球の描画
+	skydome_->Draw(camera);
 	//敵の描画
 	//enemy_->Draw(camera);
 	
@@ -246,8 +231,10 @@ void GameScene::Draw(){
 	gameObject_->Draw(camera);
 	
 	
-	//天球の描画
-	skydome_->Draw(camera);
+	if (flag == false) {
+		//プレイヤーの描画
+		player_->Draw(camera);
+	}
 
 
 
