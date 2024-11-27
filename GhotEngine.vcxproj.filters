@@ -136,13 +136,13 @@
     <ClCompile Include="GhotEngine\Particle\Particle.cpp">
       <Filter>GhotEngine\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="Project\PlayerManager\Player.cpp">
+    <ClCompile Include="Project\Block\BlockManager.cpp">
       <Filter>Project\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Project\PlayerManager\PlayerCore\PlayerCore.cpp">
+    <ClCompile Include="Project\Block\BlockCore\BlockCore.cpp">
       <Filter>Project\Player\PlayrCore</Filter>
     </ClCompile>
-    <ClCompile Include="Project\PlayerManager\PlayerCrust\PlayerCrust.cpp">
+    <ClCompile Include="Project\Block\BlockCrust\BlockCrust.cpp">
       <Filter>Project\Player\PlayerCrust</Filter>
     </ClCompile>
     <ClCompile Include="GhotEngine\Skybox\Skybox.cpp">
@@ -160,6 +160,7 @@
     <ClCompile Include="GhotEngine\Audio\Audio.cpp" />
     <ClCompile Include="Project\SceneManager\ScreenTransition\ScreenTransition.cpp" />
     <ClCompile Include="Project\GameObject\GameObject.cpp" />
+    <ClCompile Include="Project\Player\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GhotEngine\CameraRole\CameraRole.h">
@@ -552,13 +553,13 @@
     <ClInclude Include="GhotEngine\Particle\Particle.h">
       <Filter>GhotEngine\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="Project\PlayerManager\Player.h">
+    <ClInclude Include="Project\Block\BlockManager.h">
       <Filter>Project\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Project\PlayerManager\PlayerCore\PlayerCore.h">
+    <ClInclude Include="Project\Block\BlockCore\BlockCore.h">
       <Filter>Project\Player\PlayrCore</Filter>
     </ClInclude>
-    <ClInclude Include="Project\PlayerManager\PlayerCrust\PlayerCrust.h">
+    <ClInclude Include="Project\Block\BlockCrust\BlockCrust.h">
       <Filter>Project\Player\PlayerCrust</Filter>
     </ClInclude>
     <ClInclude Include="GhotEngine\Skybox\Skybox.h">
@@ -576,6 +577,7 @@
     <ClInclude Include="GhotEngine\Audio\Audio.h" />
     <ClInclude Include="Project\SceneManager\ScreenTransition\ScreenTransition.h" />
     <ClInclude Include="Project\GameObject\GameObject.h" />
+    <ClInclude Include="Project\Player\Player.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GhotEngine">

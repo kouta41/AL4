@@ -1,5 +1,5 @@
  #include "Enemy.h"
-#include "Player.h"
+#include "BlockManager.h"
 
 Enemy::Enemy(){
 }

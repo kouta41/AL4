@@ -1,18 +1,18 @@
-#include "Player.h"
+#include "BlockManager.h"
 
-Player::Player(){
+BlockManager::BlockManager(){
 }
 
-Player::~Player(){
-	for (PlayerCore* core_ : cores_) {
+BlockManager::~BlockManager(){
+	for (BlockCore* core_ : cores_) {
 		delete core_;
 	}
-	for (PlayerCrust* crust_ : crusts_) {
+	for (BlockCrust* crust_ : crusts_) {
 		delete crust_;
 	}
 }
 
-void Player::Initialize(CollisionManager* collisionManager) {
+void BlockManager::Initialize(CollisionManager* collisionManager) {
 	collisionManager_ = collisionManager;
 
 	worldTransform_.Initialize();
@@ -33,16 +33,6 @@ void Player::Initialize(CollisionManager* collisionManager) {
 
 	ClearCount_ = 0;
 	// 7×7のプレイヤーのデータ
-	
-	playerLocation_ =
-	{
-		{0,0,0,0,0},
-		{0,0,0,0,0},
-		{0,0,0,0,0},
-		{0,0,0,0,0},
-		{0,0,0,0,0},
-	};
-
 
 	Block.I = {
 		{0,0,1,0,0},
@@ -115,14 +105,13 @@ void Player::Initialize(CollisionManager* collisionManager) {
 	input_ = Input::GetInstance();
 
 
-
-
 	for (int i = 0; i < 4; i++) {
 		nextWorldTransform_[i].Initialize();
 		nextmodel_[i] = std::make_unique<Object3DPlacer>();
 		nextmodel_[i]->Initialize();
 		nextmodel_[i]->SetModel("cube.obj");
 		nextmodel_[i]->SetTexHandle(coreTexHandle_);
+		nextmodel_[i]->SetColor({ 1,1,1,0.3f });
 		
 	}
 	worldTransform_.translate = { 0,14,0 };
@@ -151,7 +140,7 @@ void Player::Initialize(CollisionManager* collisionManager) {
 	Pushcooltime = 20.f;
 }
 
-void Player::Update(){
+void BlockManager::Update(){
 	worldTransform_.UpdateMatrix();
 
 	for (int i = 0; i < 4; i++) {
@@ -175,23 +164,23 @@ void Player::Update(){
 	nextBlockShape();
 
 
-	for (PlayerCore* core_ : cores_) {
+	for (BlockCore* core_ : cores_) {
 		core_->Update();
 	}
-	for (PlayerCrust* crust_ : crusts_) {
+	for (BlockCrust* crust_ : crusts_) {
 		//crust_->Update(velocity_);
 	}
 
 
 	//デスラグが立つと削除
-	cores_.remove_if([](PlayerCore* core) {
+	cores_.remove_if([](BlockCore* core) {
 		if (core->IsDead()) {
 			delete core;
 			return true;
 		}
 		return false;
 		});
-	crusts_.remove_if([](PlayerCrust* crust) {
+	crusts_.remove_if([](BlockCrust* crust) {
 		if (crust->IsDead()) {
 			delete crust;
 			return true;
@@ -206,7 +195,7 @@ void Player::Update(){
 	
 }
 
-void Player::LimitMove(){
+void BlockManager::LimitMove(){
 
 	//移動制限
 	if (worldTransform_.translate.x <= -LimitMove_L) {
@@ -217,15 +206,14 @@ void Player::LimitMove(){
 	}
 }
 
-void Player::OutPutBlock(){
+void BlockManager::OutPutBlock(){
 	Pushcooltime++;
 	if (input_->PressedKey(DIK_SPACE)&& Pushcooltime>=20.f) {
 		Pushcooltime = 0.0f;
 		shape_ = ChangeShape_[0];
 		nextShape_ = ChangeShape_[1];
 
-		//shape_ = Shape::shape_side;
-		//nextShape_ = Shape::shape_side;
+
 
 		ChangeShape_[0] = ChangeShape_[1];
 		ChangeShape_[1] = ChangeShape_[2];
@@ -235,7 +223,7 @@ void Player::OutPutBlock(){
 	}
 }
 
-void Player::BlockShape(){
+void BlockManager::BlockShape(){
 	switch (shape_)
 	{
 	case Shape::shape_I:
@@ -272,7 +260,7 @@ void Player::BlockShape(){
 	for (int i = 0; i < MAX_PLAYER_CHIPS; ++i) {
 		for (int j = 0; j < MAX_PLAYER_CHIPS; ++j) {
 			if (playerLocation_[i][j] == CORE) {
-				PlayerCore* newCore = new PlayerCore();
+				BlockCore* newCore = new BlockCore();
 				// 初期化
 				newCore->Initialize(coreTexHandle_);
 				newCore->SetWorldPosition(
@@ -286,7 +274,7 @@ void Player::BlockShape(){
 	}
 }
 
-void Player::nextBlockShape(){
+void BlockManager::nextBlockShape(){
 	
 	
 
@@ -381,7 +369,7 @@ void Player::nextBlockShape(){
 		nextWorldTransform_[1].translate.y = worldTransform_.translate.y + 1;
 		//ブロック3
 		nextWorldTransform_[2].translate.x = worldTransform_.translate.x;
-		nextWorldTransform_[2].translate.y = worldTransform_.translate.y +3;
+		nextWorldTransform_[2].translate.y = worldTransform_.translate.y + 3;
 		//ブロック4
 		nextWorldTransform_[3].translate.x = worldTransform_.translate.x - 2;
 		nextWorldTransform_[3].translate.y = worldTransform_.translate.y - 1;
@@ -454,7 +442,7 @@ void Player::nextBlockShape(){
 
 
 
-void Player::Draw(const CameraRole& viewProjection_){
+void BlockManager::Draw(const CameraRole& viewProjection_){
 
 	
 	///デバック場面
@@ -496,14 +484,15 @@ void Player::Draw(const CameraRole& viewProjection_){
 
 		ParticlTime++;
 	}
+
 	if (ParticlTime > 60) {
 		Particlflag = false;
 	}
 
-	for (PlayerCore* core_ : cores_) {
+	for (BlockCore* core_ : cores_) {
 		core_->Draw(viewProjection_);
 	}
-	for (PlayerCrust* crust_ : crusts_) {
+	for (BlockCrust* crust_ : crusts_) {
 		crust_->Draw(viewProjection_);
 	}
 
@@ -516,13 +505,13 @@ void Player::Draw(const CameraRole& viewProjection_){
 }
 
 
-void Player::OnCollisionLine(){
+void BlockManager::OnCollisionLine(){
 	for (int i = 0; i < kBlockNumY; i++) {
 		// その列にブロックがいくつあるかの確認
 		int count = 0;
 		int hardBlockCount = 0;
 		// 落下するブロック
-		for (PlayerCore* core_ : cores_) {
+		for (BlockCore* core_ : cores_) {
 			if (!core_->GetFoolFlag()) {
 				if ((int)clearBlock_[i].y == static_cast<int>(std::round(core_->GetWorldPosition().y))) {
 					for (int j = 0; j < kBlockNumX; j++) {
@@ -538,12 +527,7 @@ void Player::OnCollisionLine(){
 					}
 				}
 			}
-
 		}
-
-
-
-
 
 
 		if (count >= kBlockNumX) {
@@ -551,7 +535,7 @@ void Player::OnCollisionLine(){
 				Particlflag = true;
 				ParticlTime = 0;
 				//ClearCount_++;
-				cores_.remove_if([](PlayerCore* block) {
+				cores_.remove_if([](BlockCore* block) {
 					if (!block->GetIsAlive()) {
 						delete block;
 						return true;
@@ -567,7 +551,7 @@ void Player::OnCollisionLine(){
 				};
 				// すでに生成されているブロックをコライダーに登録
 				// 落下するブロック
-				for (PlayerCore* core_ : cores_) {
+				for (BlockCore* core_ : cores_) {
 					// 当たり判定の形状を設定
 					core_->SetCollisionPrimitive_(kCollisionAABB);
 					core_->SetCollisionAttribute_(kAttributeBlock);
@@ -580,14 +564,14 @@ void Player::OnCollisionLine(){
 		}
 		else {
 			//Particlflag = false;
-			for (PlayerCore* core_ : cores_) {
+			for (BlockCore* core_ : cores_) {
 				core_->SetIsAlive(true);
 			}
 		}
 	}
 }
 
-Vector3 Player::GetWorldPosition(){
+Vector3 BlockManager::GetWorldPosition(){
 	Vector3 worldPos;
 
 	worldPos.x = worldTransform_.matWorld.m[3][0];
@@ -597,11 +581,11 @@ Vector3 Player::GetWorldPosition(){
 	return worldPos;
 }
 
-Vector3 Player::GetPlayerCoreWorldPosition()
+Vector3 BlockManager::GetPlayerCoreWorldPosition()
 {
 	Vector3 worldPos{};
 
-	for (PlayerCore* core_ : cores_) {
+	for (BlockCore* core_ : cores_) {
 		worldPos = core_->GetWorldPosition();
 	}
 	return worldPos;

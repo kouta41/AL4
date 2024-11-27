@@ -1,12 +1,12 @@
-#include "PlayerCrust.h"
+#include "BlockCrust.h"
 
-PlayerCrust::PlayerCrust(){
+BlockCrust::BlockCrust(){
 }
 
-PlayerCrust::~PlayerCrust(){
+BlockCrust::~BlockCrust(){
 }
 
-void PlayerCrust::Initialize(uint32_t texHandle_) {
+void BlockCrust::Initialize(uint32_t texHandle_) {
 	worldTransform_.Initialize();
 
 	model_ = std::make_unique<Object3DPlacer>();
@@ -22,23 +22,23 @@ void PlayerCrust::Initialize(uint32_t texHandle_) {
 
 }
 
-void PlayerCrust::Update(Vector3 velocity){
+void BlockCrust::Update(Vector3 velocity){
 
 	worldTransform_.UpdateMatrix();
 	worldTransform_.translate.x += velocity.x;
 	worldTransform_.translate.y += velocity.y;
 }
 
-void PlayerCrust::Draw(CameraRole viewProjection_){
+void BlockCrust::Draw(CameraRole viewProjection_){
 	model_->Draw(worldTransform_, viewProjection_);
 
 }
 
-void PlayerCrust::OnCollision(){
+void BlockCrust::OnCollision(){
 	isDead_ = true;
 }
 
-Vector3 PlayerCrust::GetWorldPosition()
+Vector3 BlockCrust::GetWorldPosition()
 {
 	Vector3 worldPos;
 
@@ -49,7 +49,7 @@ Vector3 PlayerCrust::GetWorldPosition()
 	return worldPos;
 }
 
-void PlayerCrust::SetWorldPosition(Vector3 translate) {
+void BlockCrust::SetWorldPosition(Vector3 translate) {
 	worldTransform_.translate.x = translate.x;
 	worldTransform_.translate.y = translate.y;
 	worldTransform_.translate.z = translate.z;

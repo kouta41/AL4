@@ -11,17 +11,17 @@
 #include "Object3D.h"
 
 
-class PlayerCrust :public Collider {
+class BlockCrust :public Collider {
 public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ
 	/// </summary>
-	PlayerCrust();
+	BlockCrust();
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~PlayerCrust();
+	~BlockCrust();
 
 	/// <summary>
 	/// 初期化

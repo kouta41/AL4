@@ -8,7 +8,7 @@
 #include "Object3D.h"
 #include "Animation/Animation.h"
 #include "Skybox/Skybox.h"
-#include "Player.h"
+#include "BlockManager.h"
 #include "Enemy.h"
 #include "Skydome.h"
 #include "CollisionManager.h"

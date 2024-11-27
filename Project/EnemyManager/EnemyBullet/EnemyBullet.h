@@ -7,7 +7,7 @@
 #include <cassert>
 
 #include "Object3D.h"
-#include "Player.h"
+#include "BlockManager.h"
 
 class Player;
 class PlayerCore;

@@ -8,13 +8,14 @@
 #include "ModelCube.h"
 #include "Input.h"
 #include "ImGuiManager/ImGuiManager.h"
-#include "PlayerCrust.h"
-#include "PlayerCore.h"
+#include "BlockCrust.h"
+#include "BlockCore.h"
 #include "Collider.h"
 #include "CollisionConfig.h"
 #include "ModelManager.h"
 #include "CollisionManager.h"
 #include "Particle.h"
+#include <Object3D.h>
 
 #define MAX_PLAYER_CHIPS 5
 
@@ -50,20 +51,20 @@ struct typeShape final {
 
 
 /// <summary>
-/// プレイヤー
+/// ブロックマネージャ
 /// </summary>
-class Player:public Collider {
+class BlockManager :public Collider {
 
 public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ
 	/// </summary>
-	Player();
+	BlockManager();
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~Player();
+	~BlockManager();
 
 	/// <summary>
 	/// 初期化
@@ -114,9 +115,9 @@ public: // メンバ関数
 	Vector3 GetPlayerCoreWorldPosition();
 
 	//核リストを取得
-	const std::list<PlayerCore*>& GetPlayerCores()const { return cores_; }
+	const std::list<BlockCore*>& GetPlayerCores()const { return cores_; }
 	//外殻リストを取得
-	const std::list<PlayerCrust*>& GetPlayerCrusts()const { return crusts_; }
+	const std::list<BlockCrust*>& GetPlayerCrusts()const { return crusts_; }
 
 	float GetClearCount_() { return ClearCount_; }
 
@@ -159,9 +160,9 @@ private: // メンバ変数
 
 	std::vector<std::vector<int32_t>> playerLocation_;
 	///核
-	std::list<PlayerCore*> cores_;
+	std::list<BlockCore*> cores_;
 	///外殻
-	std::list<PlayerCrust*> crusts_;
+	std::list<BlockCrust*> crusts_;
 	
 
 	Shape ChangeShape_[3];

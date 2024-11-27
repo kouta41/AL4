@@ -1,15 +1,15 @@
-#include "PlayerCore.h"
+#include "BlockCore.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <cassert>
 
-PlayerCore::PlayerCore(){
+BlockCore::BlockCore(){
 }
 
-PlayerCore::~PlayerCore(){
+BlockCore::~BlockCore(){
 }
 
-void PlayerCore::Initialize(uint32_t texHandle_) {
+void BlockCore::Initialize(uint32_t texHandle_) {
 	worldTransform_.Initialize();
 
 	model_ = std::make_unique<Object3DPlacer>();
@@ -37,7 +37,7 @@ void PlayerCore::Initialize(uint32_t texHandle_) {
 	//SetAABB(aabb);
 }
 
-void PlayerCore::Update(){
+void BlockCore::Update(){
 	worldTransform_.UpdateMatrix();
 
 
@@ -51,7 +51,7 @@ void PlayerCore::Update(){
 
 }
 
-void PlayerCore::Draw(CameraRole viewProjection_){
+void BlockCore::Draw(CameraRole viewProjection_){
 	model_->Draw(worldTransform_, viewProjection_);
 
 #ifdef RELEASE
@@ -69,7 +69,7 @@ void PlayerCore::Draw(CameraRole viewProjection_){
 
 }
 
-void PlayerCore::OnCollision(Collider* collider){
+void BlockCore::OnCollision(Collider* collider){
 	float theta = atan2(worldTransform_.translate.y - collider->GetWorldPosition().y, worldTransform_.translate.x - collider->GetWorldPosition().x);
 
 	if (GetCollisionAttribute_() == collider->GetCollisionAttribute_()) {
@@ -122,7 +122,7 @@ void PlayerCore::OnCollision(Collider* collider){
 
 
 
-Vector3 PlayerCore::GetWorldPosition()
+Vector3 BlockCore::GetWorldPosition()
 {
 	Vector3 worldPos;
 
@@ -133,7 +133,7 @@ Vector3 PlayerCore::GetWorldPosition()
 	return worldPos;
 }
 
-void PlayerCore::SetWorldPosition(Vector3 translate){
+void BlockCore::SetWorldPosition(Vector3 translate){
 	worldTransform_.translate.x = translate.x;
 	worldTransform_.translate.y = translate.y;
 	worldTransform_.translate.z = translate.z;

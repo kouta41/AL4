@@ -8,7 +8,7 @@
 #include "Object3D.h"
 #include "Animation/Animation.h"
 #include "Skybox/Skybox.h"
-#include "Player.h"
+#include "BlockManager.h"
 #include "Enemy.h"
 #include "Skydome.h"
 #include "CollisionManager.h"
@@ -54,7 +54,7 @@ private: // メンバ変数
 	CameraRole camera;
 
 	//プレイヤー
-	std::unique_ptr<Player> player_{};
+	std::unique_ptr<BlockManager> BlockManager_{};
 	//敵
 	std::unique_ptr<Enemy> enemy_{};
 

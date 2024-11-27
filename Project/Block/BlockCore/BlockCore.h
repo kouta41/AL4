@@ -11,17 +11,17 @@
 #include "Object3D.h"
 
 
-class PlayerCore :public Collider {
+class BlockCore :public Collider {
 public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ
 	/// </summary>
-	PlayerCore();
+	BlockCore();
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~PlayerCore();
+	~BlockCore();
 
 	/// <summary>
 	/// 初期化

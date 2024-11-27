@@ -29,9 +29,9 @@ void GameScene::Initialize(){
 	collisionManager_ = std::make_unique<CollisionManager>();
 
 	//自キャラの生成
-	player_ = std::make_unique<Player>();
+	BlockManager_ = std::make_unique<BlockManager>();
 	// 自キャラの初期化
-	player_->Initialize(collisionManager_.get());
+	BlockManager_->Initialize(collisionManager_.get());
 
 
 	//敵キャラの生成
@@ -122,8 +122,8 @@ void GameScene::Update(){
 	//天球の更新
 	skydome_->Update();
 
-		//プレイヤーの更新
-		player_->Update();
+	//プレイヤーの更新
+	BlockManager_->Update();
 
 	if (flag == false) {
 
@@ -163,7 +163,7 @@ void GameScene::Update(){
 	}
 
 	//クリア演出
-	if (player_->GetClearCount_() == 4.0f&& cameraflag1 == true&& cameraflag2 ==true) {
+	if (BlockManager_->GetClearCount_() == 4.0f&& cameraflag1 == true&& cameraflag2 ==true) {
 		camera.translate = { posA.x,posA.y ,posA.z-20 };
 		cameraRotate = camera.rotate;
 		cameraPosA= { posA.x,posA.y ,posA.z - 20 };
@@ -233,7 +233,7 @@ void GameScene::Draw(){
 	
 	if (flag == false) {
 		//プレイヤーの描画
-		player_->Draw(camera);
+		BlockManager_->Draw(camera);
 	}
 
 

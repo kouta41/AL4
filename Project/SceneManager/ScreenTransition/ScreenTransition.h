@@ -5,7 +5,7 @@
 #include "IsScen.h"
 #include "Animation.h"
 #include "Skybox.h"
-#include "Player.h"
+#include "BlockManager.h"
 #include "Enemy.h"
 #include "Skydome.h"
 #include "CollisionManager.h"
