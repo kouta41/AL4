@@ -2,7 +2,10 @@
 struct Material
 {
     float32_t4 color;
+    float32_t4x4 uvTransform;
     int32_t enableLighting;
+    float32_t shininess;
+    float32_t environmentCoefficient;
 };
 
 struct DirectionalLight
@@ -12,7 +15,26 @@ struct DirectionalLight
     float intensity;
 };
 
+
+struct PointLight
+{
+    float32_t4 color;
+    float32_t3 position;
+    float intensity;
+    float radius;
+    float decay;
+};
+struct Camera
+{
+    float32_t3 worldPosition;
+};
+
+
 ConstantBuffer<Material> gMaterial : register(b0);
+
+
+
+
 struct PixelShaderOutput
 {
     float32_t4 color : SV_TARGET0;
@@ -21,28 +43,73 @@ struct PixelShaderOutput
 
 ConstantBuffer<DirectionalLight> gDirectionalLight : register(b1);
 
+ConstantBuffer<Camera> gCamera : register(b2);
+
+
+
+ConstantBuffer<PointLight> gPointLight : register(b3);
+
 Texture2D<float32_t4> gTexture : register(t0);
+TextureCube<float32_t4> gEnvironmentTexture : register(t1);
+
 SamplerState gSampler : register(s0);
 
 PixelShaderOutput main(VertexShaderOutput input)
 {
+   
+    // PixelShaderでTextureの宣言を行う
     PixelShaderOutput output;
+   // float4 transformedUV = mul(float32_t4(input.texcoord, 0.0f, 1.0f), gMaterial.uvTransform);
     float32_t4 textureColor = gTexture.Sample(gSampler, input.texcoord);
-    if (gMaterial.enableLighting != 0)
+    
+    if (gMaterial.enableLighting != 0)// Lightingする場合
     {
-	    // half lambert
+        // 鏡面反射
+        float32_t3 toEye = normalize(gCamera.worldPosition - input.worldPosition);
+        float32_t3 reflectLight = reflect(gDirectionalLight.direction, normalize(input.normal));
+        float RdotE = dot(reflectLight, toEye);
+    
+        // Blinn Phong Reflection
+        float32_t3 halfVector = normalize(-gDirectionalLight.direction + toEye);
+        float NDoH = dot(normalize(input.normal), halfVector);
+        float specularPow = pow(saturate(NDoH), gMaterial.shininess);
+        
+        // half lambert
+        // Ndotlは法線とライト方向(ライトへの向き)の内積
         float NdotL = dot(normalize(input.normal), -gDirectionalLight.direction);
-        float cos = pow(NdotL * 0.5f + 0.5f, 2.0f);
-		// lambert
-	    //float cos = saturate(dot(normalize(input.normal), -gDirectionalLight.direction));
-        output.color.rgb = gMaterial.color.rgb * textureColor.rgb * gDirectionalLight.color.rgb * cos * gDirectionalLight.intensity;
+       // float cos = pow(NdotL * 0.5f + 0.5f, 2.0f);
+        
+        float cos = saturate(dot(normalize(input.normal), -gDirectionalLight.direction));
+        output.color = gMaterial.color * textureColor * gDirectionalLight.color * cos * gDirectionalLight.intensity;
+       
+        // 拡散反射
+        float32_t3 diffuse = gMaterial.color.rgb * textureColor.rgb * gDirectionalLight.color.rgb * cos * gDirectionalLight.intensity;
+        
+        // 鏡面反射
+        float32_t3 specular = gDirectionalLight.color.rgb * gDirectionalLight.intensity * specularPow * float32_t3(1.0f, 1.0f, 1.0f);
+        // 拡散反射+鏡面反射
+        output.color.rgb = diffuse + specular;
+        // アルファは今まで通り
         output.color.a = gMaterial.color.a * textureColor.a;
+        
+        
+        
+        
+        // 環境マッピングを行う
+        float32_t3 cameraToPosition = normalize(input.worldPosition - gCamera.worldPosition);
+        float32_t3 refrectedVector = reflect(cameraToPosition, normalize(input.normal));
+        float32_t4 enviromentColor = gEnvironmentTexture.Sample(gSampler, refrectedVector);
+        // 計算結果を適用する
+      //  output.color.rgb = enviromentColor.rgb;
+      //  output.color.rgb += enviromentColor.rgb * gMaterial.environmentCoefficient;
+        
     }
-    else
+    else // Lightingしない場合
     {
+        // Samplingしたtextureの色とmaterialの色を乗算して合成する
         output.color = gMaterial.color * textureColor;
     }
-
+    
     return output;
 
 };

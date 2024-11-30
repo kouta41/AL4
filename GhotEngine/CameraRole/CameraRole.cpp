@@ -1,18 +1,41 @@
 #include "CameraRole.h"
 
-void ViewProjection::Initialize() {
 
-	matView = MakeIdentityMatrix();
-	matProjection = MakeIdentityMatrix();
-	sMatProjection = MakeIdentityMatrix();
+
+void CameraRole::Initialize() {
+	CreateConstBuffer();
+	Map();
+	UpdateMatrix();
+	TransferMatrix();
 }
 
-void ViewProjection::UpdateMatrix() {
+void CameraRole::CreateConstBuffer() {
+	constBuff_ = CreateResource::CreateBufferResource(sizeof(ConstBufferDataViewProjection));
+}
 
-	matView = Inverse(MakeAffineMatrix(scale, rotate, translate));
-	matProjection = MakePerspectiveFovMatrix(fov, aspectRatio, nearZ, farZ);
+void CameraRole::Map() {
+	constBuff_.Get()->Map(0, nullptr, reinterpret_cast<void**>(&constMap));
+}
 
-	sMatView = MakeIdentityMatrix();
-	sMatProjection = MakeOrthographicMatrix(0.0f, 0.0f, 1280.0f, 720.0f, 0.0f, 100.0f);
+void CameraRole::UpdateMatrix() {
+	UpdateViewMatrix();
+	UpdateProjectionMatrix();
+	TransferMatrix();
+}
 
+void CameraRole::TransferMatrix() {
+	constMap->view = matView;
+	constMap->projection = matProjection;
+	constMap->cameraPos = { matView.m[3][0], matView.m[3][1], matView.m[3][2] };
+}
+
+void CameraRole::UpdateViewMatrix() {
+	Matrix4x4 cameraMatrix = MakeAffineMatrix({ 1.0f, 1.0f, 1.0f }, rotate, translate);
+	matView = Inverse(cameraMatrix);
+	worldPos_ = { matView.m[3][0], matView.m[3][1], matView.m[3][2] };
+
+}
+
+void CameraRole::UpdateProjectionMatrix() {
+	matProjection = MakePerspectiveFovMatrix(fovAngleY, aspectRatio, nearZ, farZ);
 }
