@@ -184,11 +184,25 @@ private: // メンバ変数
 	// 当たり判定
 	CollisionManager* collisionManager_ = nullptr;
 
+	bool iscollision_ = true;
+
 	//移動制限
 	float LimitMove_R = 8.0f;
 	float LimitMove_L = 8.0f;
 
+	const float LimitMove_large = 12.0f;
+	const float LimitMove_small = 10.0f;
+
+
+
 	//アウトプットのクールタイム
 	float Pushcooltime = 120.f;
+
+	//
+	const float Shift_y = -1.0f;
+
+	const float Value_y = 2.0f;
+
+	const float Shift_x = 2.0f;
 
 };

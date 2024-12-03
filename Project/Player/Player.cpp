@@ -27,10 +27,10 @@ void Player::OnCollision(Collider* collider) {
 }
 
 
-Vector3 GetWorldPosition() {
+Vector3 Player::GetWorldPosition() {
 	Vector3 worldPos;
 
-	worldPos.x = worldTransform_.
+	worldPos.x = worldTransform_.matWorld.m[3][0];
 	worldPos.y = worldTransform_.matWorld.m[3][1];
 	worldPos.z = worldTransform_.matWorld.m[3][2];
 

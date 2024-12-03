@@ -188,9 +188,10 @@ void BlockManager::Update(){
 		return false;
 		});
 
-	//横一列になったら消える処理
-	OnCollisionLine();
-
+	if (iscollision_ = true) {
+		//横一列になったら消える処理
+		OnCollisionLine();
+	}
 
 	
 }
@@ -283,60 +284,60 @@ void BlockManager::nextBlockShape(){
 	case Shape::shape_I:
 		//ブロック1
 		nextWorldTransform_[0].translate.x = worldTransform_.translate.x;
-		nextWorldTransform_[0].translate.y = worldTransform_.translate.y - 1;
+		nextWorldTransform_[0].translate.y = worldTransform_.translate.y +Shift_y;
 		//ブロック2
 		nextWorldTransform_[1].translate.x = worldTransform_.translate.x;
-		nextWorldTransform_[1].translate.y = worldTransform_.translate.y + 1;
+		nextWorldTransform_[1].translate.y = worldTransform_.translate.y + Shift_y + Value_y;
 		//ブロック3
 		nextWorldTransform_[2].translate.x = worldTransform_.translate.x;
-		nextWorldTransform_[2].translate.y = worldTransform_.translate.y + 3;
+		nextWorldTransform_[2].translate.y = worldTransform_.translate.y + Shift_y + Value_y + Value_y;
 		//ブロック4
 		nextWorldTransform_[3].translate.x = worldTransform_.translate.x;
-		nextWorldTransform_[3].translate.y = worldTransform_.translate.y + 5;
+		nextWorldTransform_[3].translate.y = worldTransform_.translate.y + Shift_y + Value_y + Value_y + Value_y;
 
 		//移動制限
-		LimitMove_R = 12.0f;
-		LimitMove_L = 12.0f;
+		LimitMove_R = LimitMove_large;
+		LimitMove_L = LimitMove_large;
 
 		break;
 
 	case Shape::shape_T:
 		//ブロック1
 		nextWorldTransform_[0].translate.x = worldTransform_.translate.x;
-		nextWorldTransform_[0].translate.y = worldTransform_.translate.y - 1;
+		nextWorldTransform_[0].translate.y = worldTransform_.translate.y + Shift_y;
 		//ブロック2
 		nextWorldTransform_[1].translate.x = worldTransform_.translate.x;
-		nextWorldTransform_[1].translate.y = worldTransform_.translate.y + 1;
+		nextWorldTransform_[1].translate.y = worldTransform_.translate.y + Shift_y + Value_y;
 		//ブロック3
-		nextWorldTransform_[2].translate.x = worldTransform_.translate.x + 2;
-		nextWorldTransform_[2].translate.y = worldTransform_.translate.y + 1;
+		nextWorldTransform_[2].translate.x = worldTransform_.translate.x + Shift_x;
+		nextWorldTransform_[2].translate.y = worldTransform_.translate.y + Shift_y + Value_y;
 		//ブロック4
-		nextWorldTransform_[3].translate.x = worldTransform_.translate.x - 2;
-		nextWorldTransform_[3].translate.y = worldTransform_.translate.y + 1;
+		nextWorldTransform_[3].translate.x = worldTransform_.translate.x - Shift_x;
+		nextWorldTransform_[3].translate.y = worldTransform_.translate.y + Shift_y + Value_y;
 
 		//移動制限
-		LimitMove_R = 10.0f;
-		LimitMove_L = 10.0f;
+		LimitMove_R = LimitMove_small;
+		LimitMove_L = LimitMove_small;
 
 		break;
 
 	case Shape::shape_S:
 		//ブロック1
 		nextWorldTransform_[0].translate.x = worldTransform_.translate.x;
-		nextWorldTransform_[0].translate.y = worldTransform_.translate.y - 1;
+		nextWorldTransform_[0].translate.y = worldTransform_.translate.y + Shift_y;
 		//ブロック2
-		nextWorldTransform_[1].translate.x = worldTransform_.translate.x - 2;
-		nextWorldTransform_[1].translate.y = worldTransform_.translate.y - 1;
+		nextWorldTransform_[1].translate.x = worldTransform_.translate.x - Shift_x;
+		nextWorldTransform_[1].translate.y = worldTransform_.translate.y + Shift_y;
 		//ブロック3
 		nextWorldTransform_[2].translate.x = worldTransform_.translate.x;
-		nextWorldTransform_[2].translate.y = worldTransform_.translate.y + 1;
+		nextWorldTransform_[2].translate.y = worldTransform_.translate.y + Shift_y + Value_y;
 		//ブロック4
-		nextWorldTransform_[3].translate.x = worldTransform_.translate.x + 2;
-		nextWorldTransform_[3].translate.y = worldTransform_.translate.y + 1;
+		nextWorldTransform_[3].translate.x = worldTransform_.translate.x + Shift_x;
+		nextWorldTransform_[3].translate.y = worldTransform_.translate.y + Shift_y + Value_y;
 
 		//移動制限
-		LimitMove_R = 10.0f;
-		LimitMove_L = 10.0f;
+		LimitMove_R = LimitMove_small;
+		LimitMove_L = LimitMove_small;
 
 		break;
 
@@ -355,8 +356,8 @@ void BlockManager::nextBlockShape(){
 		nextWorldTransform_[3].translate.y = worldTransform_.translate.y + 1;
 
 		//移動制限
-		LimitMove_R = 10.0f;
-		LimitMove_L = 12.0f;
+		LimitMove_R = LimitMove_small;
+		LimitMove_L = LimitMove_large;
 
 		break;
 
@@ -375,8 +376,8 @@ void BlockManager::nextBlockShape(){
 		nextWorldTransform_[3].translate.y = worldTransform_.translate.y - 1;
 
 		//移動制限
-		LimitMove_R = 12.0f;
-		LimitMove_L = 10.0f;
+		LimitMove_R = LimitMove_large;
+		LimitMove_L = LimitMove_small;
 
 		break;
 
@@ -395,8 +396,8 @@ void BlockManager::nextBlockShape(){
 		nextWorldTransform_[3].translate.y = worldTransform_.translate.y - 1;
 
 		//移動制限
-		LimitMove_R = 10.0f;
-		LimitMove_L = 12.0f;
+		LimitMove_R = LimitMove_small;
+		LimitMove_L = LimitMove_large;
 
 		break; 
 	case Shape::shape_ten:
@@ -414,8 +415,8 @@ void BlockManager::nextBlockShape(){
 		nextWorldTransform_[3].translate.y = worldTransform_.translate.y - 1;
 
 		//移動制限
-		LimitMove_R = 12.0f;
-		LimitMove_L = 12.0f;
+		LimitMove_R = LimitMove_large;
+		LimitMove_L = LimitMove_large;
 
 		break;
 	case Shape::shape_side:
@@ -433,8 +434,8 @@ void BlockManager::nextBlockShape(){
 		nextWorldTransform_[3].translate.y = worldTransform_.translate.y - 1;
 
 		//移動制限
-		LimitMove_R = 10.0f;
-		LimitMove_L = 12.0f;
+		LimitMove_R = LimitMove_small;
+		LimitMove_L = LimitMove_large;
 
 		break;
 	}
@@ -456,7 +457,11 @@ void BlockManager::Draw(const CameraRole& viewProjection_){
 
 		ImGui::TreePop();
 	}
-	
+	if (ImGui::TreeNode("collision")) {
+		ImGui::Checkbox("iscollision_",&iscollision_);
+		ImGui::TreePop();
+	}
+
 	ImGui::End();
 
 #endif // _DEBUG
