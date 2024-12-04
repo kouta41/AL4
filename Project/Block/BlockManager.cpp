@@ -188,7 +188,7 @@ void BlockManager::Update(){
 		return false;
 		});
 
-	if (iscollision_ = true) {
+	if (iscollision_ == false) {
 		//横一列になったら消える処理
 		OnCollisionLine();
 	}
@@ -589,10 +589,19 @@ Vector3 BlockManager::GetWorldPosition(){
 Vector3 BlockManager::GetPlayerCoreWorldPosition()
 {
 	Vector3 worldPos{};
-
 	for (BlockCore* core_ : cores_) {
-		worldPos = core_->GetWorldPosition();
+		if (core_->GetFoolFlag() == false) {
+			worldPos = core_->GetWorldPosition();
+		}
 	}
 	return worldPos;
+}
+
+void BlockManager::SetfoolSpeed(float foolspeed){
+	for (BlockCore* core_ : cores_) {
+		if (core_->GetFoolFlag() == false) {
+			core_->SetfoolSpeed(foolspeed);
+		}
+	}
 }
 

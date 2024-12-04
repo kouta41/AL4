@@ -121,6 +121,11 @@ public: // メンバ関数
 
 	float GetClearCount_() { return ClearCount_; }
 
+	//Y軸の変更
+	void SetWorldTransform(float worldTransform) { worldTransform_.translate.y = worldTransform; }
+
+	//ブロックの落ちる速度の変更
+	void SetfoolSpeed(float foolspeed);
 
 	// マップの左端
 	const float kMapLeftPos = 0.0f;

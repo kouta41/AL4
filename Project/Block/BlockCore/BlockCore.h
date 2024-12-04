@@ -66,6 +66,9 @@ public: // メンバ関数
 	void SetIsAlive(bool isAlive) { isAlive_ = isAlive; }
 	// 消えないブロックを設定
 	inline void SetIsHardBlock(bool isActive) { isHardBlock_ = isActive; }
+	//ブロックの落ちるスピード
+	void SetfoolSpeed(float foolSpeed) { foolSpeed_ = foolSpeed; }
+
 
 	//ワールド座標系を取得
 	void SetWorldPosition(Vector3 translate);

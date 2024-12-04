@@ -125,6 +125,16 @@ void GameScene::Update(){
 	//プレイヤーの更新
 	BlockManager_->Update();
 
+	//カメラの調整
+	if (BlockManager_->GetPlayerCoreWorldPosition().y > 10 && cameraflag1 == true && cameraflag2 == true) {
+		camera.translate = { 0,10,-120 };
+		EndrightworldTransform_.translate.z = camera.translate.z + 4;
+		EndLeftworldTransform_.translate.z = camera.translate.z + 4;
+		BlockManager_->SetWorldTransform(26.0f);
+		BlockManager_->SetfoolSpeed(6.00);
+	}
+
+
 	if (flag == false) {
 
 		//敵の更新
