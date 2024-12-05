@@ -1,3 +1,6 @@
+/// <summary>
+/// IMGUIの管理
+/// </summary>
 #pragma once
 
 #include <d3d12.h>
@@ -48,6 +51,7 @@ private:
     ImGuiManager(const ImGuiManager&) = delete;
     const ImGuiManager& operator=(const ImGuiManager&) = delete;
 
+    
     // DirectX基盤インスタンス（借りてくる）
     DirectXCommon* dxCommon_ = nullptr;
 

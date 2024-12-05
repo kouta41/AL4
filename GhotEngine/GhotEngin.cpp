@@ -1,3 +1,6 @@
+/// <summary>
+/// メインファイル
+/// </summary>
 #include "GhotEngin.h"
 
 /// <summary>
@@ -19,12 +22,11 @@ void Engine::Initialize() {
 	dxCommon_->Initialize(win_);
 	Input::Initialize();
 	GraphicsPipeline::Initialize();
-	TextureManager::GetInstance()->Initialize();
 
 	//ゲームシーンの初期化
-	gameScene_ = new GameScene();
-	gameScene_->Initialize();
+	gameManager_ = std::make_unique<GameManager>();
 	
+
 	// ImGuiの初期化
 	imguiManager_ = ImGuiManager::GetInstance();
 	imguiManager_->Initialize(win_, dxCommon_);
@@ -47,15 +49,16 @@ void Engine::Run() {
 		//imgui受付開始
 		imguiManager_->Begin();
 
-		//ゲームシーンの更新
-		gameScene_->Update();
+		// ゲームの処理
+		gameManager_->Initialize();
+		gameManager_->Run();
 		//imguiManager_->End();
 
 		// 描画前処理
 		dxCommon_->PreDraw();
 
-		//ゲームシーンの描画
-		gameScene_->Draw();
+		// シーン描画
+		gameManager_->Draw();
 
 		imguiManager_->End();
 

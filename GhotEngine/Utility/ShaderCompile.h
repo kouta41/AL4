@@ -1,3 +1,6 @@
+/// <summary>
+/// シェイダーの管理
+/// </summary>
 #pragma once
 #include "DirectX12.h"
 #include <dxcapi.h>

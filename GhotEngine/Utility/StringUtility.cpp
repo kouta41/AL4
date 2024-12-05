@@ -1,3 +1,6 @@
+/// <summary>
+/// ログの管理
+/// </summary>
 #include "StringUtility.h"
 
 // ConvertString

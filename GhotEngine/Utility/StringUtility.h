@@ -1,3 +1,6 @@
+/// <summary>
+/// ログの管理
+/// </summary>
 #pragma once
 #include <string>
 #include <Windows.h>

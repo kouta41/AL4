@@ -1,4 +1,7 @@
 #pragma once
+/// <summary>
+/// DirectX12の管理
+/// </summary>
 
 #include <Windows.h>
 #include <cstdint>
@@ -12,6 +15,7 @@
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "dxguid.lib")
 #include "Window.h"
+#include "DescriptorManager/DescriptorManager.h"
 
 class DirectXCommon {
 public: // メンバ関数
@@ -26,9 +30,6 @@ public: // メンバ関数
 	static ID3D12GraphicsCommandList* GetCommandList() { return commandList_.Get(); }
 
 	DXGI_SWAP_CHAIN_DESC1 GetBufferCount() { return swapChainDesc; }
-
-	ID3D12DescriptorHeap* GetSRV() { return srvHeap_.Get(); }
-
 
 	/// <summary>
 	/// 初期化
@@ -58,7 +59,7 @@ public: // メンバ関数
 	// descriptorheap生成
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE type, UINT numDescriptors, bool shaderVisible);
 
-	// RTV,SRV作成
+	// RTV
 	void CreateRenderTargetView();
 
 	// fence作成
@@ -70,19 +71,18 @@ public: // メンバ関数
 	/// 深度バッファ生成
 	void CreateDepthBuffer();
 
-private: // メンバ関数
-	//FPS固定初期化
-	void InitializeFixFPS();
-	//FPS固定更新
-	void UpdateFixFPS();
-	//記録時間(FPS固定用)
-	std::chrono::steady_clock::time_point reference_;
+
 
 private: // メンバ関数
 	DirectXCommon() = default;
 	~DirectXCommon() = default;
 	DirectXCommon(const DirectXCommon&) = delete;
 	const DirectXCommon& operator=(const DirectXCommon&) = delete;
+
+	// FPS固定初期化
+	void InitializeFixFPS();
+	// FPS固定更新
+	void UpdateFixFPS();
 
 private:
 	WinApp* winApp_;
@@ -95,9 +95,6 @@ private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain4> swapChain_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> swapChainResources[2];
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> rtvHeap_;
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap_;
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> dsvHeap_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> depthBuffer_;
 	Microsoft::WRL::ComPtr<ID3D12Fence> fence_;
 	UINT64 fenceVal_ = 0;
@@ -110,4 +107,6 @@ private:
 	// シザー矩形
 	D3D12_RECT scissorRect{};
 	UINT backBufferIndex_;
+	// 記録時間	(FPS固定用)
+	std::chrono::steady_clock::time_point reference_;
 };

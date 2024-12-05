@@ -1,3 +1,6 @@
+/// <summary>
+/// モデル球体
+/// </summary>
 #include "ModelSphere.h"
 
 /// <summary>
@@ -125,10 +128,10 @@ void ModelSphere::Initialize(Model* state)
 /// <param name="state"></param>
 /// <param name="viewProjection"></param>
 /// <param name="texHandle"></param>
-void ModelSphere::Draw(WorldTransform worldTransform, ViewProjection viewProjection, uint32_t texHandle)
+void ModelSphere::Draw(WorldTransform worldTransform, CameraRole cameraRole, uint32_t texHandle)
 {
 
-	worldTransform.TransferMatrix(resource_.wvpResource, viewProjection);
+	worldTransform.TransferMatrix();
 
 	Property property = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
 
@@ -142,7 +145,7 @@ void ModelSphere::Draw(WorldTransform worldTransform, ViewProjection viewProject
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
 	// wvp用のCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetGPUHandle(texHandle));
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle));
 	// 平行光源
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(3, resource_.directionalLightResource->GetGPUVirtualAddress());
 	// 描画。(DrawCall/ドローコール)。

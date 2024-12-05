@@ -1,3 +1,6 @@
+/// <summary>
+/// モデルキューブ
+/// </summary>
 #include "ModelCube.h"
 
 void ModelCube::Initialize(Model* state) {
@@ -115,9 +118,9 @@ void ModelCube::Initialize(Model* state) {
 
 }
 
-void ModelCube::Draw(WorldTransform worldTransform, ViewProjection viewProjection, uint32_t texHandle) {
+void ModelCube::Draw(WorldTransform worldTransform, CameraRole cameraRole, uint32_t srvIndex) {
 
-	worldTransform.TransferMatrix(resource_.wvpResource, viewProjection);
+	worldTransform.TransferMatrix();
 
 	Property property = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
 
@@ -132,7 +135,7 @@ void ModelCube::Draw(WorldTransform worldTransform, ViewProjection viewProjectio
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
 	// wvp用のCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetGPUHandle(texHandle));
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetDescriptorHeapForGPU(srvIndex));
 	// 平行光源
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(3, resource_.directionalLightResource->GetGPUVirtualAddress());
 	// 描画。(DrawCall/ドローコール)。

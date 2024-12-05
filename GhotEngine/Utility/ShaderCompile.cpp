@@ -1,3 +1,6 @@
+/// <summary>
+/// シェイダーの管理
+/// </summary>
 #include "ShaderCompile.h"
 #include "StringUtility.h"
 

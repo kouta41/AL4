@@ -1,3 +1,6 @@
+/// <summary>
+/// モデルキューブ
+/// </summary>
 #pragma once
 #include "IModelState.h"
 
@@ -15,7 +18,7 @@ public:
 	/// <param name="worldTransform"></param>
 	/// <param name="viewProjection"></param>
 	/// <param name="texHandle"></param>
-	void Draw(WorldTransform worldTransform, ViewProjection viewProjection, uint32_t texHandle)override;
+	void Draw(WorldTransform worldTransform, CameraRole cameraRole, uint32_t texHandle)override;
 
 private:
 

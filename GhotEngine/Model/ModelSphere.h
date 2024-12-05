@@ -1,3 +1,6 @@
+/// <summary>
+/// モデル球体
+/// </summary>
 #pragma once
 #include <math.h>
 #define _USE_MATH_DEFINES
@@ -6,10 +9,14 @@
 
 class ModelSphere : public IModelState {
 public:
-
+	/// <summary>
+	///初期化
+	/// </summary>
 	void Initialize(Model* state)override;
-
-	void Draw(WorldTransform worldTransform, ViewProjection viewProjection, uint32_t texHandle)override;
+	/// <summary>
+	/// 描画
+	/// </summary>
+	void Draw(WorldTransform worldTransform, CameraRole cameraRole, uint32_t texHandle)override;
 
 private:
 

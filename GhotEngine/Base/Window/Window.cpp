@@ -1,3 +1,7 @@
+/// <summary>
+/// ウィンドウの管理
+/// </summary>
+
 #include "Window.h"
 #include <string>
 #pragma comment(lib,"winmm.lib")
@@ -60,7 +64,7 @@ void WinApp::CreateGameWindow(
 
 	// ウィンドウサイズ{ X座標 Y座標 横幅 縦幅 }
 	RECT wrc = { 0, 0, clientWidth, clientHeight };
-	AdjustWindowRect(&wrc, windowStyle_, false); // 自動でサイズ補正
+	AdjustWindowRect(&wrc, windowStyle, false); // 自動でサイズ補正
 
 	// ウィンドウオブジェクトの生成
 	hwnd_ = CreateWindow(

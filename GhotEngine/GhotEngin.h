@@ -1,3 +1,6 @@
+/// <summary>
+/// メインファイル
+/// </summary>
 #pragma once
 #include "Window.h"
 #include "DirectX12.h"
@@ -7,6 +10,7 @@
 #include "ImGuiManager.h"
 #include "TextureManager.h"
 #include "Input.h"
+#include "GameManager.h"
 
 class Engine {
 public:
@@ -29,5 +33,5 @@ private:
 	WinApp* win_;
 	DirectXCommon* dxCommon_;
 	ImGuiManager* imguiManager_;
-	GameScene* gameScene_;
+	std::unique_ptr<GameManager> gameManager_;
 };

@@ -1,8 +1,35 @@
-#pragma once
-#include "Vector3.h"
-#include "Mathfunction.h"
+/// <summary>
+/// ゲーム内のカメラの管理
+/// </summary>
 
-struct ViewProjection {
+#pragma once
+#include "Mathfunction.h"
+#include "CreateResource.h"
+
+struct CameraRole {
+
+	// 定数バッファ用データ構造体
+	struct ConstBufferDataViewProjection {
+		Matrix4x4 view;       // ワールド → ビュー変換行列
+		Matrix4x4 projection; // ビュー → プロジェクション変換行列
+		Vector3 cameraPos;    // カメラ座標（ワールド座標）
+	};
+
+	// 定数バッファ用データ構造体 (sprite用)
+	struct ConstBufferDataViewProjectionSprite {
+		Matrix4x4 view;       // ワールド → ビュー変換行列
+		Matrix4x4 projection; // ビュー → プロジェクション変換行列
+		Vector3 cameraPos;    // カメラ座標（ワールド座標）
+	};
+
+	// 定数バッファ
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuff_;
+	Microsoft::WRL::ComPtr<ID3D12Resource> sConstBuff;
+	// マッピング済みアドレス
+	ConstBufferDataViewProjection* constMap = nullptr;
+	ConstBufferDataViewProjectionSprite* sConstMap = nullptr;
+
+
 
 #pragma region	ビュー行列の設定
 
@@ -31,8 +58,24 @@ struct ViewProjection {
 	Matrix4x4 matProjection = {};
 	Matrix4x4 sMatProjection = {};
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Initialize();
-
+	/// <summary>
+	/// 定数バッファ生成
+	/// </summary>
+	void CreateConstBuffer();
+	/// <summary>
+	/// マッピングする
+	/// </summary>
+	void Map();
+	/// <summary>
+	/// 行列を更新する
+	/// </summary>
 	void UpdateMatrix();
-
+	/// <summary>
+	/// 行列を転送する
+	/// </summary>
+	void TransferMatrix();
 };

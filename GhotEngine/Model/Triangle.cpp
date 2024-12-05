@@ -1,3 +1,6 @@
+/// <summary>
+/// 三角形
+/// </summary>
 #include "Triangle.h"
 
 void Triangle::Initialize()
@@ -47,10 +50,10 @@ void Triangle::Initialize()
 	resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
 }
 
-void Triangle::Draw(WorldTransform worldTransform, ViewProjection viewProjection, uint32_t texHandle)
+void Triangle::Draw(WorldTransform worldTransform, CameraRole cameraRole, uint32_t texHandle)
 {
 
-	worldTransform.TransferMatrix(resource_.wvpResource, viewProjection);
+	worldTransform.TransferMatrix();
 
 	Property property = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
 
@@ -64,7 +67,7 @@ void Triangle::Draw(WorldTransform worldTransform, ViewProjection viewProjection
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
 	// wvp用のCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetGPUHandle(texHandle));
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetDescriptorHeapForGPU(texHandle));
 	// 描画。(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
 	DirectXCommon::GetCommandList()->DrawInstanced(6, 1, 0, 0);
 }
