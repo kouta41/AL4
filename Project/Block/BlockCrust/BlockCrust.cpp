@@ -22,11 +22,15 @@ void BlockCrust::Initialize(uint32_t texHandle_) {
 
 }
 
-void BlockCrust::Update(Vector3 velocity){
+void BlockCrust::Update(){
 
 	worldTransform_.UpdateMatrix();
-	worldTransform_.translate.x += velocity.x;
-	worldTransform_.translate.y += velocity.y;
+	worldTransform_.translate.x -= foolSpeed_;
+	//時間経過でデス
+	if (--deathTimer_ <= 0) {
+		isDead_ = true;
+	}
+	
 }
 
 void BlockCrust::Draw(CameraRole viewProjection_){

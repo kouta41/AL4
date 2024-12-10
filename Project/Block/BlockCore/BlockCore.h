@@ -33,6 +33,12 @@ public: // メンバ関数
 	/// </summary>
 	void Update();
 
+
+	/// <summary>
+	/// 毎フレーム処理
+	/// </summary>
+	void UpdateIsSred();
+
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -58,6 +64,9 @@ public: // メンバ関数
 	bool GetFoolFlag() { return foolflag_; }
 	// 消えないブロックを取得
 	inline bool GetIsHardBlock() { return isHardBlock_; }
+	//スライドするかを取得
+	bool GetIsSred() { return isSred_; }
+	
 
 	/// Setter
 	// ワールド座標を設定
@@ -68,6 +77,8 @@ public: // メンバ関数
 	inline void SetIsHardBlock(bool isActive) { isHardBlock_ = isActive; }
 	//ブロックの落ちるスピード
 	void SetfoolSpeed(float foolSpeed) { foolSpeed_ = foolSpeed; }
+	//スライドするかを設定
+	void SetIsSred(bool isSred) { isSred_ = isSred; }
 
 
 	//ワールド座標系を取得
@@ -104,4 +115,7 @@ private: // メンバ変数
 	float foolSpeed_ = 0.4f;
 	// 消えないブロック
 	bool isHardBlock_;
+
+
+	bool isSred_;
 };

@@ -25,6 +25,9 @@ void BlockCore::Initialize(uint32_t texHandle_) {
 	// 生存フラグ
 	isAlive_ = true;
 
+	//スライドするか
+	isSred_ = true;
+
 	// 当たり判定の形状を設定
 	SetCollisionPrimitive_(kCollisionAABB);
 	//当たり判定の属性
@@ -40,14 +43,23 @@ void BlockCore::Initialize(uint32_t texHandle_) {
 void BlockCore::Update(){
 	worldTransform_.UpdateMatrix();
 
-
+	
 	worldTransform_.translate.y -= foolSpeed_;
+	
+	
+
 	if (worldTransform_.translate.y <= -12) {
 		float floor = worldTransform_.translate.y - (-12);
 		worldTransform_.translate.y -= floor;
 		foolflag_ = false;
 		SetIsBottomHitAABB_(true);
 	}
+
+}
+
+void BlockCore::UpdateIsSred(){
+	worldTransform_.UpdateMatrix();
+	worldTransform_.translate.x -= foolSpeed_;
 
 }
 
@@ -85,7 +97,7 @@ void BlockCore::OnCollision(Collider* collider){
 		}
 		else {
 			SetIsBottomHitAABB_(false);
-			foolflag_ = true;
+			//foolflag_ = true;
 		}
 
 		// 上

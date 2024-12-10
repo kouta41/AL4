@@ -31,7 +31,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update(Vector3 velocity);
+	void Update();
 
 	/// <summary>
 	/// 描画
@@ -57,7 +57,8 @@ private: // メンバ変数
 	std::unique_ptr<Object3DPlacer> model_;
 
 	//速度
-	Vector3 velocity_;
+	//速度
+	float foolSpeed_ = 0.4f;
 
 
 

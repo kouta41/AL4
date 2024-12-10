@@ -17,8 +17,8 @@ void BlockManager::Initialize(CollisionManager* collisionManager) {
 
 	worldTransform_.Initialize();
 	ModelManager::LoadObjModel("cube.obj");
-
-
+	
+	ModelManager::LoadObjModel("scaffolding.obj");
 	coreTexHandle_ = TextureManager::Load("resources/cube.jpg");
 	crustTexHandle_= TextureManager::Load("resources/uvChecker.png");
 	texHandle_ = TextureManager::Load("resources/white.png");
@@ -138,6 +138,9 @@ void BlockManager::Initialize(CollisionManager* collisionManager) {
 
 	//クールタイム
 	Pushcooltime = 20.f;
+
+	//消えるかの切り替え
+	iscollision_ = true;
 }
 
 void BlockManager::Update(){
@@ -154,6 +157,8 @@ void BlockManager::Update(){
 		worldTransform_.translate.x -= 2.00f;
 	}
 
+	
+
 	//移動制限
 	LimitMove();
 
@@ -165,10 +170,12 @@ void BlockManager::Update(){
 
 
 	for (BlockCore* core_ : cores_) {
-		core_->Update();
+		if (iscollision_) {
+			core_->Update();
+		}
 	}
 	for (BlockCrust* crust_ : crusts_) {
-		//crust_->Update(velocity_);
+		crust_->Update();
 	}
 
 
@@ -209,7 +216,7 @@ void BlockManager::LimitMove(){
 
 void BlockManager::OutPutBlock(){
 	Pushcooltime++;
-	if (input_->PressedKey(DIK_SPACE)&& Pushcooltime>=20.f) {
+	if (input_->PressedKey(DIK_SPACE)&& Pushcooltime>=20.f&& iscollision_ == true) {
 		Pushcooltime = 0.0f;
 		shape_ = ChangeShape_[0];
 		nextShape_ = ChangeShape_[1];
@@ -221,6 +228,16 @@ void BlockManager::OutPutBlock(){
 		ChangeShape_[2] = Shape(rand() % 8);
 
 		BlockShape();
+	}
+	if (input_->PressedKey(DIK_B) && iscollision_ == true) {
+		iscollision_ = false;
+		iscollisionTime_ = 0.0f;
+	}
+	if (iscollision_ == false) {
+		iscollisionTime_++;
+		if (iscollisionTime_ > 90.0f) {
+			iscollision_ = true;
+		}
 	}
 }
 
@@ -265,8 +282,8 @@ void BlockManager::BlockShape(){
 				// 初期化
 				newCore->Initialize(coreTexHandle_);
 				newCore->SetWorldPosition(
-					{ worldTransform_.translate.x + (float(j * 2.01 - MAX_PLAYER_CHIPS +1.f)),
-					worldTransform_.translate.y - (float(i * 2.01 - MAX_PLAYER_CHIPS )),
+					{ worldTransform_.translate.x + (float(j * 2.02 - MAX_PLAYER_CHIPS +0.8f)),
+					worldTransform_.translate.y - (float(i * 2.02 - MAX_PLAYER_CHIPS )),
 					worldTransform_.translate.z });
 				cores_.push_back(newCore);
 				collisionManager_->SetColliderList(newCore);
@@ -540,6 +557,15 @@ void BlockManager::OnCollisionLine(){
 				Particlflag = true;
 				ParticlTime = 0;
 				//ClearCount_++;
+				for (BlockCore* core_ : cores_) {
+					if (!core_->GetIsAlive()) {
+						BlockCrust* newCrust = new BlockCrust();
+						// 初期化
+						newCrust->Initialize(coreTexHandle_);
+						newCrust->SetWorldPosition(core_->GetWorldPosition());
+						crusts_.push_back(newCrust);
+					}
+				}
 				cores_.remove_if([](BlockCore* block) {
 					if (!block->GetIsAlive()) {
 						delete block;

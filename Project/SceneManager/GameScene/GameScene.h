@@ -13,6 +13,9 @@
 #include "Skydome.h"
 #include "CollisionManager.h"
 #include "GameObject.h"
+#include "Player.h"
+#include "GoalLine.h"
+#include "DeadLine.h"
 
 #include <list>
 
@@ -53,10 +56,17 @@ private: // メンバ変数
 
 	CameraRole camera;
 
-	//プレイヤー
+	//ブロックマネージャ
 	std::unique_ptr<BlockManager> BlockManager_{};
-	//敵
-	std::unique_ptr<Enemy> enemy_{};
+
+	// 自機
+	std::unique_ptr<Player> player_{};
+
+	// ゴールライン
+	std::unique_ptr<GoalLine> goalLine_;
+
+	// デッドライン
+	std::unique_ptr<DeadLine> deadLine_;
 
 	//天球
 	std::unique_ptr<Skydome> skydome_{};

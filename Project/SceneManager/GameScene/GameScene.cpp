@@ -34,10 +34,20 @@ void GameScene::Initialize(){
 	BlockManager_->Initialize(collisionManager_.get());
 
 
-	//敵キャラの生成
-	//enemy_ = std::make_unique<Enemy>();
-	// 敵キャラの初期化
-	//enemy_->Initialize();
+	player_ = std::make_unique<Player>();
+	player_->Initialize();
+	collisionManager_->SetColliderList(player_.get());
+
+	// ゴールライン
+	goalLine_ = std::make_unique<GoalLine>();
+	goalLine_->Initialize();
+	goalLine_->SetPlayer(player_.get());
+
+	// デッドライン
+	deadLine_ = std::make_unique<DeadLine>();
+	deadLine_->Initialize();
+	deadLine_->SetPlayer(player_.get());
+	deadLine_->SetIsBlockDelete(BlockManager_->GetIsDelete_());
 
 
 	//天球の生成
@@ -49,6 +59,8 @@ void GameScene::Initialize(){
 	gameObject_ = std::make_unique<GameObject>();
 	//ゲームオブジェクトの初期化
 	gameObject_->Initialize();
+
+	gameObject_->SetPlayer(BlockManager_.get());
 
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
@@ -122,43 +134,48 @@ void GameScene::Update(){
 	//天球の更新
 	skydome_->Update();
 
+	//自機の更新
+	if (BlockManager_->GetIscollision_()) {
+		player_->Update();
+	}
+
 	//プレイヤーの更新
 	BlockManager_->Update();
 
-	//カメラの調整
-	if (BlockManager_->GetPlayerCoreWorldPosition().y > 10 && cameraflag1 == true && cameraflag2 == true) {
-		camera.translate = { 0,10,-120 };
-		EndrightworldTransform_.translate.z = camera.translate.z + 4;
-		EndLeftworldTransform_.translate.z = camera.translate.z + 4;
-		BlockManager_->SetWorldTransform(26.0f);
-		BlockManager_->SetfoolSpeed(6.00);
+	// ゴールライン
+	goalLine_->Update();
+
+	// デッドライン
+	deadLine_->SetIsBlockDelete(BlockManager_->GetIsDelete_());
+//	deadLine_->Update();
+
+	 //ブロックが消えていた場合
+	if (BlockManager_->GetIsDelete_()) {	
+		collisionManager_->ClearColliderList();
+
+		AABB aabb = {
+			{-0.8f,-1.0f,-0.8f},
+			{0.8f,1.0f,0.8f}
+		};
+		player_->SetAABB_(aabb);
+		// 自機をコライダーにセット
+		collisionManager_->SetColliderList(player_.get());
+		player_->SetCollisionPrimitive_(kCollisionAABB);
+		player_->SetCollisionAttribute_(kAttributePlayer);
+		// ブロックの消えるフラグをfalse
+		BlockManager_->SetIsDelete_(false);
 	}
 
+	// 当たり判定
+	collisionManager_->CheckAllCollisions();
 
-	if (flag == false) {
+	// ゴールラインに達したらクリア
+	//else if (goalLine_->GetIsGoal()) {
+		//gameManager->ChangeScene(new GameClearScene);
+	//}
 
-		//敵の更新
-		//enemy_->Update();
-		//enemy_->SetPlayerCorepos(player_->GetPlayerCoreWorldPosition());
 
-		// 当たり判定
-		collisionManager_->CheckAllCollisions();
-
-		XINPUT_STATE joyState{};
-		if (Input::GetInstance()->GetJoystickState(joyState)) {
-			if ((joyState.Gamepad.sThumbLX < CUSTOM_DEADZONE && joyState.Gamepad.sThumbLX > -CUSTOM_DEADZONE) && (joyState.Gamepad.sThumbLY < CUSTOM_DEADZONE && joyState.Gamepad.sThumbLY > -CUSTOM_DEADZONE)) {
-				joyState.Gamepad.sThumbLX = 0;
-				joyState.Gamepad.sThumbLY = 0;
-				worldTransform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.1f;
-				worldTransform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.1f;
-			}
-			else {
-				worldTransform.translate.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.1f;
-				worldTransform.translate.z += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.1f;
-			}
-
-		}
-	}
+	
 
 	
 
@@ -172,13 +189,13 @@ void GameScene::Update(){
 			flag = false;
 	}
 
-	//クリア演出
-	if (BlockManager_->GetClearCount_() == 4.0f&& cameraflag1 == true&& cameraflag2 ==true) {
+	// 自機が死んだらゲームオーバー
+	/*if (!player_->GetIsAlive() && cameraflag1 == true&& cameraflag2 ==true) {
 		camera.translate = { posA.x,posA.y ,posA.z-20 };
 		cameraRotate = camera.rotate;
 		cameraPosA= { posA.x,posA.y ,posA.z - 20 };
 		cameraflag1 = false;
-	}
+	}*/
 
 	if (cameraflag1 == false) {
 		frame1++;
@@ -203,6 +220,20 @@ void GameScene::Update(){
 			sceneNo_ = END;
 		}
 	}
+
+	if (input_->PressedKey(DIK_R)) {
+		sceneNo_ = TITLE;
+	}
+
+	// ゴールラインに達したらクリア
+	if (goalLine_->GetIsGoal()) {
+		sceneNo_ = END;
+	}
+	//デッドラインに達したらアウト
+	if (deadLine_->GetIsDead()) {
+		sceneNo_ = END;
+	}
+
 }
 
 void GameScene::Draw(){
@@ -239,14 +270,20 @@ void GameScene::Draw(){
 	
 	//ゲームオブジェクトの描画
 	gameObject_->Draw(camera);
-	
-	
+	// ゴールライン
+	goalLine_->Draw3DLine(camera);
+	// デッドライン
+	deadLine_->Draw3DLine(camera);
+
 	if (flag == false) {
+		//自機の描画
+		player_->Draw(camera);
+		
 		//プレイヤーの描画
 		BlockManager_->Draw(camera);
 	}
 
-
+	gameObject_->Draw2D(camera);
 
 }
 

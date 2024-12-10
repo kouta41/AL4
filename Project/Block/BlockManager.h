@@ -121,6 +121,8 @@ public: // メンバ関数
 
 	float GetClearCount_() { return ClearCount_; }
 
+	bool GetIscollision_() { return iscollision_; }
+
 	//Y軸の変更
 	void SetWorldTransform(float worldTransform) { worldTransform_.translate.y = worldTransform; }
 
@@ -202,6 +204,8 @@ private: // メンバ変数
 
 	//アウトプットのクールタイム
 	float Pushcooltime = 120.f;
+	//演出の切り替えタイム
+	float iscollisionTime_ = 0.0f;
 
 	//
 	const float Shift_y = -1.0f;
