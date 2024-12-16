@@ -173,6 +173,10 @@ void BlockManager::Update(){
 		if (iscollision_) {
 			core_->Update();
 		}
+		//クリアラインを超えたら消す（修正必死）
+		if (!core_->GetFoolFlag()&&core_->GetworldTransform_().y>10) {
+			core_->SetIsDead(true);
+		}
 	}
 	for (BlockCrust* crust_ : crusts_) {
 		crust_->Update();
@@ -181,14 +185,14 @@ void BlockManager::Update(){
 
 	//デスラグが立つと削除
 	cores_.remove_if([](BlockCore* core) {
-		if (core->IsDead()) {
+		if (core->GetIsDead()) {
 			delete core;
 			return true;
 		}
 		return false;
 		});
 	crusts_.remove_if([](BlockCrust* crust) {
-		if (crust->IsDead()) {
+		if (crust->GetIsDead()) {
 			delete crust;
 			return true;
 		}
@@ -600,6 +604,10 @@ void BlockManager::OnCollisionLine(){
 			}
 		}
 	}
+}
+
+void BlockManager::OnCollisonStageOut(){
+
 }
 
 Vector3 BlockManager::GetWorldPosition(){

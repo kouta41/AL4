@@ -43,7 +43,7 @@ public: // メンバ関数
 	void OnCollision();
 
 
-	bool IsDead()const { return isDead_; }
+	bool GetIsDead()const { return isDead_; }
 
 
 	//ワールド座標系を取得

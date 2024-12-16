@@ -16,6 +16,7 @@
 #include "CollisionManager.h"
 #include "Particle.h"
 #include <Object3D.h>
+#include "GoalLine.h"
 
 #define MAX_PLAYER_CHIPS 5
 
@@ -104,6 +105,9 @@ public: // メンバ関数
 	//横一列に並んだらブロックが消える
 	void OnCollisionLine();
 
+	//場外に出たら消す
+	void OnCollisonStageOut();
+
 	
 	//ワールド座標系を取得
 	Vector3 GetWorldPosition();
@@ -123,11 +127,22 @@ public: // メンバ関数
 
 	bool GetIscollision_() { return iscollision_; }
 
+	// ブロックが消えるフラグを取得
+	bool GetisDelete() { return isDelete_; }
+
+	//ゴールラインを取得
+	const std::unique_ptr<GoalLine> GetgoalLine()const { goalLine_; }
+
+
 	//Y軸の変更
 	void SetWorldTransform(float worldTransform) { worldTransform_.translate.y = worldTransform; }
 
 	//ブロックの落ちる速度の変更
 	void SetfoolSpeed(float foolspeed);
+
+	void SetIsDelete(bool isDelete) { isDelete_ = isDelete; }
+
+	void SetgoalLine(GoalLine* goalLine) { goalLine_ = goalLine; }
 
 	// マップの左端
 	const float kMapLeftPos = 0.0f;
@@ -157,6 +172,8 @@ private: // メンバ変数
 	//3Dモデル
 	std::unique_ptr<Object3DPlacer> nextmodel_[4];
 
+	//ゴールライン
+	GoalLine* goalLine_;
 
 
 	//テクスチャハンドル

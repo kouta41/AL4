@@ -28,9 +28,9 @@ void GameScene::Initialize(){
 	// 当たり判定のインスタンスを生成
 	collisionManager_ = std::make_unique<CollisionManager>();
 
-	//自キャラの生成
+	//ブロックの生成
 	BlockManager_ = std::make_unique<BlockManager>();
-	// 自キャラの初期化
+	// ブロックの初期化
 	BlockManager_->Initialize(collisionManager_.get());
 
 
@@ -42,6 +42,7 @@ void GameScene::Initialize(){
 	goalLine_ = std::make_unique<GoalLine>();
 	goalLine_->Initialize();
 	goalLine_->SetPlayer(player_.get());
+	BlockManager_->SetgoalLine(goalLine_.get());
 
 	// デッドライン
 	deadLine_ = std::make_unique<DeadLine>();
@@ -146,12 +147,11 @@ void GameScene::Update(){
 	goalLine_->Update();
 
 	// デッドライン
-	deadLine_->SetIsBlockDelete(BlockManager_->GetIsDelete_());
+	deadLine_->SetIsBlockDelete(BlockManager_->GetisDelete());
 //	deadLine_->Update();
 
 	 //ブロックが消えていた場合
-	if (BlockManager_->GetIsDelete_()) {	
-		collisionManager_->ClearColliderList();
+	if (BlockManager_->GetisDelete()) {
 
 		AABB aabb = {
 			{-0.8f,-1.0f,-0.8f},
@@ -163,19 +163,11 @@ void GameScene::Update(){
 		player_->SetCollisionPrimitive_(kCollisionAABB);
 		player_->SetCollisionAttribute_(kAttributePlayer);
 		// ブロックの消えるフラグをfalse
-		BlockManager_->SetIsDelete_(false);
+		BlockManager_->SetIsDelete(false);
 	}
 
 	// 当たり判定
 	collisionManager_->CheckAllCollisions();
-
-	// ゴールラインに達したらクリア
-	//else if (goalLine_->GetIsGoal()) {
-		//gameManager->ChangeScene(new GameClearScene);
-	//}
-
-
-	
 
 	
 

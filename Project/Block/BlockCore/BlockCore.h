@@ -66,7 +66,8 @@ public: // メンバ関数
 	inline bool GetIsHardBlock() { return isHardBlock_; }
 	//スライドするかを取得
 	bool GetIsSred() { return isSred_; }
-	
+	//デスフラグを取得
+	bool GetIsDead()const { return isDead_; }
 
 	/// Setter
 	// ワールド座標を設定
@@ -79,12 +80,12 @@ public: // メンバ関数
 	void SetfoolSpeed(float foolSpeed) { foolSpeed_ = foolSpeed; }
 	//スライドするかを設定
 	void SetIsSred(bool isSred) { isSred_ = isSred; }
-
+	//デスフラグの設定
+	void SetIsDead(bool isDead) { isDead_ = isDead; }
 
 	//ワールド座標系を取得
 	void SetWorldPosition(Vector3 translate);
 
-	bool IsDead()const { return isDead_; }
 
 
 

@@ -119,8 +119,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="GhotEngine\Object3D\Object3D.cpp" />
     <ClCompile Include="GhotEngine\Particle\Particle.cpp" />
     <ClCompile Include="Project\SceneManager\EndScene\EndScene.cpp" />
-    <ClCompile Include="Project\EnemyManager\EnemyBullet\EnemyBullet.cpp" />
-    <ClCompile Include="Project\EnemyManager\Enemy.cpp" />
     <ClCompile Include="Project\SceneManager\IsScen\IsScen.cpp" />
     <ClCompile Include="Project\SceneManager\GameManager\GameManager.cpp" />
     <ClCompile Include="Project\Collider\CollisionManager.cpp" />
@@ -256,8 +254,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="GhotEngine\Object3D\Object3D.h" />
     <ClInclude Include="GhotEngine\Particle\Particle.h" />
     <ClInclude Include="Project\SceneManager\EndScene\EndScene.h" />
-    <ClInclude Include="Project\EnemyManager\EnemyBullet\EnemyBullet.h" />
-    <ClInclude Include="Project\EnemyManager\Enemy.h" />
     <ClInclude Include="Project\SceneManager\IsScen\IsScen.h" />
     <ClInclude Include="Project\SceneManager\GameManager\GameManager.h" />
     <ClInclude Include="Project\Collider\CollisionManager.h" />

@@ -121,12 +121,6 @@
     <ClCompile Include="Project\SceneManager\EndScene\EndScene.cpp">
       <Filter>Project\EndScene</Filter>
     </ClCompile>
-    <ClCompile Include="Project\EnemyManager\Enemy.cpp">
-      <Filter>Project\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Project\EnemyManager\EnemyBullet\EnemyBullet.cpp">
-      <Filter>Project\EnemyBullet</Filter>
-    </ClCompile>
     <ClCompile Include="Project\SceneManager\GameManager\GameManager.cpp">
       <Filter>Project\GamaManager</Filter>
     </ClCompile>
@@ -539,12 +533,6 @@
     </ClInclude>
     <ClInclude Include="Project\SceneManager\EndScene\EndScene.h">
       <Filter>Project\EndScene</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\EnemyManager\Enemy.h">
-      <Filter>Project\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Project\EnemyManager\EnemyBullet\EnemyBullet.h">
-      <Filter>Project\EnemyBullet</Filter>
     </ClInclude>
     <ClInclude Include="Project\SceneManager\GameManager\GameManager.h">
       <Filter>Project\GamaManager</Filter>
