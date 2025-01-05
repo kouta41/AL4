@@ -9,7 +9,6 @@
 #include "Animation/Animation.h"
 #include "Skybox/Skybox.h"
 #include "BlockManager.h"
-#include "Enemy.h"
 #include "Skydome.h"
 #include "CollisionManager.h"
 #include "Audio/Audio.h"
@@ -64,19 +63,8 @@ private:
 
 	///3Dモデル
 	//タイトル
-	std::unique_ptr<Object3DPlacer> Titlemodel_;
-	//オブジェクト_R
-	std::unique_ptr<Object3DPlacer> objectemodel_R;
-	//オブジェクト_L
-	std::unique_ptr<Object3DPlacer> objectemodel_L;
-	//スタート
-	std::unique_ptr<Object3DPlacer> Startmodel_;
-	//画面遷移_右
-	std::unique_ptr<Object3DPlacer> Endrightmodel_;
-	//画面遷移_左
-	std::unique_ptr<Object3DPlacer> EndLeftmodel_;
-	//天球
-	std::unique_ptr<Skydome> skydome_{};
+	std::unique_ptr<Object3DPlacer> model_;
+
 
 
 	//キーボード入力
