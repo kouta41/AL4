@@ -1,3 +1,6 @@
+/// <summary>
+/// ブロックのマネージャ
+/// </summary>
 #pragma once
 #include <list>
 

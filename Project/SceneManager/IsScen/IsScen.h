@@ -1,3 +1,6 @@
+/// <summary>
+/// シーン管理
+/// </summary>
 #pragma once
 #include <memory>
 

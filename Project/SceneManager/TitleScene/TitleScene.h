@@ -1,3 +1,6 @@
+/// <summary>
+/// タイトルシーン
+/// </summary>
 #pragma once
 #include "IsScen.h"
 #include "Input/Input.h"
@@ -18,9 +21,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-/// <summary>
-/// タイトルシーン
-/// </summary>
 class TitleScene : public IScene
 {
 public:

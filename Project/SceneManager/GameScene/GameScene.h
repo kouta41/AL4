@@ -1,3 +1,6 @@
+/// <summary>
+/// ゲームシーン
+/// </summary>
 #pragma once
 #include "IsScen.h"
 #include "Input/Input.h"
@@ -9,7 +12,6 @@
 #include "Animation/Animation.h"
 #include "Skybox/Skybox.h"
 #include "BlockManager.h"
-#include "Enemy.h"
 #include "Skydome.h"
 #include "CollisionManager.h"
 #include "GameObject.h"
@@ -19,9 +21,6 @@
 
 #include <list>
 
-/// <summary>
-/// ゲームシーン
-/// </summary>
 class GameScene : public IScene {
 
 public: // メンバ関数

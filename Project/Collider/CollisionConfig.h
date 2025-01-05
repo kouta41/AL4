@@ -1,3 +1,6 @@
+/// <summary>
+/// コリジョンコンフィグ
+/// </summary>
 #pragma once
 
 #include <cstdint>

@@ -1,3 +1,6 @@
+/// <summary>
+/// ゲームオブジェクト
+/// </summary>
 #pragma once
 #include "Sprite.h"
 #include "ImGuiManager/ImGuiManager.h"

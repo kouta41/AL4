@@ -1,3 +1,6 @@
+/// <summary>
+/// ゲームマネジャ
+/// </summary>
 #pragma once
 #include "IsScen.h"
 #include <memory>

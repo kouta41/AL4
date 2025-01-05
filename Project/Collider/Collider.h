@@ -1,3 +1,6 @@
+/// <summary>
+/// コライダー
+/// </summary>
 #pragma once
 #include"Vector3.h"
 #include "Mathfunction.h"

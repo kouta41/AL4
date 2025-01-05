@@ -1,3 +1,6 @@
+/// <summary>
+/// ゴールライン
+/// </summary>
 #pragma once
 #include <list>
 

@@ -1,3 +1,6 @@
+/// <summary>
+/// タイムコール
+/// </summary>
 #pragma once
 #include<functional>
 #include<initializer_list>

@@ -1,3 +1,7 @@
+/// <summary>
+/// プレイヤー
+/// </summary>
+
 #pragma once
 #include <list>
 
@@ -17,10 +21,6 @@
 #include <Object3D.h>
 #include <optional>
 #include <memory>
-
-/// <summary>
-/// プレイヤー
-/// </summary>
 
 class Player : public Collider
 {

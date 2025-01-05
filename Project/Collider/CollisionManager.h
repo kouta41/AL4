@@ -1,3 +1,6 @@
+/// <summary>
+/// コリジョンマネージャ
+/// </summary>
 #pragma once
 #include "Collider.h"
 #include <Mathfunction.h>

@@ -1,3 +1,6 @@
+/// <summary>
+/// エンドシーン
+/// </summary>
 #pragma once
 #include "IsScen.h"
 #include "Input/Input.h"
@@ -9,7 +12,6 @@
 #include "Animation/Animation.h"
 #include "Skybox/Skybox.h"
 #include "BlockManager.h"
-#include "Enemy.h"
 #include "Skydome.h"
 #include "CollisionManager.h"
 

@@ -1,3 +1,6 @@
+/// <summary>
+/// ブロックの外殻
+/// </summary>
 #pragma once
 #include "Sprite.h"
 #include "Triangle.h"

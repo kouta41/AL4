@@ -1,3 +1,6 @@
+/// <summary>
+/// スカイドーム
+/// </summary>
 #pragma once
 #include "Model.h"
 #include "WorldTransform.h"

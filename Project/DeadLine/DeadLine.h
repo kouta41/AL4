@@ -1,3 +1,6 @@
+/// <summary>
+/// デッドライン
+/// </summary>
 #pragma once
 
 #include "Sprite.h"
