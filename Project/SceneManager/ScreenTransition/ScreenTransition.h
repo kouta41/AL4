@@ -6,7 +6,6 @@
 #include "Animation.h"
 #include "Skybox.h"
 #include "BlockManager.h"
-#include "Enemy.h"
 #include "Skydome.h"
 #include "CollisionManager.h"
 #include "Audio.h"

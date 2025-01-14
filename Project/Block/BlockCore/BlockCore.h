@@ -120,6 +120,8 @@ private: // メンバ変数
 	// 消えないブロック
 	bool isHardBlock_;
 
+	float radius = 4.0f;
+
 
 	bool isSred_;
 };

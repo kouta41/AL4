@@ -174,23 +174,60 @@ void BlockManager::Update(){
 			core_->Update();
 		}
 		//クリアラインを超えたら消す（修正必死）
-		if (!core_->GetFoolFlag()&&core_->GetworldTransform_().y>10) {
+		if (!core_->GetFoolFlag() && core_->GetworldTransform_().y > 10) {
+			//core_->SetIsAlive(false);
+
+
 			core_->SetIsDead(true);
 		}
+
+
+		//デットフラグが立ったら再度設定するコマンド
+		if (!core_->GetIsDead()) {
+			cores_.remove_if([](BlockCore* core) {
+				if (core->GetIsDead()) {
+					delete core;
+					return true;
+				}
+				return false;
+				});
+			// コライダーをすべてクリア
+			collisionManager_->ClearColliderList();
+			AABB aabb = {
+				{-0.99999f,-1.0f,-0.99999f},
+				{0.99999f,1.0f,0.99999f}
+			};
+			// すでに生成されているブロックをコライダーに登録
+			// 落下するブロック
+			for (BlockCore* core_ : cores_) {
+				// 当たり判定の形状を設定
+				core_->SetCollisionPrimitive_(kCollisionAABB);
+				core_->SetCollisionAttribute_(kAttributeBlock);
+				core_->SetAABB_(aabb);
+				collisionManager_->SetColliderList(core_);
+			}
+			// コライダーのすべてが初期化されてしまっているのでplayerを再pushする
+			isDelete_ = true;  
+		}
+
+
 	}
+
+
+
 	for (BlockCrust* crust_ : crusts_) {
 		crust_->Update();
 	}
 
 
 	//デスラグが立つと削除
-	cores_.remove_if([](BlockCore* core) {
-		if (core->GetIsDead()) {
-			delete core;
-			return true;
-		}
-		return false;
-		});
+
+	
+
+
+	
+	
+
 	crusts_.remove_if([](BlockCrust* crust) {
 		if (crust->GetIsDead()) {
 			delete crust;
@@ -199,12 +236,21 @@ void BlockManager::Update(){
 		return false;
 		});
 
+
+
+
 	if (iscollision_ == false) {
 		//横一列になったら消える処理
 		OnCollisionLine();
 	}
+	else {
+		for (BlockCore* core_ : cores_) {
+			core_->SetIsAlive(true);
+		}
+	}
 
 	
+
 }
 
 void BlockManager::LimitMove(){
@@ -286,8 +332,8 @@ void BlockManager::BlockShape(){
 				// 初期化
 				newCore->Initialize(coreTexHandle_);
 				newCore->SetWorldPosition(
-					{ worldTransform_.translate.x + (float(j * 2.02 - MAX_PLAYER_CHIPS +0.8f)),
-					worldTransform_.translate.y - (float(i * 2.02 - MAX_PLAYER_CHIPS )),
+					{ worldTransform_.translate.x + (float(j * 2.02f - MAX_PLAYER_CHIPS +0.96f)),
+					worldTransform_.translate.y - (float(i * 2.02f - MAX_PLAYER_CHIPS )),
 					worldTransform_.translate.z });
 				cores_.push_back(newCore);
 				collisionManager_->SetColliderList(newCore);
@@ -464,28 +510,28 @@ void BlockManager::nextBlockShape(){
 
 
 
-void BlockManager::Draw(const CameraRole& viewProjection_){
+void BlockManager::Draw(const CameraRole& viewProjection_) {
 
-	
+
 	///デバック場面
 #ifdef _DEBUG
 	///デバック場面
 	ImGui::Begin("worldTransform");
 	if (ImGui::TreeNode("worldTransform")) {
-		ImGui::DragFloat3("translate", &emitter.worldransform.translate.x, 0.1f, 100, 100);
-		ImGui::DragFloat("ParticlTime", &ParticlTime, 0.1f, 100, 100);
-		
+		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.01f, 100, 100);
+
 
 		ImGui::TreePop();
 	}
-	if (ImGui::TreeNode("collision")) {
-		ImGui::Checkbox("iscollision_",&iscollision_);
-		ImGui::TreePop();
-	}
+
 
 	ImGui::End();
-
+	
 #endif // _DEBUG
+
+	for (BlockCore* core_ : cores_) {
+		core_->Draw(viewProjection_);
+	}
 
 	//パーティクル
 	if (Particlflag == true) {
@@ -561,6 +607,8 @@ void BlockManager::OnCollisionLine(){
 				Particlflag = true;
 				ParticlTime = 0;
 				//ClearCount_++;
+
+				//スライドするブロックの設定
 				for (BlockCore* core_ : cores_) {
 					if (!core_->GetIsAlive()) {
 						BlockCrust* newCrust = new BlockCrust();
@@ -570,6 +618,7 @@ void BlockManager::OnCollisionLine(){
 						crusts_.push_back(newCrust);
 					}
 				}
+
 				cores_.remove_if([](BlockCore* block) {
 					if (!block->GetIsAlive()) {
 						delete block;
@@ -599,9 +648,7 @@ void BlockManager::OnCollisionLine(){
 		}
 		else {
 			//Particlflag = false;
-			for (BlockCore* core_ : cores_) {
-				core_->SetIsAlive(true);
-			}
+			
 		}
 	}
 }

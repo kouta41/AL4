@@ -117,8 +117,8 @@ void Player::OnCollision(Collider* collider) {
 		hitCounter_++;
 	}
 
-	// 左
-	if (theta < M_PI / 10.0f && theta > -(M_PI / 10.0f)) {
+	// 右
+	if (theta <= M_PI / radius && theta >= -(M_PI / radius)) {
 		float extrusion = (-GetAABB_().min.x + collider->GetAABB_().max.x) - (worldTransform_.translate.x - collider->GetWorldPosition().x);
 		worldTransform_.translate.x += extrusion;
 		worldTransform_.UpdateMatrix();
@@ -131,8 +131,8 @@ void Player::OnCollision(Collider* collider) {
 			inverseVelSignal_ = true;
 		}
 	}
-	// 右
-	if (theta > M_PI - (M_PI / 10.0f) || theta < -M_PI + (M_PI / 10.0f)) {
+	// 左
+	if (theta >= M_PI - (M_PI / radius) || theta <= -M_PI + (M_PI / radius)) {
 		float extrusion = (GetAABB_().max.x + (-collider->GetAABB_().min.x)) - (collider->GetWorldPosition().x - worldTransform_.translate.x);
 		worldTransform_.translate.x -= extrusion;
 		worldTransform_.UpdateMatrix();
@@ -307,6 +307,8 @@ void Player::AdjustmentParameter() {
 		ImGui::TreePop();
 	}
 	ImGui::Text("IsAlive:%d", isAlive_);
+	ImGui::DragFloat("radius", &radius, 0.01f, 0, 20);
+
 
 	ImGui::End();
 #endif // DEBUG

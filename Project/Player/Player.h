@@ -145,6 +145,10 @@ private:
 	// 生きてるか
 	bool isAlive_;
 
+	//半径
+	float radius = 10.f;
+
+
 	// 振るまい
 	enum class Behavior {
 		kNormal,	 // 通常状態

@@ -111,7 +111,11 @@ public: // メンバ関数
 	//場外に出たら消す
 	void OnCollisonStageOut();
 
+
 	
+
+#pragma region geter & Seter
+
 	//ワールド座標系を取得
 	Vector3 GetWorldPosition();
 
@@ -146,6 +150,8 @@ public: // メンバ関数
 	void SetIsDelete(bool isDelete) { isDelete_ = isDelete; }
 
 	void SetgoalLine(GoalLine* goalLine) { goalLine_ = goalLine; }
+
+#pragma endregion
 
 	// マップの左端
 	const float kMapLeftPos = 0.0f;
