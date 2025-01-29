@@ -63,10 +63,27 @@ private://メンバ変数
 	WorldTransform spriteWorldTransform_OFF;
 
 
+	WorldTransform nextWorldTransform_[5];
+	WorldTransform scandWorldTransform_[5];
+
+	WorldTransform worldTransform_background;
+
+	WorldTransform worldTransform_guide;
+
+
 	//3Dモデル
 	std::unique_ptr<Object3DPlacer> Stagemodel_Right;
 	std::unique_ptr<Object3DPlacer> Stagemodel_Left;
 	std::unique_ptr<Object3DPlacer> Stagemodel_Bottom;
+
+	std::unique_ptr<Object3DPlacer> nextModel_[4];
+	std::unique_ptr<Object3DPlacer> scandModel_[4];
+
+	std::unique_ptr<Object3DPlacer> backgroundModel_;
+
+	std::unique_ptr<Object3DPlacer> guideModel_;
+
+
 
 	//2Dスプライト
 	std::unique_ptr<Sprite> UIsprite_;
@@ -81,6 +98,14 @@ private://メンバ変数
 	uint32_t texHandle_chage = 0;
 	uint32_t texHandle_ON = 0;
 	uint32_t texHandle_OFF = 0;
+	uint32_t texHandle_Block = 0;
+	uint32_t texHandle_background = 0;
+	uint32_t texHandle_guide = 0;
+
+
+
+
+	Shape nextShape[3];
 
 
 };

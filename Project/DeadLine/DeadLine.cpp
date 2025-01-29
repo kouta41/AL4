@@ -13,7 +13,7 @@ void DeadLine::Initialize() {
 
 	// 3Dモデルの初期設定
 	worldTransform_.Initialize();
-	worldTransform_.translate = { 0,kStartDeadLine_,0 };
+	worldTransform_.translate = { 0,kStartDeadLine_,-1 };
 	worldTransform_.scale = { 100,0.1f,1 };
 	worldTransform_.UpdateMatrix();
 

@@ -25,7 +25,14 @@ void BlockCrust::Initialize(uint32_t texHandle_) {
 void BlockCrust::Update(){
 
 	worldTransform_.UpdateMatrix();
-	worldTransform_.translate.x -= foolSpeed_;
+	
+	if (worldTransform_.translate.z > 2) {
+		worldTransform_.translate.y -= foolSpeed_*1.5f;
+	}
+	else {
+		worldTransform_.translate.z += foolSpeed_;
+	}
+	
 	//時間経過でデス
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;

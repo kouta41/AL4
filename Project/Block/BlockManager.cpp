@@ -170,9 +170,8 @@ void BlockManager::Update(){
 
 
 	for (BlockCore* core_ : cores_) {
-		if (iscollision_) {
+		
 			core_->Update();
-		}
 		//クリアラインを超えたら消す（修正必死）
 		if (!core_->GetFoolFlag() && core_->GetworldTransform_().y > 10) {
 			//core_->SetIsAlive(false);
@@ -221,13 +220,6 @@ void BlockManager::Update(){
 
 
 	//デスラグが立つと削除
-
-	
-
-
-	
-	
-
 	crusts_.remove_if([](BlockCrust* crust) {
 		if (crust->GetIsDead()) {
 			delete crust;
@@ -285,7 +277,7 @@ void BlockManager::OutPutBlock(){
 	}
 	if (iscollision_ == false) {
 		iscollisionTime_++;
-		if (iscollisionTime_ > 90.0f) {
+		if (iscollisionTime_ > 40.0f) {
 			iscollision_ = true;
 		}
 	}
@@ -516,22 +508,10 @@ void BlockManager::Draw(const CameraRole& viewProjection_) {
 	///デバック場面
 #ifdef _DEBUG
 	///デバック場面
-	ImGui::Begin("worldTransform");
-	if (ImGui::TreeNode("worldTransform")) {
-		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.01f, 100, 100);
 
-
-		ImGui::TreePop();
-	}
-
-
-	ImGui::End();
 	
 #endif // _DEBUG
 
-	for (BlockCore* core_ : cores_) {
-		core_->Draw(viewProjection_);
-	}
 
 	//パーティクル
 	if (Particlflag == true) {
@@ -648,7 +628,7 @@ void BlockManager::OnCollisionLine(){
 		}
 		else {
 			//Particlflag = false;
-			
+
 		}
 	}
 }
@@ -665,6 +645,30 @@ Vector3 BlockManager::GetWorldPosition(){
 	worldPos.z = worldTransform_.matWorld.m[3][2];
 
 	return worldPos;
+}
+
+Shape BlockManager::GetChangeShape(){
+	Shape nextShape;
+
+	nextShape = ChangeShape_[0];
+
+	return nextShape;
+}
+
+Shape BlockManager::GetChangeShape1(){
+	Shape nextShape;
+
+	nextShape = ChangeShape_[1];
+
+	return nextShape;
+}
+
+Shape BlockManager::GetChangeShape2(){
+	Shape nextShape;
+
+	nextShape = ChangeShape_[2];
+
+	return nextShape;
 }
 
 Vector3 BlockManager::GetPlayerCoreWorldPosition()

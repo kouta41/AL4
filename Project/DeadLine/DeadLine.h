@@ -94,7 +94,7 @@ private:// 定数
 	const float kDownValue = 1.0f;
 
 	// デッドラインの開始位置
-	const float kStartDeadLine_ = -20;
+	const float kStartDeadLine_ = -16;
 
 
 };

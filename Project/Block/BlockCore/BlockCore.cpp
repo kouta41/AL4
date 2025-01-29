@@ -44,8 +44,9 @@ void BlockCore::Update(){
 	worldTransform_.UpdateMatrix();
 
 	
+	if (foolflag_ == true) {
+	}
 		worldTransform_.translate.y -= foolSpeed_;
-	
 
 	if (worldTransform_.translate.y <= -12) {
 		float floor = worldTransform_.translate.y - (-12);
@@ -66,7 +67,7 @@ void BlockCore::Draw(CameraRole viewProjection_){
 	model_->Draw(worldTransform_, viewProjection_);
 
 #ifdef _DEBUG
-	ImGui::Begin("PlayerCore");
+	ImGui::Begin("Core");
 	if (ImGui::TreeNode("worldTransform")) {
 		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, 100, 100);
 		ImGui::DragFloat3("rotate", &worldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
@@ -79,8 +80,6 @@ void BlockCore::Draw(CameraRole viewProjection_){
 
 	ImGui::End();
 #endif // _DEBUG
-
-
 }
 
 void BlockCore::OnCollision(Collider* collider){

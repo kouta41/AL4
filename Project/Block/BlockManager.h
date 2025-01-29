@@ -119,6 +119,15 @@ public: // メンバ関数
 	//ワールド座標系を取得
 	Vector3 GetWorldPosition();
 
+	//今のブロック
+	Shape GetChangeShape();
+
+	//次のブロック
+	Shape GetChangeShape1();
+
+	//次の次のブロック
+	Shape GetChangeShape2();
+
 	//プレイヤーのポジションのセッティング
 	void SetplayerLocation_(std::vector<std::vector<int32_t>> playerLocation) { playerLocation_ = playerLocation; }
 

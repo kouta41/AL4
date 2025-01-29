@@ -61,7 +61,7 @@ private: // メンバ変数
 
 	//速度
 	//速度
-	float foolSpeed_ = 0.4f;
+	float foolSpeed_ = 0.2f;
 
 
 

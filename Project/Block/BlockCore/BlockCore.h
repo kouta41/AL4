@@ -77,6 +77,8 @@ public: // メンバ関数
 	void SetworldTransform_(Vector3 worldTransform) { this->worldTransform_.translate = worldTransform; }
 	// 生存フラグを設定
 	void SetIsAlive(bool isAlive) { isAlive_ = isAlive; }
+	// 落ちているかを取得
+	void SetFoolFlag(bool foolflag) { foolflag_ = foolflag; }
 	// 消えないブロックを設定
 	inline void SetIsHardBlock(bool isActive) { isHardBlock_ = isActive; }
 	//ブロックの落ちるスピード

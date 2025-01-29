@@ -14,7 +14,7 @@ GameScene::~GameScene() {
 void GameScene::Initialize(){
 	worldTransform.Initialize();
 	camera.Initialize();
-	camera.translate = { 0,0,-85 };
+	camera.translate = { 2,0,-85 };
 
 	texHandle_ = TextureManager::Load("resources/white.png");
 	SkydometexHandle_ = TextureManager::Load("resources/skydome.jpg");
@@ -82,7 +82,7 @@ void GameScene::Initialize(){
 	Endrightmodel_->SetModel("cube.obj");
 	Endrightmodel_->SetTexHandle(blacktexHandle_);
 	EndrightworldTransform_.Initialize();
-	EndrightworldTransform_.translate = { 1.0f,-0.0f,camera.translate.z + 4 };
+	EndrightworldTransform_.translate = { 3.0f,-0.0f,camera.translate.z + 4 };
 	EndrightworldTransform_.scale = { 1.0f,1.0f,0.0f };
 
 	//モデルの初期化＆設定(エンドオブジェクト左)
@@ -91,7 +91,7 @@ void GameScene::Initialize(){
 	EndLeftmodel_->SetModel("cube.obj");
 	EndLeftmodel_->SetTexHandle(blacktexHandle_);
 	EndLeftworldTransform_.Initialize();
-	EndLeftworldTransform_.translate = { -1.0f,-0.0f,camera.translate.z + 4 };
+	EndLeftworldTransform_.translate = { 1.0f,-0.0f,camera.translate.z + 4 };
 	EndLeftworldTransform_.scale = { 1.0f,1.0f,0.0f };
 
 	//モデルの初期化＆設定(スタートオブジェクト)
@@ -100,13 +100,14 @@ void GameScene::Initialize(){
 	Startmodel_->SetModel("cube.obj");
 	Startmodel_->SetTexHandle(StarttexHandle_);
 	StartworldTransform_.Initialize();
-	StartworldTransform_.translate = { -2.0f,-0.87f,-240.0f };
+	StartworldTransform_.translate = { -1.0f,-0.87f,-240.0f };
 	StartworldTransform_.scale = { 1.0f,1.0f,0.0f };
 
 	flag = true;
 	count_ = 0;
 	cameraflag1 = true;
 	cameraflag2 = true;
+
 
 	frame1 = 0.0f;
 	frame2 = 0.0f;
@@ -136,9 +137,10 @@ void GameScene::Update(){
 	skydome_->Update();
 
 	//自機の更新
-	if (BlockManager_->GetIscollision_()) {
-		player_->Update();
+	if (cameraflag1 == true) {
+	player_->Update();
 	}
+	
 
 	//プレイヤーの更新
 	BlockManager_->Update();
@@ -177,7 +179,7 @@ void GameScene::Update(){
 		EndLeftworldTransform_.translate.x -= 0.04f;
 	}
 
-	if (EndrightworldTransform_.translate.x >= 3.0f) {
+	if (EndrightworldTransform_.translate.x >= 5.0f) {
 			flag = false;
 	}
 
@@ -189,13 +191,31 @@ void GameScene::Update(){
 		cameraflag1 = false;
 	}*/
 
+	if (cameraflag1 == true && input_->PressedKey(DIK_G)) {
+		camera.translate = { player_->GetWorldPosition().x, player_->GetWorldPosition().y , player_->GetWorldPosition().z - 20};
+		cameraRotate = camera.rotate;
+		cameraPosA = { player_->GetWorldPosition().x, player_->GetWorldPosition().y , player_->GetWorldPosition().z - 20 };
+		cameraflag1 = false;
+	}
+	// ゴールラインに達したらクリア
+	if (cameraflag1 == true&&goalLine_->GetIsGoal()) {
+		camera.translate = { player_->GetWorldPosition().x, player_->GetWorldPosition().y , player_->GetWorldPosition().z - 20 };
+		cameraRotate = camera.rotate;
+		cameraPosA = { player_->GetWorldPosition().x, player_->GetWorldPosition().y , player_->GetWorldPosition().z - 20 };
+		cameraflag1 = false;
+	}
+	//デッドラインに達したらアウト
+	if (deadLine_->GetIsDead()) {
+		sceneNo_ = END;
+	}
+
 	if (cameraflag1 == false) {
 		frame1++;
 		camera.translate.z = cameraPosA.z + (cameraPosA.z - 60 - cameraPosA.z) * easeoutCubic(frame1/ endframe1);
 		if (frame1 == endframe1) {
+			cameraPosA = camera.translate;
 			cameraflag2 = false;
 			cameraflag1 = true;
-			cameraPosA = camera.translate;
 		}
 	}
 
@@ -206,7 +226,7 @@ void GameScene::Update(){
 		EndrightworldTransform_.translate.z = camera.translate.z+4;
 		EndLeftworldTransform_.translate.z = camera.translate.z+4;
 		frame2++;
-		camera.translate.z=cameraPosA.z+(-0.5f-cameraPosA.z)* easeInQuart(frame2 / endframe2);
+		camera.translate.z=cameraPosA.z+(-cameraPosA.z-0.5f)* easeInQuart(frame2 / endframe2);
 		if (frame2 == endframe2) {
 			cameraflag2 = true;
 			sceneNo_ = END;
@@ -217,14 +237,6 @@ void GameScene::Update(){
 		sceneNo_ = TITLE;
 	}
 
-	// ゴールラインに達したらクリア
-	if (goalLine_->GetIsGoal()) {
-		sceneNo_ = END;
-	}
-	//デッドラインに達したらアウト
-	if (deadLine_->GetIsDead()) {
-		sceneNo_ = END;
-	}
 
 }
 
