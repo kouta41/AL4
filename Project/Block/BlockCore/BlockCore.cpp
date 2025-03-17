@@ -42,19 +42,23 @@ void BlockCore::Initialize(uint32_t texHandle_) {
 
 void BlockCore::Update(){
 	worldTransform_.UpdateMatrix();
+		
+	worldTransform_.translate.y -= foolSpeed_;
 
-	
-	if (foolflag_ == true) {
+	if (Titleflag_ == false) {
+		if (worldTransform_.translate.y <= -12) {
+			float floor = worldTransform_.translate.y - (-12);
+			worldTransform_.translate.y -= floor;
+			foolflag_ = false;
+			SetIsBottomHitAABB_(true);
+		}
 	}
-		worldTransform_.translate.y -= foolSpeed_;
-
-	if (worldTransform_.translate.y <= -12) {
-		float floor = worldTransform_.translate.y - (-12);
-		worldTransform_.translate.y -= floor;
-		foolflag_ = false;
-		SetIsBottomHitAABB_(true);
+	else {
+		//時間経過でデス
+		if (--deathTimer_ <= 0) {
+			isDead_ = true;
+		}
 	}
-
 }
 
 void BlockCore::UpdateIsSred(){
@@ -68,15 +72,8 @@ void BlockCore::Draw(CameraRole viewProjection_){
 
 #ifdef _DEBUG
 	ImGui::Begin("Core");
-	if (ImGui::TreeNode("worldTransform")) {
-		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, 100, 100);
-		ImGui::DragFloat3("rotate", &worldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &worldTransform_.scale.x, 0.01f, 0, 10);
+		ImGui::DragFloat3("worldTransform_", &worldTransform_.translate.x, 1.f, 60, -60);
 
-		ImGui::TreePop();
-	}
-		ImGui::Checkbox("isDead", &isDead_);
-		ImGui::Checkbox("isAlive", &isAlive_);
 
 	ImGui::End();
 #endif // _DEBUG
@@ -92,7 +89,7 @@ void BlockCore::OnCollision(Collider* collider){
 			worldTransform_.translate.y += extrusion;
 			int y = static_cast<int>(std::round(worldTransform_.translate.y));
 			worldTransform_.translate.y = (float)y;
-			worldTransform_.UpdateMatrix();
+			//worldTransform_.UpdateMatrix();
 			foolflag_ = false;
 			SetIsBottomHitAABB_(true);
 		}
@@ -103,7 +100,7 @@ void BlockCore::OnCollision(Collider* collider){
 
 		// 上
 		if (theta <= -(M_PI / radius) && theta >= -M_PI + (M_PI / radius)) {
-			worldTransform_.UpdateMatrix();
+			//worldTransform_.UpdateMatrix();
 			if (GetCollisionAttribute_() == collider->GetCollisionAttribute_()) {
 				SetIsTopHitAABB_(true);
 			}
@@ -116,7 +113,7 @@ void BlockCore::OnCollision(Collider* collider){
 		if (theta < M_PI / radius && theta > -(M_PI / radius)) {
 			float extrusion = (-GetAABB_().min.x + collider->GetAABB_().max.x) - (worldTransform_.translate.x - collider->GetWorldPosition().x);
 			worldTransform_.translate.x += extrusion;
-			worldTransform_.UpdateMatrix();
+		//	worldTransform_.UpdateMatrix();
 			if (GetCollisionAttribute_() == collider->GetCollisionAttribute_()) {
 				SetIsRightHitAABB_(true);
 			}
@@ -125,7 +122,7 @@ void BlockCore::OnCollision(Collider* collider){
 		if (theta > M_PI - (M_PI / radius) || theta < -M_PI + (M_PI / radius)) {
 			float extrusion = (GetAABB_().max.x + (-collider->GetAABB_().min.x)) - (collider->GetWorldPosition().x - worldTransform_.translate.x);
 			worldTransform_.translate.x -= extrusion;
-			worldTransform_.UpdateMatrix();
+		//	worldTransform_.UpdateMatrix();
 			if (GetCollisionAttribute_() == collider->GetCollisionAttribute_()) {
 				SetIsLeftHitAABB_(true);
 			}

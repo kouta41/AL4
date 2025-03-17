@@ -26,11 +26,11 @@ void BlockCrust::Update(){
 
 	worldTransform_.UpdateMatrix();
 	
-	if (worldTransform_.translate.z > 2) {
-		worldTransform_.translate.y -= foolSpeed_*1.5f;
+	if (worldTransform_.translate.z > 6) {
+		worldTransform_.translate.y -= foolSpeed_.x;
 	}
 	else {
-		worldTransform_.translate.z += foolSpeed_;
+		worldTransform_.translate.z += foolSpeed_.y;
 	}
 	
 	//時間経過でデス

@@ -7,6 +7,9 @@ TitleScene::TitleScene() {
 }
 
 TitleScene::~TitleScene() {
+	for (BlockCore* core_ : cores_) {
+		delete core_;
+	}
 }
 
 void TitleScene::Initialize(){
@@ -17,12 +20,13 @@ void TitleScene::Initialize(){
 
 	//画像の読み込み
 	TitletexHandle_ = TextureManager::Load("resources/7g9a5.png");
-	objecttexHandle_R = TextureManager::Load("resources/81c9l.png");
-	objecttexHandle_L = TextureManager::Load("resources/w14s8.png");
+	
 	StarttexHandle_ = TextureManager::Load("resources/7nu95.png");
 
-	SkydometexHandle_ = TextureManager::Load("resources/rainbow.jpg");
+	SkydometexHandle_ = TextureManager::Load("resources/1034303-492673.png");
 	blacktexHandle_ = TextureManager::Load("resources/black.png");
+
+	coreTexHandle_ = TextureManager::Load("resources/grya.png");
 
 	//モデルデータの読み込み
 	ModelManager::LoadObjModel("skydome.obj");
@@ -45,25 +49,7 @@ void TitleScene::Initialize(){
 	Titlemodel_->SetModel("cube.obj");
 	Titlemodel_->SetTexHandle(TitletexHandle_);
 	TitleworldTransform_.Initialize();
-	TitleworldTransform_.translate = { 0.0f,0.6f,-50.75f };
-	TitleworldTransform_.scale = { 1.5f,1.0f,1.0f };
-	//モデルの初期化＆設定(オブジェクト右)
-	objectemodel_R = std::make_unique<Object3DPlacer>();
-	objectemodel_R->Initialize();
-	objectemodel_R->SetModel("cube.obj");
-	objectemodel_R->SetTexHandle(objecttexHandle_R);
-	objectworldTransform_R.Initialize();
-	objectworldTransform_R.translate = { 1.6f,-0.5f,-53.0f };
-	objectworldTransform_R.rotate = { 0.0f,0.06f,0.34f };
-
-	//モデルの初期化＆設定(オブジェクト左)
-	objectemodel_L = std::make_unique<Object3DPlacer>();
-	objectemodel_L->Initialize();
-	objectemodel_L->SetModel("cube.obj");
-	objectemodel_L->SetTexHandle(objecttexHandle_L);
-	objectworldTransform_L.Initialize();
-	objectworldTransform_L.translate = { -1.6f,-0.5f,-53.0f };
-	objectworldTransform_L.rotate = { 0.0f,-0.06f,-0.34f };
+	
 
 	//モデルの初期化＆設定(スタートオブジェクト)
 	Startmodel_ = std::make_unique<Object3DPlacer>();
@@ -71,8 +57,6 @@ void TitleScene::Initialize(){
 	Startmodel_->SetModel("cube.obj");
 	Startmodel_->SetTexHandle(StarttexHandle_);
 	StartworldTransform_.Initialize();
-	StartworldTransform_.translate = { 0.0f,-0.87f,-53.36f };
-	StartworldTransform_.scale = { 0.5f,0.5f,0.0f };
 
 	//モデルの初期化＆設定(エンドオブジェクト右)
 	Endrightmodel_ = std::make_unique<Object3DPlacer>();
@@ -80,8 +64,6 @@ void TitleScene::Initialize(){
 	Endrightmodel_->SetModel("cube.obj");
 	Endrightmodel_->SetTexHandle(blacktexHandle_);
 	EndrightworldTransform_.Initialize();
-	EndrightworldTransform_.translate = { 2.63f,-0.0f,-56.0f };
-	EndrightworldTransform_.scale = { 1.0f,1.0f,0.0f };
 
 	//モデルの初期化＆設定(エンドオブジェクト左)
 	EndLeftmodel_ = std::make_unique<Object3DPlacer>();
@@ -89,31 +71,55 @@ void TitleScene::Initialize(){
 	EndLeftmodel_->SetModel("cube.obj");
 	EndLeftmodel_->SetTexHandle(blacktexHandle_);
 	EndLeftworldTransform_.Initialize();
-	EndLeftworldTransform_.translate = { -2.63f,-0.0f,-56.0f };
-	EndLeftworldTransform_.scale = { 1.0f,1.0f,0.0f };
-
+	
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
-	flag = true;
+	TransitionFlag = true;
 
 	//BGM
 	sceneBGM = audio_->SoundLoadWave("resources/dance.wav");
 	sceneSE = audio_->SoundLoadWave("resources/EndSE.wav");
 	audio_->SoundPlayLoop(sceneBGM);
 
+	//調整項目の追加
+	globalVariables_ = GlobalVariables::GatInstance();
+	//グループを追加
+	GlobalVariables::GatInstance()->CreateGroup(groupName);
+
+	//各項目の調整の追加
+	//タイトルのオブジェクト
+	globalVariables_->AddItem(groupName, "TitleworldTransform_.translate", TitleworldTransform_.translate);
+	globalVariables_->AddItem(groupName, "TitleworldTransform_.scale", TitleworldTransform_.scale);
+	//タイトルのスタートオブジェクト
+	globalVariables_->AddItem(groupName, "StartworldTransform_.translate", StartworldTransform_.translate);
+	globalVariables_->AddItem(groupName, "StartworldTransform_.scale", StartworldTransform_.scale);
+	//エンドオブジェクト右(画面遷移)
+	globalVariables_->AddItem(groupName, "EndrightworldTransform_.translate", EndrightworldTransform_.translate);
+	globalVariables_->AddItem(groupName, "EndrightworldTransform_.scale", EndrightworldTransform_.scale);
+	//エンドオブジェクト左(画面遷移)
+	globalVariables_->AddItem(groupName, "EndLeftworldTransform_.translate", EndLeftworldTransform_.translate);
+	globalVariables_->AddItem(groupName, "EndLeftworldTransform_.scale", EndLeftworldTransform_.scale);
+
+	//エンドオブジェクト右(画面遷移)の移行
+	EndrightworldTransform_.translate = globalVariables_->GetVector3Value(groupName, "EndrightworldTransform_.translate");
+	EndrightworldTransform_.scale = globalVariables_->GetVector3Value(groupName, "EndrightworldTransform_.scale");
+	//エンドオブジェクト左(画面遷移)の移行
+	EndLeftworldTransform_.translate = globalVariables_->GetVector3Value(groupName, "EndLeftworldTransform_.translate");
+	EndLeftworldTransform_.scale = globalVariables_->GetVector3Value(groupName, "EndLeftworldTransform_.scale");
 }
 
 void TitleScene::Update() {
 	//各種更新処理
 	worldTransform.UpdateMatrix();
 	TitleworldTransform_.UpdateMatrix();
-	objectworldTransform_R.UpdateMatrix();
-	objectworldTransform_L.UpdateMatrix();
 	StartworldTransform_.UpdateMatrix();
 	EndrightworldTransform_.UpdateMatrix();
 	EndLeftworldTransform_.UpdateMatrix();
 	camera.UpdateMatrix();
 	Sprite::StaticUpdate();
+
+	//jsonのデータのアップロード
+	ApplyGlobalVariaBles();
 
 	//スプライトの情報をもらう
 	spriteWorldTransform = sprite_->GetWorldTransform();
@@ -124,101 +130,115 @@ void TitleScene::Update() {
 
 
 	//演出開始
-	if (input_->PressedKey(DIK_SPACE) && flag == true) {
+	if (input_->PressedKey(DIK_SPACE) && TransitionFlag == true) {
 		audio_->SoundPlayStop(sceneBGM);
 		audio_->SoundPlayWave(sceneSE);
-		flag = false;
+		TransitionFlag = false;
 	}
 
 
 	//演出
-	if (flag == false) {
+	if (TransitionFlag == false) {
 		EndrightworldTransform_.translate.x -= 0.04f;
 		EndLeftworldTransform_.translate.x += 0.04f;
 	}
 
 	if (EndrightworldTransform_.translate.x<=0.9f&&
 		EndLeftworldTransform_.translate.x>=-0.9f) {
+		//発生しているブロックの削除
+		for (BlockCore* core_ : cores_) {
+			core_->SetIsDead(true);
+		}
 		//次のシーンへ
 		sceneNo_ = GAME;
-
 	}
 
-	//オブジェクト回転
-	objectworldTransform_R.rotate.y -= 0.08f;
-	objectworldTransform_L.rotate.y += 0.08f;
 
 
-	//
+
+	//rand関数のリセット
 	srand((unsigned int)time(NULL));
+
+	//スライドするブロックの設定
+	
+	if (foolTime >= 20) {
+		BlockCore* newCore = new BlockCore();
+		// 初期化
+		newCore->Initialize(coreTexHandle_);
+		newCore->SetIsTitleflag(true);
+		randPos_ = { static_cast<float>(rand() % 21) ,
+			12.f,
+			static_cast<float>(rand() % 61-10)
+		};
+		newCore->SetWorldPosition(randPos_);
+		cores_.push_back(newCore);
+		foolTime = 0;
+	}
+	else {
+		foolTime++;
+	}
+
+	srand((unsigned int)time(NULL));
+	if (foolTime1 >= 30) {
+		BlockCore* newCore = new BlockCore();
+		// 初期化
+		newCore->Initialize(coreTexHandle_);
+		newCore->SetIsTitleflag(true);
+		randPos_ = { static_cast<float>(rand() % 21 - 20) ,
+			12.f,
+			static_cast<float>(rand() % 41 - 10)
+		};
+		newCore->SetWorldPosition(randPos_);
+		cores_.push_back(newCore);
+		foolTime1 = 0;
+	}
+	else {
+		foolTime1++;
+	}
+
+
+	for (BlockCore* core_ : cores_) {
+		core_->Update();
+	}
+
+
+	//デスラグが立つと削除
+	cores_.remove_if([](BlockCore* core) {
+		if (core->GetIsDead()) {
+			delete core;
+			return true;
+		}
+		return false;
+		});
 }
 
 void TitleScene::Draw(){
 	//画面遷移
 	Endrightmodel_->Draw(EndrightworldTransform_, camera);
 	EndLeftmodel_->Draw(EndLeftworldTransform_, camera);
-
+	//落ちてくるブロック
+	for (BlockCore* core_ : cores_) {
+		core_->Draw(camera);
+	}
 	//天球の描画
 	skydome_->Draw(camera);
 
 	//モデルの描画
 	Startmodel_->Draw(StartworldTransform_, camera);
 	Titlemodel_->Draw(TitleworldTransform_, camera);
-	objectemodel_R->Draw(objectworldTransform_R, camera);
-	objectemodel_L->Draw(objectworldTransform_L, camera);
-
-
-	//スプライトの描画
-	
-
-	///デバック場面
-#ifdef _DEBUG
-
-	ImGui::Begin("WorldTransform");
-	if (ImGui::TreeNode("EndrightworldTransform_")) {
-		ImGui::DragFloat3("translate", &EndrightworldTransform_.translate.x, 0.01f, 100, 100);
-		ImGui::DragFloat3("rotate", &EndrightworldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &EndrightworldTransform_.scale.x, 0.01f, 0, 10);
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("EndLeftworldTransform_")) {
-		ImGui::DragFloat3("translate", &EndLeftworldTransform_.translate.x, 0.01f, 100, 100);
-		ImGui::DragFloat3("rotate", &EndLeftworldTransform_.rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &EndLeftworldTransform_.scale.x, 0.01f, 0, 10);
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("objectworldTransform_L")) {
-		ImGui::DragFloat3("translate", &objectworldTransform_L.translate.x, 0.01f, 100, 100);
-		ImGui::DragFloat3("rotate", &objectworldTransform_L.rotate.x, 0.01f, -6.28f, 6.28f);
-		ImGui::DragFloat3("scale", &objectworldTransform_L.scale.x, 0.01f, 0, 10);
-		ImGui::TreePop();
-	}
-
-	if (ImGui::TreeNode("StartworldTransform_")) {
-		ImGui::DragFloat3("translate", &StartworldTransform_.translate.x, 0.01f, 100, 100);
-		ImGui::DragFloat3("rotate", &StartworldTransform_.rotate.x, 0.01f, 100, 100);
-		ImGui::DragFloat3("scale", &StartworldTransform_.scale.x, 0.01f, 100, 100);
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("Color_R")) {
-		ImGui::DragFloat("Color_R", &Color_R, 0.01f, 100, 100);
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("Color_L")) {
-		ImGui::DragFloat("Color_L", &Color_L, 0.01f, 100, 100);
-		ImGui::TreePop();
-	}
-
-
-	ImGui::End();
-	
-#endif // _DEBUG
-
-
 
 }
 
-void TitleScene::CheckAllCollisions(){
-	
+/// <summary>
+/// Jsonファイルからデータをアップロード
+/// </summary>
+void TitleScene::ApplyGlobalVariaBles(){
+	//各項目の調整の追加
+	//タイトルのオブジェクト
+	TitleworldTransform_.translate = globalVariables_->GetVector3Value(groupName, "TitleworldTransform_.translate");
+	TitleworldTransform_.scale = globalVariables_->GetVector3Value(groupName, "TitleworldTransform_.scale");
+	//タイトルのスタートオブジェクト
+	StartworldTransform_.translate = globalVariables_->GetVector3Value(groupName, "StartworldTransform_.translate");
+	StartworldTransform_.scale = globalVariables_->GetVector3Value(groupName, "StartworldTransform_.scale");
 
 }

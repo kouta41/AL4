@@ -1,0 +1,161 @@
+{
+    "GameObject": {
+        "BlockGuide_Offset": [
+            1.0,
+            11.0,
+            1.0
+        ],
+        "NextTranslate_X": [
+            20.0,
+            22.0,
+            24.0
+        ],
+        "NextTranslate_Y": [
+            2.0,
+            4.0,
+            6.0,
+            8.0
+        ],
+        "OtherBlock_rotate": [
+            0.0,
+            0.20000000298023224,
+            0.0
+        ],
+        "Stage_Bottom_scale": [
+            17.0,
+            1.0,
+            1.0
+        ],
+        "Stage_Bottom_translate": [
+            0.0,
+            -14.0,
+            0.0
+        ],
+        "Stage_Left_scale": [
+            1.0,
+            15.0,
+            1.0
+        ],
+        "Stage_Left_translate": [
+            -14.0,
+            0.0,
+            0.0
+        ],
+        "Stage_Right_scale": [
+            1.0,
+            15.0,
+            1.0
+        ],
+        "Stage_Right_translate": [
+            14.0,
+            0.0,
+            0.0
+        ],
+        "Stage_Sprite_scale": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "Stage_Sprite_translate": [
+            230.0,
+            50.0,
+            0.0
+        ],
+        "Stage_background1_scale": [
+            1.0,
+            1.0,
+            0.0
+        ],
+        "Stage_background1_translate": [
+            2.0,
+            2.0,
+            -83.0
+        ],
+        "Stage_background_scale": [
+            24.0,
+            17.0,
+            0.0
+        ],
+        "Stage_background_translate": [
+            4.0,
+            0.0,
+            1.0
+        ],
+        "Stage_guide_scale": [
+            1.0,
+            1.0,
+            0.0
+        ],
+        "Stage_guide_scale_I": [
+            1.0,
+            16.0,
+            0.0
+        ],
+        "Stage_guide_scale_J": [
+            2.0,
+            16.0,
+            0.0
+        ],
+        "Stage_guide_scale_L": [
+            2.0,
+            16.0,
+            0.0
+        ],
+        "Stage_guide_scale_O": [
+            2.0,
+            16.0,
+            0.0
+        ],
+        "Stage_guide_scale_S": [
+            3.0,
+            16.0,
+            0.0
+        ],
+        "Stage_guide_scale_T": [
+            3.0,
+            16.0,
+            0.0
+        ],
+        "Stage_guide_scale_side": [
+            2.0,
+            16.0,
+            0.0
+        ],
+        "Stage_guide_scale_ten": [
+            1.0,
+            16.0,
+            0.0
+        ],
+        "Stage_guide_translate": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "secondTranslate_X": [
+            20.0,
+            22.0,
+            24.0
+        ],
+        "secondTranslate_Y": [
+            -8.0,
+            -6.0,
+            -4.0,
+            -2.0
+        ],
+        "spriteWorldTransform_OFF": [
+            230.0,
+            50.0,
+            0.0
+        ],
+        "spriteWorldTransform_ON": [
+            230.0,
+            50.0,
+            0.0
+        ],
+        "spriteWorldTransform_chage": [
+            0.0,
+            50.0,
+            0.0
+        ]
+    }
+}

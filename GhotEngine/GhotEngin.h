@@ -11,6 +11,7 @@
 #include "TextureManager.h"
 #include "Input.h"
 #include "GameManager.h"
+#include "GlobalVariables.h"
 
 class Engine {
 public:

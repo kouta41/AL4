@@ -146,7 +146,7 @@ private:
 	bool isAlive_;
 
 	//半径
-	float radius = 10.f;
+	float radius = 8.0f;
 
 
 	// 振るまい

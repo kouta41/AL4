@@ -23,6 +23,9 @@ void Engine::Initialize() {
 	Input::Initialize();
 	GraphicsPipeline::Initialize();
 
+	//グローバル変数の読み込み
+	GlobalVariables::GatInstance()->LoadFiles();
+
 	//ゲームシーンの初期化
 	gameManager_ = std::make_unique<GameManager>();
 	
@@ -59,9 +62,14 @@ void Engine::Run() {
 
 		// シーン描画
 		gameManager_->Draw();
+#ifdef _DEBUG
+		//グローバル変数の更新
+		GlobalVariables::GatInstance()->Update();
+#endif // RELEASE
 
+		//IMGuiの受付終了
 		imguiManager_->End();
-
+		//ImGuiの描画
 		imguiManager_->Draw();
 		// 描画後処理
 		dxCommon_->PostDraw();

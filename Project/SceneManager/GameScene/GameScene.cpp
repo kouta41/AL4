@@ -136,20 +136,23 @@ void GameScene::Update(){
 	//天球の更新
 	skydome_->Update();
 
-	//自機の更新
-	if (cameraflag1 == true) {
-	player_->Update();
+
+	if (gameObject_->GetoptionFlag() == false) {
+		//自機の更新
+		if (cameraflag1 == true) {
+			player_->Update();
+		}
+
+
+		//プレイヤーの更新
+		BlockManager_->Update();
+
+		// ゴールライン
+		goalLine_->Update();
+
+		// デッドライン
+		deadLine_->SetIsBlockDelete(BlockManager_->GetisDelete());
 	}
-	
-
-	//プレイヤーの更新
-	BlockManager_->Update();
-
-	// ゴールライン
-	goalLine_->Update();
-
-	// デッドライン
-	deadLine_->SetIsBlockDelete(BlockManager_->GetisDelete());
 //	deadLine_->Update();
 
 	 //ブロックが消えていた場合
@@ -233,8 +236,20 @@ void GameScene::Update(){
 		}
 	}
 
-	if (input_->PressedKey(DIK_R)) {
-		sceneNo_ = TITLE;
+
+
+
+	if (gameObject_->GetoptionFlag() == true) {
+		if (input_->PressedKey(DIK_R)) {
+			sceneNo_ = TITLE;
+		}
+		if (input_->PressedKey(DIK_N)) {
+			gameObject_->SetoptionFlag(false);
+		}
+	}
+	
+	if(gameObject_->GetoptionFlag() == false&&input_->PressedKey(DIK_O)) {
+		gameObject_->SetoptionFlag(true);
 	}
 
 
@@ -248,14 +263,6 @@ void GameScene::Draw(){
 		ImGui::DragFloat3("rotate", &camera.rotate.x, 0.1f, 100, 100);
 
 
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("EndrightworldTransform_")) {
-		ImGui::DragFloat3("translate", &EndrightworldTransform_.translate.x, 0.1f, 100, 100);
-		ImGui::TreePop();
-	}
-	if (ImGui::TreeNode("EndLeftworldTransform_")) {
-		ImGui::DragFloat3("translate", &EndLeftworldTransform_.translate.x, 0.1f, 100, 100);
 		ImGui::TreePop();
 	}
 	ImGui::End();

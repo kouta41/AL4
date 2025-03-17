@@ -26,6 +26,8 @@ public:
 
 	WorldTransform& GetWorldTransform() { return worldTransform_; }
 
+	void SetWorldTransform(WorldTransform worldTransform) { worldTransform = worldTransform_; }
+
 
 private:
 	//ワールド変換データ

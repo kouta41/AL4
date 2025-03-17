@@ -19,8 +19,8 @@ void BlockManager::Initialize(CollisionManager* collisionManager) {
 	ModelManager::LoadObjModel("cube.obj");
 	
 	ModelManager::LoadObjModel("scaffolding.obj");
-	coreTexHandle_ = TextureManager::Load("resources/cube.jpg");
-	crustTexHandle_= TextureManager::Load("resources/uvChecker.png");
+	coreTexHandle_ = TextureManager::Load("resources/grya.png");
+	crustTexHandle_= TextureManager::Load("resources/black_grya.png");
 	texHandle_ = TextureManager::Load("resources/white.png");
 	texHandle_1= TextureManager::Load("resources/circle.png");
 
@@ -111,7 +111,7 @@ void BlockManager::Initialize(CollisionManager* collisionManager) {
 		nextmodel_[i]->Initialize();
 		nextmodel_[i]->SetModel("cube.obj");
 		nextmodel_[i]->SetTexHandle(coreTexHandle_);
-		nextmodel_[i]->SetColor({ 1,1,1,0.3f });
+		//nextmodel_[i]->SetColor({ 1,1,1,0.3f });
 		
 	}
 	worldTransform_.translate = { 0,14,0 };
@@ -169,17 +169,24 @@ void BlockManager::Update(){
 	nextBlockShape();
 
 
+	if (iscollision_ == false) {
+		//横一列になったら消える処理
+		OnCollisionLine();
+	}
+	else {
+		for (BlockCore* core_ : cores_) {
+			core_->SetIsAlive(true);
+		}
+	}
+
+
 	for (BlockCore* core_ : cores_) {
 		
 			core_->Update();
 		//クリアラインを超えたら消す（修正必死）
 		if (!core_->GetFoolFlag() && core_->GetworldTransform_().y > 10) {
-			//core_->SetIsAlive(false);
-
-
 			core_->SetIsDead(true);
 		}
-
 
 		//デットフラグが立ったら再度設定するコマンド
 		if (!core_->GetIsDead()) {
@@ -212,6 +219,7 @@ void BlockManager::Update(){
 
 	}
 
+	
 
 
 	for (BlockCrust* crust_ : crusts_) {
@@ -231,15 +239,7 @@ void BlockManager::Update(){
 
 
 
-	if (iscollision_ == false) {
-		//横一列になったら消える処理
-		OnCollisionLine();
-	}
-	else {
-		for (BlockCore* core_ : cores_) {
-			core_->SetIsAlive(true);
-		}
-	}
+	
 
 	
 
@@ -277,7 +277,7 @@ void BlockManager::OutPutBlock(){
 	}
 	if (iscollision_ == false) {
 		iscollisionTime_++;
-		if (iscollisionTime_ > 40.0f) {
+		if (iscollisionTime_ > 10.0f) {
 			iscollision_ = true;
 		}
 	}
@@ -322,16 +322,29 @@ void BlockManager::BlockShape(){
 			if (playerLocation_[i][j] == CORE) {
 				BlockCore* newCore = new BlockCore();
 				// 初期化
-				newCore->Initialize(coreTexHandle_);
+				blockCount++;
+				//ブロックの種類の設定
+				randBlock = static_cast<int>(rand() % 10);
+				if (randBlock != blockCount) {
+					newCore->Initialize(coreTexHandle_);
+				}
+				else {
+					newCore->SetIsHardBlock(true);
+					newCore->Initialize(crustTexHandle_);
+
+				}
+				srand((unsigned int)time(nullptr));
+				newCore->SetIsTitleflag(false);
 				newCore->SetWorldPosition(
-					{ worldTransform_.translate.x + (float(j * 2.02f - MAX_PLAYER_CHIPS +0.96f)),
-					worldTransform_.translate.y - (float(i * 2.02f - MAX_PLAYER_CHIPS )),
+					{ worldTransform_.translate.x + (float(j * 2.02f - MAX_PLAYER_CHIPS + 0.96f)),
+					worldTransform_.translate.y - (float(i * 2.02f - MAX_PLAYER_CHIPS)),
 					worldTransform_.translate.z });
 				cores_.push_back(newCore);
 				collisionManager_->SetColliderList(newCore);
 			}
 		}
 	}
+	blockCount = 0;
 }
 
 void BlockManager::nextBlockShape(){
@@ -616,6 +629,7 @@ void BlockManager::OnCollisionLine(){
 				// すでに生成されているブロックをコライダーに登録
 				// 落下するブロック
 				for (BlockCore* core_ : cores_) {
+					//core_->SetfoolSpeed(0.2f);
 					// 当たり判定の形状を設定
 					core_->SetCollisionPrimitive_(kCollisionAABB);
 					core_->SetCollisionAttribute_(kAttributeBlock);

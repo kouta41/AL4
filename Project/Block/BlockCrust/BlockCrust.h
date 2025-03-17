@@ -60,8 +60,7 @@ private: // メンバ変数
 	std::unique_ptr<Object3DPlacer> model_;
 
 	//速度
-	//速度
-	float foolSpeed_ = 0.2f;
+	Vector2 foolSpeed_ = { 0.2f*1.5f,0.2f*3.0f };
 
 
 

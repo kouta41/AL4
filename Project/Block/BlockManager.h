@@ -249,4 +249,10 @@ private: // メンバ変数
 
 	const float Shift_x = 2.0f;
 
+	//ブロックランダムの計測
+	int randBlock;
+
+	//ブロックカウント
+	int blockCount;
+
 };

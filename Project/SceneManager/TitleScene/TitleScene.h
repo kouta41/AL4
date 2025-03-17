@@ -15,6 +15,8 @@
 #include "Skydome.h"
 #include "CollisionManager.h"
 #include "Audio/Audio.h"
+#include "BlockCore.h"
+#include "GlobalVariables.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,15 +35,16 @@ public:
 
 	void Draw()override;
 
-	/// <summary>
-	///	当たり判定
-	/// </summary>
-	void CheckAllCollisions();
+	//調整項目の適任
+	void ApplyGlobalVariaBles();
+
+
 private:
+
+	//ワールド座標
 	WorldTransform worldTransform;
 	WorldTransform TitleworldTransform_;
-	WorldTransform objectworldTransform_R; 
-	WorldTransform objectworldTransform_L;
+	
 	WorldTransform StartworldTransform_;
 
 	WorldTransform EndrightworldTransform_;
@@ -49,25 +52,35 @@ private:
 
 	WorldTransform spriteWorldTransform;
 
+	//カメラ座標
 	CameraRole camera;
 
-
+	//オーディオ
 	Audio* audio_ = Audio::GetInstance();
 
+	//調整項目
+	GlobalVariables* globalVariables_;
 
-	bool flag = true;
+	//画面遷移のフラグ
+	bool TransitionFlag = true;
+
+	//スプライト
 	std::unique_ptr<Sprite> sprite_;
 	std::unique_ptr<Sprite> blackSprite_;
 
-	Vector2 pos = { 0,0 };
+
+	//落ちてくるブロックの位置
+	Vector3 randPos_;
+	//落ちてくるタイミング
+	float foolTime = 0;
+
+	//落ちてくるタイミング
+	float foolTime1 = 0;
 
 	///3Dモデル
 	//タイトル
 	std::unique_ptr<Object3DPlacer> Titlemodel_;
-	//オブジェクト_R
-	std::unique_ptr<Object3DPlacer> objectemodel_R;
-	//オブジェクト_L
-	std::unique_ptr<Object3DPlacer> objectemodel_L;
+	
 	//スタート
 	std::unique_ptr<Object3DPlacer> Startmodel_;
 	//画面遷移_右
@@ -77,22 +90,26 @@ private:
 	//天球
 	std::unique_ptr<Skydome> skydome_{};
 
+	//落ちてくるブロック
+	std::list<BlockCore*> cores_;
 
 	//キーボード入力
 	Input* input_ = nullptr;
 
 	//テクスチャハンドル
 	uint32_t TitletexHandle_ = 0;
-	uint32_t objecttexHandle_R = 0;
-	uint32_t objecttexHandle_L = 0;
 	uint32_t StarttexHandle_ = 0;
 
 	uint32_t SkydometexHandle_ = 0;
 	uint32_t blacktexHandle_ = 0;
 	
-
+	uint32_t coreTexHandle_ = 0;
 	uint32_t sceneBGM = 0;
 	uint32_t sceneSE = 0;
+
+	//グループ名
+	const char* groupName = "TitleObject";
+
 
 	float Color_R = 1.0f;
 	float Color_L = 1.0f;

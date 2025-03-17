@@ -51,7 +51,7 @@ public: // メンバ関数
 	//衝突判定
 	void OnCollision(Collider* collider)override;
 
-	
+
 
 
 	//ワールド座標系を取得
@@ -71,6 +71,8 @@ public: // メンバ関数
 	bool GetIsSred() { return isSred_; }
 	//デスフラグを取得
 	bool GetIsDead()const { return isDead_; }
+	//タイトルシーンかいなか
+	bool GetIsTitleflag()const { return Titleflag_; }
 
 	/// Setter
 	// ワールド座標を設定
@@ -87,6 +89,8 @@ public: // メンバ関数
 	void SetIsSred(bool isSred) { isSred_ = isSred; }
 	//デスフラグの設定
 	void SetIsDead(bool isDead) { isDead_ = isDead; }
+	//タイトルシーンかいなか
+	void SetIsTitleflag(bool Titleflag) { Titleflag_ = Titleflag; }
 
 	//ワールド座標系を取得
 	void SetWorldPosition(Vector3 translate);
@@ -106,7 +110,7 @@ private: // メンバ変数
 
 
 	//寿命
-	static const int32_t kLifeTime = 60 * 3;
+	static const int32_t kLifeTime = 60 * 5;
 	//デスタイマー
 	int32_t deathTimer_ = kLifeTime;
 	//デスフラグ
@@ -126,4 +130,6 @@ private: // メンバ変数
 
 
 	bool isSred_;
+
+	bool Titleflag_ = false;
 };

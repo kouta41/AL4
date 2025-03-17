@@ -100,15 +100,15 @@ void Player::OnCollision(Collider* collider) {
 	float theta = atan2(worldTransform_.translate.y - collider->GetWorldPosition().y, worldTransform_.translate.x - collider->GetWorldPosition().x);
 
 	// 上
-	if (theta <= -(M_PI / 3.5f) && theta >= -M_PI + (M_PI / 3.5f)) {
+	if (theta <= -(M_PI / 4.0f) && theta >= -M_PI + (M_PI / 4.0f)) {
 		isAlive_ = false;
-		worldTransform_.UpdateMatrix();
+		//worldTransform_.UpdateMatrix();
 	}
 	// 下
-	if (theta >= (M_PI / 5.0f) && theta <= M_PI - (M_PI / 5)) {
+	if (theta >= (M_PI / 4.0f) && theta <= M_PI - (M_PI / 4.0f)) {
 		float extrusion = (-GetAABB_().min.y + collider->GetAABB_().max.y) - (worldTransform_.translate.y - collider->GetWorldPosition().y);
 		worldTransform_.translate.y += extrusion;
-		worldTransform_.UpdateMatrix();	
+		//worldTransform_.UpdateMatrix();	
 		if (hitCounter_ <= 0) {
 			isJump_ = false;
 			behaviorRequest_ = Behavior::kLanding;
@@ -121,7 +121,7 @@ void Player::OnCollision(Collider* collider) {
 	if (theta <= M_PI / radius && theta >= -(M_PI / radius)) {
 		float extrusion = (-GetAABB_().min.x + collider->GetAABB_().max.x) - (worldTransform_.translate.x - collider->GetWorldPosition().x);
 		worldTransform_.translate.x += extrusion;
-		worldTransform_.UpdateMatrix();
+		//worldTransform_.UpdateMatrix();
 		if (!collider->GetIsTopHitAABB_()) {
 			if (collider->GetIsBottomHitAABB_()) {
 				isJump_ = true;
@@ -135,7 +135,7 @@ void Player::OnCollision(Collider* collider) {
 	if (theta >= M_PI - (M_PI / radius) || theta <= -M_PI + (M_PI / radius)) {
 		float extrusion = (GetAABB_().max.x + (-collider->GetAABB_().min.x)) - (collider->GetWorldPosition().x - worldTransform_.translate.x);
 		worldTransform_.translate.x -= extrusion;
-		worldTransform_.UpdateMatrix();
+		//worldTransform_.UpdateMatrix();
 		if (!collider->GetIsTopHitAABB_()) {
 			if (collider->GetIsBottomHitAABB_()) {
 				isJump_ = true;

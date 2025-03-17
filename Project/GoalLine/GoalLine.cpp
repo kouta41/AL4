@@ -13,7 +13,7 @@ void GoalLine::Initialize() {
 	model_->SetTexHandle(lineTexture_);
 
 	worldTransform_.Initialize();
-	worldTransform_.translate = { 0,10,-2.5f };
+	worldTransform_.translate = { 0,11,-2.5f };
 	worldTransform_.scale = { 100,0.1f,1 };
 	worldTransform_.UpdateMatrix();
 

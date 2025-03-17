@@ -1,0 +1,44 @@
+{
+    "TitleObject": {
+        "EndLeftworldTransform_.scale": [
+            1.0,
+            1.0,
+            0.0
+        ],
+        "EndLeftworldTransform_.translate": [
+            -2.63,
+            0.0,
+            -56.0
+        ],
+        "EndrightworldTransform_.scale": [
+            1.0,
+            1.0,
+            0.0
+        ],
+        "EndrightworldTransform_.translate": [
+            2.63,
+            0.0,
+            -56.0
+        ],
+        "StartworldTransform_.scale": [
+            0.5,
+            0.5,
+            0.0
+        ],
+        "StartworldTransform_.translate": [
+            0.0,
+            -0.87,
+            -53.36
+        ],
+        "TitleworldTransform_.scale": [
+            1.5,
+            1.0,
+            1.0
+        ],
+        "TitleworldTransform_.translate": [
+            0.0,
+            0.6,
+            -50.75
+        ]
+    }
+}
