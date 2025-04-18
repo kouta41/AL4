@@ -1,5 +1,5 @@
 /// <summary>
-/// ゲームオブジェクト
+/// ゲームシーンのオブジェクト
 /// </summary>
 #pragma once
 #include "Sprite.h"
@@ -76,7 +76,14 @@ private://メンバ変数
 	WorldTransform spriteWorldTransform_ON;
 	WorldTransform spriteWorldTransform_OFF;
 	WorldTransform spriteWorldTransform_option;
-	
+	WorldTransform spriteworldTransform_crossKeyGuide;
+	WorldTransform spriteworldTransform_Space;
+	WorldTransform spriteworldTransform_SpaceGuide;
+	WorldTransform spriteworldTransform_GuideUI;
+	WorldTransform spriteworldTransform_FallGuide;
+	WorldTransform spriteworldTransform_DeleteString;
+	WorldTransform spriteworldTransform_DeleteStringUI;
+
 
 	WorldTransform nextWorldTransform_[5];
 	WorldTransform secondWorldTransform_[5];
@@ -85,6 +92,7 @@ private://メンバ変数
 	WorldTransform worldTransform_background1;
 
 	WorldTransform worldTransform_guide;
+
 
 	//キーボード入力
 	Input* input_ = nullptr;
@@ -110,7 +118,13 @@ private://メンバ変数
 	std::unique_ptr<Sprite> UIsprite_ON;
 	std::unique_ptr<Sprite> UIsprite_OFF;
 	std::unique_ptr<Sprite> UIsprite_option;
-
+	std::unique_ptr<Sprite> Operation_crossKeyGuide;
+	std::unique_ptr<Sprite> Operation_SpaceGuide;
+	std::unique_ptr<Sprite> Operation_Space;
+	std::unique_ptr<Sprite> Operation_GuideUI;
+	std::unique_ptr<Sprite> Operation_FallGuide;
+	std::unique_ptr<Sprite> Operation_DeleteString;
+	std::unique_ptr<Sprite> Operation_DeleteStringUI;
 
 	//テクスチャハンドル
 	uint32_t texHandle_ = 0;
@@ -123,6 +137,13 @@ private://メンバ変数
 	uint32_t texHandle_background1 = 0;
 	uint32_t texHandle_guide = 0;
 	uint32_t texHandle_moji = 0;
+	uint32_t texHandle_crossKeyGuide = 0;
+	uint32_t texHandle_SpaceGuide = 0;
+	uint32_t texHandle_Space = 0;
+	uint32_t texHandle_GuideUI = 0;
+	uint32_t texHandle_FallGuide = 0;
+	uint32_t texHandle_DeleteString = 0;
+	uint32_t texHandle_DeleteStringUI = 0;
 
 
 	//グループ名

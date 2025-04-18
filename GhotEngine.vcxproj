@@ -158,6 +158,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Project\SceneManager\TitleScene\TitleScene.cpp" />
     <ClCompile Include="GhotEngine\Skybox\Skybox.cpp" />
     <ClCompile Include="Project\SceneManager\ScreenTransition\ScreenTransition.cpp" />
+    <ClCompile Include="Project\GameObject\TitleObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\nlohmann\json.hpp" />
@@ -304,6 +305,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Project\SceneManager\TitleScene\TitleScene.h" />
     <ClInclude Include="GhotEngine\Skybox\Skybox.h" />
     <ClInclude Include="Project\SceneManager\ScreenTransition\ScreenTransition.h" />
+    <ClInclude Include="Project\GameObject\TitleObject.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="GhotEngine\ShaderFile\Object3d.PS.hlsl">

@@ -13,7 +13,7 @@ Player::~Player() {
 void Player::Initialize() {
 	// モデルの読み込み
 	ModelManager::LoadObjModel("cube.obj"); 
-	texHandle_ = TextureManager::Load("resources/enemy.png");
+	texHandle_ = TextureManager::Load("resources/istockphoto.jpg");
 
 	model_ = std::make_unique<Object3DPlacer>();
 	model_->Initialize();

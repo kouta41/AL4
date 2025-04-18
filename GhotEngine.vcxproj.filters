@@ -158,6 +158,7 @@
     <ClCompile Include="Project\GoalLine\GoalLine.cpp" />
     <ClCompile Include="Project\DeadLine\DeadLine.cpp" />
     <ClCompile Include="GhotEngine\GlobalVariables\GlobalVariables.cpp" />
+    <ClCompile Include="Project\GameObject\TitleObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GhotEngine\CameraRole\CameraRole.h">
@@ -574,6 +575,7 @@
     <ClInclude Include="GhotEngine\GlobalVariables\GlobalVariables.h" />
     <ClInclude Include="externals\nlohmann\json_fwd.hpp" />
     <ClInclude Include="externals\nlohmann\json.hpp" />
+    <ClInclude Include="Project\GameObject\TitleObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GhotEngine">

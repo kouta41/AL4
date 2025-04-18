@@ -18,6 +18,7 @@
 #include "Player.h"
 #include "GoalLine.h"
 #include "DeadLine.h"
+#include "GlobalVariables.h"
 
 #include <list>
 
@@ -42,8 +43,11 @@ public: // メンバ関数
 	void Draw()override;
 
 	
+	//調整項目の適任
+	void ApplyGlobalVariaBles();
 
 private: // メンバ変数
+	//ワールド座標
 	WorldTransform worldTransform;
 
 	WorldTransform worldTransform_1;
@@ -52,8 +56,14 @@ private: // メンバ変数
 	WorldTransform worldTransform_4;
 	WorldTransform StartworldTransform_;
 
-
+	//カメラ座標
 	CameraRole camera;
+
+	//調整項目
+	GlobalVariables* globalVariables_;
+
+	//グループ名
+	const char* groupName = "GameSceneObject";
 
 	//ブロックマネージャ
 	std::unique_ptr<BlockManager> BlockManager_{};
@@ -99,6 +109,7 @@ private: // メンバ変数
 	uint32_t SkydometexHandle_ = 0;
 	uint32_t blacktexHandle_ = 0;
 	uint32_t StarttexHandle_ = 0;
+
 
 	float gameTime = 0;
 

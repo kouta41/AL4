@@ -18,6 +18,9 @@ void TitleScene::Initialize(){
 	camera.Initialize();
 	audio_->Initialize();
 
+	// 当たり判定のインスタンスを生成
+	collisionManager_ = std::make_unique<CollisionManager>();
+
 	//画像の読み込み
 	TitletexHandle_ = TextureManager::Load("resources/7g9a5.png");
 	
@@ -31,6 +34,11 @@ void TitleScene::Initialize(){
 	//モデルデータの読み込み
 	ModelManager::LoadObjModel("skydome.obj");
 	ModelManager::LoadObjModel("cube.obj");
+
+	//ゲームオブジェクトの生成
+	titleObject_ = std::make_unique<TitleObject>();
+	//ゲームオブジェクトの初期化
+	titleObject_->Initialize(collisionManager_.get());
 
 
 	//天球の生成
@@ -62,14 +70,14 @@ void TitleScene::Initialize(){
 	Endrightmodel_ = std::make_unique<Object3DPlacer>();
 	Endrightmodel_->Initialize();
 	Endrightmodel_->SetModel("cube.obj");
-	Endrightmodel_->SetTexHandle(blacktexHandle_);
+	Endrightmodel_->SetTexHandle(coreTexHandle_);
 	EndrightworldTransform_.Initialize();
 
 	//モデルの初期化＆設定(エンドオブジェクト左)
 	EndLeftmodel_ = std::make_unique<Object3DPlacer>();
 	EndLeftmodel_->Initialize();
 	EndLeftmodel_->SetModel("cube.obj");
-	EndLeftmodel_->SetTexHandle(blacktexHandle_);
+	EndLeftmodel_->SetTexHandle(coreTexHandle_);
 	EndLeftworldTransform_.Initialize();
 	
 	// シングルトンインスタンスを取得する
@@ -99,6 +107,9 @@ void TitleScene::Initialize(){
 	//エンドオブジェクト左(画面遷移)
 	globalVariables_->AddItem(groupName, "EndLeftworldTransform_.translate", EndLeftworldTransform_.translate);
 	globalVariables_->AddItem(groupName, "EndLeftworldTransform_.scale", EndLeftworldTransform_.scale);
+	//ブロックの着地点
+	globalVariables_->AddItem(groupName, "着地点", LandingPosition_);
+
 
 	//エンドオブジェクト右(画面遷移)の移行
 	EndrightworldTransform_.translate = globalVariables_->GetVector3Value(groupName, "EndrightworldTransform_.translate");
@@ -121,6 +132,8 @@ void TitleScene::Update() {
 	//jsonのデータのアップロード
 	ApplyGlobalVariaBles();
 
+	titleObject_->ApplyGlobalVariaBles();
+
 	//スプライトの情報をもらう
 	spriteWorldTransform = sprite_->GetWorldTransform();
 
@@ -128,6 +141,12 @@ void TitleScene::Update() {
 	//天球の更新
 	skydome_->Update();
 
+	//ゲームオブジェクトの更新
+	titleObject_->Update();
+
+
+	// 当たり判定
+	collisionManager_->CheckAllCollisions();
 
 	//演出開始
 	if (input_->PressedKey(DIK_SPACE) && TransitionFlag == true) {
@@ -156,52 +175,6 @@ void TitleScene::Update() {
 
 
 
-	//rand関数のリセット
-	srand((unsigned int)time(NULL));
-
-	//スライドするブロックの設定
-	
-	if (foolTime >= 20) {
-		BlockCore* newCore = new BlockCore();
-		// 初期化
-		newCore->Initialize(coreTexHandle_);
-		newCore->SetIsTitleflag(true);
-		randPos_ = { static_cast<float>(rand() % 21) ,
-			12.f,
-			static_cast<float>(rand() % 61-10)
-		};
-		newCore->SetWorldPosition(randPos_);
-		cores_.push_back(newCore);
-		foolTime = 0;
-	}
-	else {
-		foolTime++;
-	}
-
-	srand((unsigned int)time(NULL));
-	if (foolTime1 >= 30) {
-		BlockCore* newCore = new BlockCore();
-		// 初期化
-		newCore->Initialize(coreTexHandle_);
-		newCore->SetIsTitleflag(true);
-		randPos_ = { static_cast<float>(rand() % 21 - 20) ,
-			12.f,
-			static_cast<float>(rand() % 41 - 10)
-		};
-		newCore->SetWorldPosition(randPos_);
-		cores_.push_back(newCore);
-		foolTime1 = 0;
-	}
-	else {
-		foolTime1++;
-	}
-
-
-	for (BlockCore* core_ : cores_) {
-		core_->Update();
-	}
-
-
 	//デスラグが立つと削除
 	cores_.remove_if([](BlockCore* core) {
 		if (core->GetIsDead()) {
@@ -216,16 +189,19 @@ void TitleScene::Draw(){
 	//画面遷移
 	Endrightmodel_->Draw(EndrightworldTransform_, camera);
 	EndLeftmodel_->Draw(EndLeftworldTransform_, camera);
-	//落ちてくるブロック
-	for (BlockCore* core_ : cores_) {
-		core_->Draw(camera);
-	}
+	
 	//天球の描画
 	skydome_->Draw(camera);
+
+	//ゲームオブジェクトの描画
+	titleObject_->Draw(camera);
 
 	//モデルの描画
 	Startmodel_->Draw(StartworldTransform_, camera);
 	Titlemodel_->Draw(TitleworldTransform_, camera);
+	
+	//ゲームオブジェクトの2D描画
+	titleObject_->Draw2D(camera);
 
 }
 
@@ -241,4 +217,5 @@ void TitleScene::ApplyGlobalVariaBles(){
 	StartworldTransform_.translate = globalVariables_->GetVector3Value(groupName, "StartworldTransform_.translate");
 	StartworldTransform_.scale = globalVariables_->GetVector3Value(groupName, "StartworldTransform_.scale");
 
+	LandingPosition_=globalVariables_->GetFloatValue(groupName, "着地点");
 }

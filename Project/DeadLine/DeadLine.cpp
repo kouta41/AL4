@@ -30,13 +30,22 @@ void DeadLine::Update() {
 
 	// 上昇処理
 	worldTransform_.translate.y += kSpeed_;
-	worldTransform_.UpdateMatrix();
 
 	// ブロックが消されたらデッドラインを下げる
-	if (isBlockDelete_) {
+	if (isBlockDelete_ == true) {
 		worldTransform_.translate.y -= kDownValue;
 	}
+	 
+	worldTransform_.UpdateMatrix();
+#ifdef _DEBUG
 
+	ImGui::Begin("GoalLine");
+	if (ImGui::TreeNode("worldTransform")) {
+		ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, 100, 100);
+		ImGui::TreePop();
+	}
+	ImGui::End();
+#endif // RELEASE
 }
 
 void DeadLine::Draw3DLine(const CameraRole& viewProjection) {

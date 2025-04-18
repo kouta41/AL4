@@ -46,8 +46,8 @@ void BlockCore::Update(){
 	worldTransform_.translate.y -= foolSpeed_;
 
 	if (Titleflag_ == false) {
-		if (worldTransform_.translate.y <= -12) {
-			float floor = worldTransform_.translate.y - (-12);
+		if (worldTransform_.translate.y <= LandingPosition_) {
+			float floor = worldTransform_.translate.y - (LandingPosition_);
 			worldTransform_.translate.y -= floor;
 			foolflag_ = false;
 			SetIsBottomHitAABB_(true);
@@ -61,22 +61,16 @@ void BlockCore::Update(){
 	}
 }
 
-void BlockCore::UpdateIsSred(){
-	worldTransform_.UpdateMatrix();
-	worldTransform_.translate.x -= foolSpeed_;
+void BlockCore::UpdateIskLife(){
+	//時間経過でデス
+	if (--deathTimer_ <= 0) {
+		isDead_ = true;
+	}
 
 }
 
 void BlockCore::Draw(CameraRole viewProjection_){
 	model_->Draw(worldTransform_, viewProjection_);
-
-#ifdef _DEBUG
-	ImGui::Begin("Core");
-		ImGui::DragFloat3("worldTransform_", &worldTransform_.translate.x, 1.f, 60, -60);
-
-
-	ImGui::End();
-#endif // _DEBUG
 }
 
 void BlockCore::OnCollision(Collider* collider){

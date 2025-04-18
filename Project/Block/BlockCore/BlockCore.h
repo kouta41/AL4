@@ -40,7 +40,8 @@ public: // メンバ関数
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void UpdateIsSred();
+	void UpdateIskLife();
+
 
 	/// <summary>
 	/// 描画
@@ -91,6 +92,8 @@ public: // メンバ関数
 	void SetIsDead(bool isDead) { isDead_ = isDead; }
 	//タイトルシーンかいなか
 	void SetIsTitleflag(bool Titleflag) { Titleflag_ = Titleflag; }
+	//着地する場所
+	void SetLandingPosition(float LandingPosition) { LandingPosition_ = LandingPosition; }
 
 	//ワールド座標系を取得
 	void SetWorldPosition(Vector3 translate);
@@ -128,6 +131,8 @@ private: // メンバ変数
 
 	float radius = 4.0f;
 
+	//ブロックの着地点
+	float LandingPosition_ = -12;
 
 	bool isSred_;
 

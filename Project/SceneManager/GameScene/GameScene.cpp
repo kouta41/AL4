@@ -18,10 +18,10 @@ void GameScene::Initialize(){
 
 	texHandle_ = TextureManager::Load("resources/white.png");
 	SkydometexHandle_ = TextureManager::Load("resources/skydome.jpg");
-	blacktexHandle_ = TextureManager::Load("resources/black.png");
+	blacktexHandle_ = TextureManager::Load("resources/grya.png");
 	StarttexHandle_ = TextureManager::Load("resources/GO.png");
 
-
+	//モデルデータの読み込み
 	ModelManager::LoadObjModel("cube.obj");
 	ModelManager::LoadObjModel("skydome.obj");
 
@@ -82,8 +82,6 @@ void GameScene::Initialize(){
 	Endrightmodel_->SetModel("cube.obj");
 	Endrightmodel_->SetTexHandle(blacktexHandle_);
 	EndrightworldTransform_.Initialize();
-	EndrightworldTransform_.translate = { 3.0f,-0.0f,camera.translate.z + 4 };
-	EndrightworldTransform_.scale = { 1.0f,1.0f,0.0f };
 
 	//モデルの初期化＆設定(エンドオブジェクト左)
 	EndLeftmodel_ = std::make_unique<Object3DPlacer>();
@@ -91,8 +89,6 @@ void GameScene::Initialize(){
 	EndLeftmodel_->SetModel("cube.obj");
 	EndLeftmodel_->SetTexHandle(blacktexHandle_);
 	EndLeftworldTransform_.Initialize();
-	EndLeftworldTransform_.translate = { 1.0f,-0.0f,camera.translate.z + 4 };
-	EndLeftworldTransform_.scale = { 1.0f,1.0f,0.0f };
 
 	//モデルの初期化＆設定(スタートオブジェクト)
 	Startmodel_ = std::make_unique<Object3DPlacer>();
@@ -116,6 +112,26 @@ void GameScene::Initialize(){
 	endframe2 = 60.0f;
 
 	posA = { 0.0f,0.0f,-5.0f };
+
+
+	//調整項目の追加
+	globalVariables_ = GlobalVariables::GatInstance();
+	//グループを追加
+	GlobalVariables::GatInstance()->CreateGroup(groupName);
+	// 各項目の調整の追加
+	//エンドオブジェクト右(画面遷移)
+	globalVariables_->AddItem(groupName, "EndrightworldTransform_.translate", EndrightworldTransform_.translate);
+	globalVariables_->AddItem(groupName, "EndrightworldTransform_.scale", EndrightworldTransform_.scale);
+	//エンドオブジェクト左(画面遷移)
+	globalVariables_->AddItem(groupName, "EndLeftworldTransform_.translate", EndLeftworldTransform_.translate);
+	globalVariables_->AddItem(groupName, "EndLeftworldTransform_.scale", EndLeftworldTransform_.scale);
+
+	//エンドオブジェクト右(画面遷移)の移行
+	EndrightworldTransform_.translate = globalVariables_->GetVector3Value(groupName, "EndrightworldTransform_.translate");
+	EndrightworldTransform_.scale = globalVariables_->GetVector3Value(groupName, "EndrightworldTransform_.scale");
+	//エンドオブジェクト左(画面遷移)の移行
+	EndLeftworldTransform_.translate = globalVariables_->GetVector3Value(groupName, "EndLeftworldTransform_.translate");
+	EndLeftworldTransform_.scale = globalVariables_->GetVector3Value(groupName, "EndLeftworldTransform_.scale");
 }
 
 void GameScene::Update(){
@@ -137,6 +153,9 @@ void GameScene::Update(){
 	skydome_->Update();
 
 
+	ApplyGlobalVariaBles();
+
+
 	if (gameObject_->GetoptionFlag() == false) {
 		//自機の更新
 		if (cameraflag1 == true) {
@@ -151,9 +170,10 @@ void GameScene::Update(){
 		goalLine_->Update();
 
 		// デッドライン
-		deadLine_->SetIsBlockDelete(BlockManager_->GetisDelete());
+		deadLine_->SetIsBlockDelete(BlockManager_->GetisBlockDelete_());
 	}
-//	deadLine_->Update();
+	//
+	deadLine_->Update();
 
 	 //ブロックが消えていた場合
 	if (BlockManager_->GetisDelete()) {
@@ -296,6 +316,9 @@ void GameScene::Draw(){
 
 	gameObject_->Draw2D(camera);
 
+}
+
+void GameScene::ApplyGlobalVariaBles(){
 }
 
 

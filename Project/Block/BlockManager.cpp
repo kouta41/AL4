@@ -127,6 +127,8 @@ void BlockManager::Initialize(CollisionManager* collisionManager) {
 	// ブロックが消えるフラグ
 	isDelete_ = false;
 
+	isBlockDelete_ = false;
+
 	//ブロックの形状の設定
 	srand((unsigned int)time(nullptr));
 	for (int i = 0; i < 3; i++) {
@@ -168,10 +170,10 @@ void BlockManager::Update(){
 	//次のブロックの生成
 	nextBlockShape();
 
+	OnCollisionLine();
 
 	if (iscollision_ == false) {
 		//横一列になったら消える処理
-		OnCollisionLine();
 	}
 	else {
 		for (BlockCore* core_ : cores_) {
@@ -275,6 +277,10 @@ void BlockManager::OutPutBlock(){
 		iscollision_ = false;
 		iscollisionTime_ = 0.0f;
 	}
+	else {
+		isBlockDelete_ = false;
+	}
+
 	if (iscollision_ == false) {
 		iscollisionTime_++;
 		if (iscollisionTime_ > 10.0f) {
@@ -334,7 +340,7 @@ void BlockManager::BlockShape(){
 
 				}
 				srand((unsigned int)time(nullptr));
-				newCore->SetIsTitleflag(false);
+				newCore->SetLandingPosition(-12);
 				newCore->SetWorldPosition(
 					{ worldTransform_.translate.x + (float(j * 2.02f - MAX_PLAYER_CHIPS + 0.96f)),
 					worldTransform_.translate.y - (float(i * 2.02f - MAX_PLAYER_CHIPS)),
@@ -638,11 +644,12 @@ void BlockManager::OnCollisionLine(){
 				}
 				// コライダーのすべてが初期化されてしまっているのでplayerを再pushする
 				isDelete_ = true;
+				isBlockDelete_ = true;
 			}
 		}
 		else {
 			//Particlflag = false;
-
+			//isBlockDelete_ = false;
 		}
 	}
 }

@@ -156,6 +156,51 @@
             0.0,
             50.0,
             0.0
+        ],
+        "spriteworldTransform_DeleteStringUI_translate": [
+            130.0,
+            270.0,
+            0.0
+        ],
+        "spriteworldTransform_DeleteString_translate": [
+            75.0,
+            270.0,
+            0.0
+        ],
+        "spriteworldTransform_FallGuide_translate": [
+            200.0,
+            210.0,
+            0.0
+        ],
+        "spriteworldTransform_GuideUI_translate": [
+            200.0,
+            155.0,
+            0.0
+        ],
+        "spriteworldTransform_SpaceGuide_scale": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "spriteworldTransform_SpaceGuide_translate": [
+            55.0,
+            190.0,
+            0.0
+        ],
+        "spriteworldTransform_Space_translate": [
+            60.0,
+            210.0,
+            0.0
+        ],
+        "spriteworldTransform_crossKeyGuide_scale": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "spriteworldTransform_crossKeyGuide_translate": [
+            0.0,
+            70.0,
+            0.0
         ]
     }
 }

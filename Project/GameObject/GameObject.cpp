@@ -1,12 +1,10 @@
 #include "GameObject.h"
 
 
-GameObject::GameObject()
-{
+GameObject::GameObject(){
 }
 
-GameObject::~GameObject()
-{
+GameObject::~GameObject(){
 }
 
 void GameObject::Initialize(){
@@ -28,8 +26,15 @@ void GameObject::Initialize(){
 	texHandle_background= TextureManager::Load("resources/104696.jpg");
 	texHandle_guide = TextureManager::Load("resources/white.png");
 	texHandle_moji= TextureManager::Load("resources/20250203_102945.png");
-	
+	texHandle_crossKeyGuide = TextureManager::Load("resources/imagesguid.png");
+	texHandle_SpaceGuide = TextureManager::Load("resources/icons8_100.png");
+	texHandle_Space = TextureManager::Load("resources/1nk7l.png");
+	texHandle_GuideUI = TextureManager::Load("resources/1s710.png");
+	texHandle_FallGuide = TextureManager::Load("resources/tmnm3.png");
+	texHandle_DeleteString = TextureManager::Load("resources/m83f3.png");
+	texHandle_DeleteStringUI = TextureManager::Load("resources/w5ik4.png");
 
+	
 	//ステージ右、モデルの初期化
 	Stagemodel_Right = std::make_unique<Object3DPlacer>();
 	Stagemodel_Right->Initialize();
@@ -68,6 +73,15 @@ void GameObject::Initialize(){
 	spriteWorldTransform_ON.Initialize();
 	spriteWorldTransform_OFF.Initialize();
 	spriteWorldTransform_option.Initialize();
+	spriteworldTransform_crossKeyGuide.Initialize();
+	spriteworldTransform_SpaceGuide.Initialize();
+	spriteworldTransform_Space.Initialize();
+	spriteworldTransform_GuideUI.Initialize();
+	spriteworldTransform_FallGuide.Initialize();
+
+	spriteworldTransform_DeleteString.Initialize();
+	spriteworldTransform_DeleteStringUI.Initialize();
+
 
 	UIsprite_.reset(Sprite::Create(texHandle_UI));
 
@@ -83,6 +97,29 @@ void GameObject::Initialize(){
 
 	UIsprite_option.reset(Sprite::Create(texHandle_moji));
 	UIsprite_option->SetWorldTransform(spriteWorldTransform_option);
+
+	Operation_crossKeyGuide.reset(Sprite::Create(texHandle_crossKeyGuide));
+	Operation_crossKeyGuide->SetWorldTransform(spriteworldTransform_crossKeyGuide);
+
+
+	Operation_SpaceGuide.reset(Sprite::Create(texHandle_SpaceGuide));
+	Operation_SpaceGuide->SetWorldTransform(spriteworldTransform_SpaceGuide);
+
+
+	Operation_Space.reset(Sprite::Create(texHandle_Space));
+	Operation_Space->SetWorldTransform(spriteworldTransform_Space);
+
+	Operation_GuideUI.reset(Sprite::Create(texHandle_GuideUI));
+	Operation_GuideUI->SetWorldTransform(spriteworldTransform_GuideUI);
+
+	Operation_FallGuide.reset(Sprite::Create(texHandle_FallGuide));
+	Operation_FallGuide->SetWorldTransform(spriteworldTransform_FallGuide);
+
+	Operation_DeleteString.reset(Sprite::Create(texHandle_DeleteString));
+	Operation_DeleteString->SetWorldTransform(spriteworldTransform_DeleteString);
+
+	Operation_DeleteStringUI.reset(Sprite::Create(texHandle_DeleteStringUI));
+	Operation_DeleteStringUI->SetWorldTransform(spriteworldTransform_DeleteStringUI);
 
 
 	for (int i = 0; i < 4; i++) {
@@ -138,8 +175,16 @@ void GameObject::Initialize(){
 	//globalVariables_->AddItem(groupName, "spriteWorldTransform_chage", spriteWorldTransform_chage.translate);
 	//globalVariables_->AddItem(groupName, "spriteWorldTransform_ON", spriteWorldTransform_ON.translate);
 	//globalVariables_->AddItem(groupName, "spriteWorldTransform_OFF", spriteWorldTransform_OFF.translate);
+	globalVariables_->AddItem(groupName, "spriteworldTransform_crossKeyGuide_translate", spriteworldTransform_crossKeyGuide.translate);
+	globalVariables_->AddItem(groupName, "spriteworldTransform_crossKeyGuide_scale", spriteworldTransform_crossKeyGuide.scale);
+	globalVariables_->AddItem(groupName, "spriteworldTransform_SpaceGuide_translate", spriteworldTransform_SpaceGuide.translate);
+	globalVariables_->AddItem(groupName, "spriteworldTransform_SpaceGuide_scale", spriteworldTransform_SpaceGuide.scale);
+	globalVariables_->AddItem(groupName, "spriteworldTransform_Space_translate", spriteworldTransform_Space.translate);
+	globalVariables_->AddItem(groupName, "spriteworldTransform_GuideUI_translate", spriteworldTransform_GuideUI.translate);
+	globalVariables_->AddItem(groupName, "spriteworldTransform_FallGuide_translate", spriteworldTransform_FallGuide.translate);
+	globalVariables_->AddItem(groupName, "spriteworldTransform_DeleteString_translate", spriteworldTransform_DeleteString.translate);
+	globalVariables_->AddItem(groupName, "spriteworldTransform_DeleteStringUI_translate", spriteworldTransform_DeleteStringUI.translate);
 
-	
 
 	//ステージのブロックのガイド(スケール)
 	//globalVariables_->AddItem(groupName, "Stage_guide_scale_I", worldTransform_guide.scale);
@@ -184,11 +229,26 @@ void GameObject::Update(){
 
 	spriteWorldTransform.UpdateMatrix();
 	spriteWorldTransform_option.UpdateMatrix();
+	spriteworldTransform_crossKeyGuide.UpdateMatrix();
+	spriteworldTransform_SpaceGuide.UpdateMatrix();
+	spriteworldTransform_Space.UpdateMatrix();
+	spriteworldTransform_GuideUI.UpdateMatrix();
+	spriteworldTransform_FallGuide.UpdateMatrix();
+	spriteworldTransform_DeleteString.UpdateMatrix();
+	spriteworldTransform_DeleteStringUI.UpdateMatrix();
+
 
 	UIsprite_option->SetWorldTransform(spriteWorldTransform_option);
 	UIsprite_chage->SetWorldTransform(spriteWorldTransform_chage);
 	UIsprite_ON->SetWorldTransform(spriteWorldTransform_ON);
 	UIsprite_OFF->SetWorldTransform(spriteWorldTransform_ON);
+	Operation_crossKeyGuide->SetWorldTransform(spriteworldTransform_crossKeyGuide);
+	Operation_SpaceGuide->SetWorldTransform(spriteworldTransform_SpaceGuide);
+	Operation_Space->SetWorldTransform(spriteworldTransform_Space);
+	Operation_GuideUI->SetWorldTransform(spriteworldTransform_GuideUI);
+	Operation_FallGuide->SetWorldTransform(spriteworldTransform_FallGuide);
+	Operation_DeleteString->SetWorldTransform(spriteworldTransform_DeleteString);
+	Operation_DeleteStringUI->SetWorldTransform(spriteworldTransform_DeleteStringUI);
 
 	for (int i = 0; i < 4; i++) {
 		nextWorldTransform_[i].rotate = globalVariables_->GetVector3Value(groupName, "OtherBlock_rotate");
@@ -633,6 +693,13 @@ void GameObject::Draw2D(CameraRole viewProjection_){
 		else {
 			UIsprite_ON->Draw();
 		}
+		Operation_crossKeyGuide->Draw();
+		Operation_SpaceGuide->Draw();
+		Operation_Space->Draw();
+		Operation_GuideUI->Draw();
+		Operation_FallGuide->Draw();
+		Operation_DeleteString->Draw();
+		Operation_DeleteStringUI->Draw();
 	}
 
 	if (optionFlag_ == true) {
@@ -668,6 +735,18 @@ void GameObject::ApplyGlobalVariaBles(){
 	spriteWorldTransform_chage.translate= globalVariables_->GetVector3Value(groupName, "spriteWorldTransform_chage");
 	spriteWorldTransform_ON.translate = globalVariables_->GetVector3Value(groupName, "spriteWorldTransform_ON");
 	spriteWorldTransform_OFF.translate = globalVariables_->GetVector3Value(groupName, "spriteWorldTransform_OFF");
+	spriteworldTransform_crossKeyGuide.translate = globalVariables_->GetVector3Value(groupName, "spriteworldTransform_crossKeyGuide_translate");
+	spriteworldTransform_crossKeyGuide.scale = globalVariables_->GetVector3Value(groupName, "spriteworldTransform_crossKeyGuide_scale");
+	spriteworldTransform_SpaceGuide.translate = globalVariables_->GetVector3Value(groupName, "spriteworldTransform_SpaceGuide_translate");
+	spriteworldTransform_SpaceGuide.scale = globalVariables_->GetVector3Value(groupName, "spriteworldTransform_SpaceGuide_scale");
+	spriteworldTransform_Space.translate = globalVariables_->GetVector3Value(groupName, "spriteworldTransform_Space_translate");
+	spriteworldTransform_GuideUI.translate = globalVariables_->GetVector3Value(groupName, "spriteworldTransform_GuideUI_translate");
+	spriteworldTransform_FallGuide.translate = globalVariables_->GetVector3Value(groupName, "spriteworldTransform_FallGuide_translate");
+	spriteworldTransform_DeleteString.translate = globalVariables_->GetVector3Value(groupName, "spriteworldTransform_DeleteString_translate");
+	spriteworldTransform_DeleteStringUI.translate = globalVariables_->GetVector3Value(groupName, "spriteworldTransform_DeleteStringUI_translate");
+
+
+	
 	//ブロックガイドのオフセット
 	BlockGuide_Offset = globalVariables_->GetVector3Value(groupName, "BlockGuide_Offset");
 	//次のブロックの座標(X軸の三種){X<Y<Z}
@@ -678,6 +757,4 @@ void GameObject::ApplyGlobalVariaBles(){
 	secondTranslate_X = globalVariables_->GetVector3Value(groupName, "secondTranslate_X");
 	//次の次のブロックの座標(Y軸の四種){X<Y<Z<W}
 	secondTranslate_Y = globalVariables_->GetVector4Value(groupName, "secondTranslate_Y");
-	//ブロックの角度
-	//OtherBlock_rotate = globalVariables_->GetVector3Value(groupName, "OtherBlock_rotate");
 }

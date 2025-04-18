@@ -146,6 +146,9 @@ public: // メンバ関数
 	// ブロックが消えるフラグを取得
 	bool GetisDelete() { return isDelete_; }
 
+	// ブロックが消えるフラグを取得
+	bool GetisBlockDelete_() { return isBlockDelete_; }
+
 	//ゴールラインを取得
 	const std::unique_ptr<GoalLine> GetgoalLine()const { goalLine_; }
 
@@ -173,6 +176,12 @@ public: // メンバ関数
 	const int kBlockNumY = 15;
 
 private: // メンバ変数
+	//グループ名
+	const char* groupName = "BlockManager";
+
+	//調整項目
+	//GlobalVariables* globalVariables_;
+
 
 	WorldTransform worldTransform_;
 
@@ -223,6 +232,9 @@ private: // メンバ変数
 	typeShape Block;
 	// ブロックが消えるフラグ
 	bool isDelete_;
+
+	//ブロックが消えてか
+	bool isBlockDelete_;
 	// 当たり判定
 	CollisionManager* collisionManager_ = nullptr;
 

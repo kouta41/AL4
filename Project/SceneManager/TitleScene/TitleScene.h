@@ -17,6 +17,8 @@
 #include "Audio/Audio.h"
 #include "BlockCore.h"
 #include "GlobalVariables.h"
+#include "GameObject.h"
+#include "TitleObject.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -58,6 +60,9 @@ private:
 	//オーディオ
 	Audio* audio_ = Audio::GetInstance();
 
+	// 当たり判定
+	std::unique_ptr<CollisionManager> collisionManager_{};
+
 	//調整項目
 	GlobalVariables* globalVariables_;
 
@@ -67,6 +72,13 @@ private:
 	//スプライト
 	std::unique_ptr<Sprite> sprite_;
 	std::unique_ptr<Sprite> blackSprite_;
+
+
+	//ゲームのオブジェクト
+	std::unique_ptr<GameObject> gameObject_{};
+
+	//タイトルのオブジェクト
+	std::unique_ptr<TitleObject> titleObject_{};
 
 
 	//落ちてくるブロックの位置
@@ -109,7 +121,8 @@ private:
 
 	//グループ名
 	const char* groupName = "TitleObject";
-
+	//ブロックの着地点
+	float LandingPosition_;
 
 	float Color_R = 1.0f;
 	float Color_L = 1.0f;
