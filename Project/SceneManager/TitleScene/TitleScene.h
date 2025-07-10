@@ -19,10 +19,18 @@
 #include "GlobalVariables.h"
 #include "GameObject.h"
 #include "TitleObject.h"
+#include "imgui.h"
+#include <cstdlib>
+#include <ctime>
+#include <iostream>
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "json.hpp"
+#include <vector>
+#include <string>
+#include <algorithm>
 
 class TitleScene : public IScene
 {
@@ -37,87 +45,34 @@ public:
 
 	void Draw()override;
 
-	//調整項目の適任
-	void ApplyGlobalVariaBles();
+	
+
+	// 成功回数が5位以内より高ければランキング登録
+	void TryInsertToRanking(const std::string & playerName, int combo);
+	//ランキングデータの読み込み
+	void LoadRankingFromJson(const std::string& jsonText);
+	//ランキングデータの保存
+	std::string CreateRankingJson();
+
 
 
 private:
-
-	//ワールド座標
-	WorldTransform worldTransform;
-	WorldTransform TitleworldTransform_;
-	
-	WorldTransform StartworldTransform_;
-
-	WorldTransform EndrightworldTransform_;
-	WorldTransform EndLeftworldTransform_;
-
-	WorldTransform spriteWorldTransform;
-
-	//カメラ座標
-	CameraRole camera;
-
-	//オーディオ
-	Audio* audio_ = Audio::GetInstance();
-
-	// 当たり判定
-	std::unique_ptr<CollisionManager> collisionManager_{};
-
-	//調整項目
-	GlobalVariables* globalVariables_;
-
-	//画面遷移のフラグ
-	bool TransitionFlag = true;
-
-	//スプライト
-	std::unique_ptr<Sprite> sprite_;
-	std::unique_ptr<Sprite> blackSprite_;
-
-
-	//ゲームのオブジェクト
-	std::unique_ptr<GameObject> gameObject_{};
-
-	//タイトルのオブジェクト
-	std::unique_ptr<TitleObject> titleObject_{};
-
-
-	//落ちてくるブロックの位置
-	Vector3 randPos_;
-	//落ちてくるタイミング
-	float foolTime = 0;
-
-	//落ちてくるタイミング
-	float foolTime1 = 0;
-
-	///3Dモデル
-	//タイトル
-	std::unique_ptr<Object3DPlacer> Titlemodel_;
-	
-	//スタート
-	std::unique_ptr<Object3DPlacer> Startmodel_;
-	//画面遷移_右
-	std::unique_ptr<Object3DPlacer> Endrightmodel_;
-	//画面遷移_左
-	std::unique_ptr<Object3DPlacer> EndLeftmodel_;
-	//天球
-	std::unique_ptr<Skydome> skydome_{};
-
-	//落ちてくるブロック
-	std::list<BlockCore*> cores_;
-
 	//キーボード入力
 	Input* input_ = nullptr;
 
-	//テクスチャハンドル
-	uint32_t TitletexHandle_ = 0;
-	uint32_t StarttexHandle_ = 0;
+	// 成功率（%）
+	 int SUCCESS_RATE = 81;
 
-	uint32_t SkydometexHandle_ = 0;
-	uint32_t blacktexHandle_ = 0;
-	
-	uint32_t coreTexHandle_ = 0;
-	uint32_t sceneBGM = 0;
-	uint32_t sceneSE = 0;
+	 //継続数
+	 int combo = 1;
+	 //成功か失敗か
+	 bool success = false;
+
+	 //リセット
+	 bool reset = false;
+
+	 // 上位5件用
+	 std::vector<RankEntry> ranking;
 
 	//グループ名
 	const char* groupName = "TitleObject";
