@@ -18,10 +18,10 @@ void GameObject::Initialize(){
 	
 	//テクスチャのロード
 	texHandle_ = TextureManager::Load("resources/1706.png");
-	texHandle_UI= TextureManager::Load("resources/8qrp7.png");
-	texHandle_chage =TextureManager::Load("resources/rgnk7.png");
-	texHandle_ON = TextureManager::Load("resources/5030v.png");
-	texHandle_OFF = TextureManager::Load("resources/396iw.png");
+	texHandle_UI= TextureManager::Load("resources/qu9s8.png");
+	texHandle_chage =TextureManager::Load("resources/w6g73.png");
+	texHandle_ON = TextureManager::Load("resources/by76f.png");
+	texHandle_OFF = TextureManager::Load("resources/0ug9t.png");
 	texHandle_Block = TextureManager::Load("resources/grya.png");
 	texHandle_background= TextureManager::Load("resources/104696.jpg");
 	texHandle_guide = TextureManager::Load("resources/white.png");
@@ -685,13 +685,13 @@ void GameObject::Draw(CameraRole viewProjection_){
 void GameObject::Draw2D(CameraRole viewProjection_){
 	if (optionFlag_ == false) {
 		UIsprite_->Draw();
-		UIsprite_chage->Draw();
+		//UIsprite_chage->Draw();
 
 		if (blockManager_->GetIscollision_()) {
-			UIsprite_OFF->Draw();
+		//	UIsprite_OFF->Draw();
 		}
 		else {
-			UIsprite_ON->Draw();
+		//	UIsprite_ON->Draw();
 		}
 		Operation_crossKeyGuide->Draw();
 		Operation_SpaceGuide->Draw();
